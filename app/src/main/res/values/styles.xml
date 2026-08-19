@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:navigationBarColor">@color/backgroundEditActivity</item>
+        <item name="colorAccent">@color/cyan</item>
+        <item name="colorControlHighlight">@color/ripple_material_dark</item>
+        <item name="colorPrimary">@color/colorBlack</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar" parent="@style/AppTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/knack_slide_left</item>
+        <item name="android:windowExitAnimation">@anim/knack_slide_right</item>
+    </style>
+
+    <style name="rtl_RecyclerTabLayout">
+        <item name="rtl_tabBackground">?selectableItemBackground</item>
+        <item name="rtl_tabIndicatorColor">?colorAccent</item>
+        <item name="rtl_tabIndicatorHeight">2.0dip</item>
+        <item name="rtl_tabMaxWidth">50.0dip</item>
+        <item name="rtl_tabMinWidth">40.0dip</item>
+        <item name="rtl_tabPaddingEnd">6.0dip</item>
+        <item name="rtl_tabPaddingStart">6.0dip</item>
+        <item name="rtl_tabSelectedTextColor">?android:textColorPrimary</item>
+        <item name="rtl_tabTextAppearance">@style/rtl_RecyclerTabLayout.Tab</item>
+    </style>
+
+    <style name="rtl_RecyclerTabLayout.Tab" parent="@style/rtl_RecyclerTabLayout">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+
+    <style name="SCBSwitch_1" parent="@style/Theme.AppCompat.Light">
+        <item name="android:colorForeground">#c2b1b1b1</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="colorSwitchThumbNormal">#A7A5A6</item>
+    </style>
+
+    <style name="SeekBaStyle">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">20.0dip</item>
+        <item name="android:layout_marginLeft">56.0dip</item>
+        <item name="android:layout_marginRight">56.0dip</item>
+        <item name="android:progressDrawable">@drawable/knack_custom_progressbar_drawable</item>
+        <item name="android:thumb">@drawable/knack_custom_thumb</item>
+        <item name="android:splitTrack">false</item>
+    </style>
+
+    <style name="SeekBaStyle_1">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">20.0dip</item>
+        <item name="android:layout_marginLeft">56.0dip</item>
+        <item name="android:layout_marginRight">56.0dip</item>
+        <item name="android:progressDrawable">@drawable/knack_custom_progressbar_drawable</item>
+        <item name="android:thumb">@drawable/knack_custom_thumb</item>
+        <item name="android:splitTrack">false</item>
+    </style>
+<style name="SeekBaStyle_2">
+        <item name="android:progressDrawable">@drawable/knack_custom_progressbar_drawable</item>
+        <item name="android:thumb">@drawable/knack_custom_thumb</item>
+        <item name="android:splitTrack">false</item>
+    </style>
+
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="progressBar" parent="@style/Theme.AppCompat">
+        <item name="colorAccent">@color/edit_bg</item>
+    </style>
+
+    <style name="TextBelowImage" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+</resources>

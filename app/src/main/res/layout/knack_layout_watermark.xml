@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_watermark"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="end|bottom"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/btn_watermark"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/knack_ic_launcher_watermark" />
+
+        <ImageView
+            android:id="@+id/btn_watermark_remove"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end|bottom"
+            android:background="@color/white"
+            android:src="@drawable/knack_ic_close"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+</LinearLayout>

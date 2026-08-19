@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/knack_border_radius__dark_grey_10"
+    android:paddingTop="15.0dip">
+
+    <ImageView
+        android:id="@id/pinch"
+        android:layout_width="200.0dip"
+        android:layout_height="250.0dip"
+        android:rotation="20.0"
+        android:src="@drawable/knack_frame_1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
+
+    <ImageView
+        android:layout_width="80.0dip"
+        android:layout_height="80.0dip"
+        android:src="@drawable/knack_zoom_out_finger"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
+
+    <TextView
+        android:id="@id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pinch to zoom in/out"
+        android:textColor="@color/white"
+        android:textSize="16.0sp"
+        app:layout_constraintBottom_toTopOf="@id/pinch"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@id/btnDone"
+        android:layout_width="wrap_content"
+        android:layout_height="36.0dip"
+        android:layout_gravity="center|right"
+        android:layout_marginTop="5.0dip"
+        android:layout_marginRight="15.0dip"
+        android:layout_marginBottom="15.0dip"
+        android:background="@drawable/knack_piclist_selector_btn_done"
+        android:backgroundTint="@color/white"
+        android:gravity="center"
+        android:paddingLeft="30.0dip"
+        android:paddingTop="5.0dip"
+        android:paddingRight="30.0dip"
+        android:paddingBottom="5.0dip"
+        android:text="Got It"
+        android:textColor="@color/selected"
+        android:textSize="14.0sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

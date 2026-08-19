@@ -7,6 +7,8 @@ local.properties
 
 # Log/OS Files
 *.log
+.DS_Store
+Thumbs.db
 
 # Android Studio generated files and folders
 captures/
@@ -18,7 +20,15 @@ output-metadata.json
 
 # IntelliJ
 *.iml
-.idea/
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/assetWizardSettings.xml
+.idea/dictionaries
+.idea/libraries
+.idea/caches
+.idea/modules.xml
+.idea/navEditor.xml
 misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml
@@ -26,9 +36,15 @@ render.experimental.xml
 # Keystore files
 *.jks
 *.keystore
+KeyStore/
 
 # Google Services (e.g. APIs or Firebase)
-google-services.json
+# google-services.json
 
 # Android Profiling
 *.hprof
+
+# Project specific
+.artifacts/
+release/
+scratch/

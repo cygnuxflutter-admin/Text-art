@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="__picker_common_primary">#ffe1e1e1</color>
+    <color name="__picker_item_photo_border_n">#33ffffff</color>
+    <color name="__picker_item_photo_border_selected">#ff99cc00</color>
+
+    <color name="ball1">#ffffd91c</color>
+    <color name="ball2">#ffff4b4a</color>
+    <color name="ball3">#ff3d8eff</color>
+    <color name="black">#ff17181b</color>
+    <color name="blue_selected">#07718B</color>
+
+    <color name="browser_actions_bg_grey">#fff5f5f5</color>
+    <color name="browser_actions_divider_color">#1e000000</color>
+    <color name="browser_actions_text_color">#de000000</color>
+    <color name="browser_actions_title_color">#ff646464</color>
+
+    <color name="colorAccent">#07718B</color>
+    <color name="colorAccentDark">#ff0f60cf</color>
+    <color name="colorPrimary">#ff3f51b5</color>
+    <color name="colorPrimaryDark">#ff303f9f</color>
+    <color name="colorText">#ffffffff</color>
+
+    <color name="cropiwa_default_border_color">#fff5f5f5</color>
+    <color name="cropiwa_default_corner_color">#fff5f5f5</color>
+    <color name="cropiwa_default_grid_color">#ffffffff</color>
+    <color name="cropiwa_default_overlay_color">#af000000</color>
+    <color name="dark_grey">#FFFFFF</color>
+    <color name="dark_grey_more">#FFFFFF</color>
+    <color name="backgroundEditActivity">#ff000000</color>
+
+    <color name="loader_defalut">#44ffffff</color>
+    <color name="loader_selected">#ffffffff</color>
+
+    <color name="overlay_background_4">#a4ffffff</color>
+
+    <color name="progress_bar_bg_light">#ff787878</color>
+
+    <color name="text_second">#ff888893</color>
+    <color name="tool_bg">#ff303030</color>
+
+    <color name="unselected_color">#ff7d7d7d</color>
+    <color name="selected">#07718B</color>
+    <color name="white">#ffffffff</color>
+    <color name="white_blur">#ffc8c8c8</color>
+
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="custome_chrom_color">#07718B</color>
+    <color name="cyan">#33a8db</color>
+    <color name="colorBlack">#ff000000</color>
+    <color name="light_pink">#f68696</color>
+    <color name="colorWhite">#ffffffff</color>
+    <color name="white_trans">#e6ffffff</color>
+    <color name="grey_400">#ffbdbdbd</color>
+    <color name="edit_bg">#ff36464e</color>
+    <color name="icChecked">#ff00cbd3</color>
+    <color name="text_unselected">#A7A5A6</color>
+
+    <color name="imagepickerColor">#24232B</color>
+    <color name="buttonColor">#9364FF</color>
+    <color name="toptextcolor">#fff</color>
+    <color name="opacitywhite">#80ffffff</color>
+    <color name="video_process_bg_color">#1e183c</color>
+    <color name="bottom_bg_color">#170f2a</color>
+
+    <color name="transparent">#00000000</color>
+</resources>

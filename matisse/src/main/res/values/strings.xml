@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="matisse_default_bucket_name">
+All Pictures</string>
+    <string name="matisse_on_read_external_storage_permission_denied">Please grant storage access and try again</string>
+    <string name="matisse_on_write_external_storage_permission_denied">Please grant storage write permission and try again</string>
+    <string name="matisse_on_camera_permission_denied">Please grant permission to take photos and try again</string>
+    <string name="matisse_limit_the_number_of_pictures">Only %d Pictures can be selected at most</string>
+    <string name="matisse_preview">Preview</string>
+    <string name="matisse_sure">OK (%d/%d)</string>
+    <string name="matisse_back">return</string>
+</resources>

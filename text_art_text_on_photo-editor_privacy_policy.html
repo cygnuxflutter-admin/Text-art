@@ -1,0 +1,254 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Privacy Policy for Text Art - Add Text on Photo app."/>
+  <title>Privacy Policy - Text Art</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--teal:#0e8a7c;--teal-light:#d0f0ec;--teal-dark:#076558;--ink:#111827;--muted:#6b7280;--border:#e5e7eb;--surface:#f8fafb;--white:#ffffff;--warn-bg:#fff7ed;--warn-bdr:#f97316;--info-bg:#eff6ff;--info-bdr:#3b82f6;--radius:12px;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06)}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--surface);color:var(--ink);line-height:1.75;font-size:15px}
+    .hero{background:linear-gradient(135deg,var(--teal-dark) 0%,var(--teal) 60%,#14b8a6 100%);color:var(--white);padding:64px 24px 56px;text-align:center;position:relative;overflow:hidden}
+    .hero-icon{width:68px;height:68px;background:rgba(255,255,255,.15);border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:32px;position:relative}
+    .hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;letter-spacing:-.5px}
+    .hero p{margin-top:10px;opacity:.85;font-size:14px}
+    .badge{display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 14px;font-size:12px;font-weight:600;margin-top:14px}
+    .container{max-width:820px;margin:0 auto;padding:48px 20px 80px}
+    .toc{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:24px 28px;margin-bottom:40px;box-shadow:var(--shadow)}
+    .toc h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:14px}
+    .toc ol{padding-left:20px;display:grid;grid-template-columns:1fr 1fr;gap:6px 16px}
+    @media(max-width:560px){.toc ol{grid-template-columns:1fr}}
+    .toc a{color:var(--teal);text-decoration:none;font-size:14px;font-weight:500}
+    .toc a:hover{text-decoration:underline}
+    .section{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:32px;margin-bottom:20px;box-shadow:var(--shadow)}
+    .section-header{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+    .section-icon{width:42px;height:42px;background:var(--teal-light);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+    .section h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:700;color:var(--ink)}
+    p{margin-bottom:14px;color:#374151}
+    p:last-child{margin-bottom:0}
+    h3{font-size:15px;font-weight:600;color:var(--ink);margin:20px 0 8px}
+    ul,ol{padding-left:22px;margin-bottom:14px}
+    li{margin-bottom:6px;color:#374151}
+    li strong{color:var(--ink)}
+    .perm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:16px}
+    .perm-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px}
+    .perm-icon{font-size:22px;flex-shrink:0;line-height:1}
+    .perm-card h4{font-size:13px;font-weight:600;margin-bottom:3px}
+    .perm-card p{font-size:12px;color:var(--muted);margin:0;line-height:1.5}
+    .sdk-table{width:100%;border-collapse:collapse;margin-top:16px}
+    .sdk-table th{background:var(--teal);color:var(--white);padding:10px 14px;text-align:left;font-size:13px;font-weight:600}
+    .sdk-table th:first-child{border-radius:8px 0 0 0}
+    .sdk-table th:last-child{border-radius:0 8px 0 0}
+    .sdk-table td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;color:#374151;vertical-align:top}
+    .sdk-table tr:last-child td{border-bottom:none}
+    .sdk-table tr:nth-child(even) td{background:var(--surface)}
+    .sdk-table a{color:var(--teal)}
+    .sdk-tag{display:inline-block;background:var(--teal-light);color:var(--teal-dark);border-radius:999px;padding:2px 10px;font-size:11px;font-weight:600}
+    .callout{border-left:4px solid;border-radius:0 8px 8px 0;padding:14px 16px;margin:16px 0;font-size:14px}
+    .callout.warn{background:var(--warn-bg);border-color:var(--warn-bdr)}
+    .callout.info{background:var(--info-bg);border-color:var(--info-bdr)}
+    .callout.green{background:var(--teal-light);border-color:var(--teal)}
+    .callout strong{display:block;margin-bottom:4px;font-size:13px}
+    .contact-card{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:var(--white);border-radius:var(--radius);padding:32px;text-align:center}
+    .contact-card h2{font-size:20px;margin-bottom:8px}
+    .contact-card p{opacity:.85;margin-bottom:20px}
+    .contact-card a{display:inline-block;background:var(--white);color:var(--teal-dark);font-weight:700;padding:12px 28px;border-radius:999px;text-decoration:none;font-size:14px}
+    footer{text-align:center;padding:24px;font-size:13px;color:var(--muted);border-top:1px solid var(--border)}
+    @media(max-width:600px){.section{padding:20px 16px}.container{padding:28px 12px 60px}}
+  </style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-icon">&#127912;</div>
+  <h1>Privacy Policy</h1>
+  <p>Text Art &#8211; Add Text on Photo</p>
+  <div class="badge">Last Updated: August 17, 2025</div>
+</div>
+<div class="container">
+  <div class="toc">
+    <h2>Table of Contents</h2>
+    <ol>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#data-collected">Data We Collect</a></li>
+      <li><a href="#permissions">App Permissions</a></li>
+      <li><a href="#how-we-use">How We Use Data</a></li>
+      <li><a href="#third-party">Third-Party Services</a></li>
+      <li><a href="#advertising">Advertising &amp; Ad ID</a></li>
+      <li><a href="#children">Children's Privacy</a></li>
+      <li><a href="#user-rights">Your Rights</a></li>
+      <li><a href="#data-retention">Data Retention</a></li>
+      <li><a href="#security">Security</a></li>
+      <li><a href="#changes">Policy Changes</a></li>
+      <li><a href="#contact">Contact Us</a></li>
+    </ol>
+  </div>
+  <div class="section" id="overview">
+    <div class="section-header"><div class="section-icon">&#128203;</div><h2>1. Overview</h2></div>
+    <p>Welcome to <strong>Text Art &#8211; Add Text on Photo</strong> ("App", "we", "our", or "us"). This Privacy Policy describes how we collect, use, share, and protect information when you use our Android application.</p>
+    <p>By installing or using Text Art, you agree to the practices described in this Privacy Policy. If you do not agree, please uninstall the App and discontinue use.</p>
+    <div class="callout green"><strong>&#10003; Our Commitment</strong>We do <strong>not</strong> sell your personal data to third parties. We collect only the data necessary to provide a fast, reliable, and ad-supported free experience.</div>
+  </div>
+  <div class="section" id="data-collected">
+    <div class="section-header"><div class="section-icon">&#128230;</div><h2>2. Data We Collect</h2></div>
+    <h3>2.1 Data You Provide</h3>
+    <ul>
+      <li><strong>Photos &amp; Images:</strong> Photos you select from your gallery or capture with your camera for editing. These are processed <em>locally on your device</em> and are never uploaded to our servers.</li>
+      <li><strong>Edited Images:</strong> Images you save are stored on your device's local storage only.</li>
+    </ul>
+    <h3>2.2 Data Collected Automatically</h3>
+    <ul>
+      <li><strong>Device Information:</strong> Device model, OS version, screen resolution, and unique device identifiers.</li>
+      <li><strong>Advertising ID (GAID):</strong> Google's resettable Advertising ID, used for personalized advertisements.</li>
+      <li><strong>Usage Analytics:</strong> App open events, feature usage, session duration collected anonymously via Firebase Analytics.</li>
+      <li><strong>Crash Reports:</strong> Crash logs and stack traces sent automatically via Firebase Crashlytics to help us fix bugs.</li>
+      <li><strong>Network Information:</strong> Network connectivity status (Wi-Fi / Mobile Data) to optimize content loading.</li>
+      <li><strong>Push Notification Token:</strong> Firebase Cloud Messaging (FCM) and OneSignal tokens to deliver notifications.</li>
+    </ul>
+    <div class="callout info"><strong>&#8505; Photos Stay On Your Device</strong>Your photos and edited artwork are <strong>never uploaded</strong> to our servers. All image editing happens entirely on-device.</div>
+  </div>
+  <div class="section" id="permissions">
+    <div class="section-header"><div class="section-icon">&#128273;</div><h2>3. App Permissions</h2></div>
+    <p>The following Android permissions are requested by the app:</p>
+    <div class="perm-grid">
+      <div class="perm-card"><div class="perm-icon">&#128247;</div><div><h4>CAMERA</h4><p>To capture photos directly within the app for text overlay editing.</p></div></div>
+      <div class="perm-card"><div class="perm-icon">&#128444;</div><div><h4>READ_MEDIA_IMAGES / READ_EXTERNAL_STORAGE</h4><p>To browse and select images from your photo gallery.</p></div></div>
+      <div class="perm-card"><div class="perm-icon">&#128190;</div><div><h4>WRITE_EXTERNAL_STORAGE</h4><p>To save your edited images and artwork to your device's gallery.</p></div></div>
+      <div class="perm-card"><div class="perm-icon">&#127760;</div><div><h4>INTERNET</h4><p>To load advertisements, templates, analytics, and push notifications.</p></div></div>
+      <div class="perm-card"><div class="perm-icon">&#128225;</div><div><h4>ACCESS_NETWORK_STATE</h4><p>To check network availability before loading remote content.</p></div></div>
+      <div class="perm-card"><div class="perm-icon">&#128276;</div><div><h4>POST_NOTIFICATIONS</h4><p>To send you app update alerts and promotional notifications.</p></div></div>
+      <div class="perm-card"><div class="perm-icon">&#128226;</div><div><h4>AD_ID (Advertising ID)</h4><p>To show relevant, personalized ads via Google AdMob and Facebook Audience Network.</p></div></div>
+      <div class="perm-card"><div class="perm-icon">&#128438;</div><div><h4>SET_WALLPAPER</h4><p>To set your edited artwork directly as your device's home screen wallpaper.</p></div></div>
+      <div class="perm-card"><div class="perm-icon">&#9889;</div><div><h4>WAKE_LOCK</h4><p>To keep the screen on during photo rendering and export operations.</p></div></div>
+    </div>
+  </div>
+  <div class="section" id="how-we-use">
+    <div class="section-header"><div class="section-icon">&#9881;</div><h2>4. How We Use Your Data</h2></div>
+    <ul>
+      <li><strong>App Functionality:</strong> To enable photo editing, text overlay, templates, gallery import, camera capture, image saving, wallpaper setting, and image sharing features.</li>
+      <li><strong>Advertising:</strong> To display banner, interstitial, native, and app open ads via Google AdMob and Facebook Audience Network. Ads help us keep the app free.</li>
+      <li><strong>Analytics:</strong> To understand how users interact with the app using Firebase Analytics (data is anonymized).</li>
+      <li><strong>Crash Reporting:</strong> To detect, diagnose, and fix app crashes using Firebase Crashlytics.</li>
+      <li><strong>Push Notifications:</strong> To send you important updates and new feature announcements via Firebase Cloud Messaging and OneSignal.</li>
+      <li><strong>Remote Configuration:</strong> To update ad unit IDs and app settings remotely via Firebase Realtime Database without requiring an app update.</li>
+      <li><strong>Legal Compliance:</strong> To comply with applicable laws, including GDPR, CCPA, and COPPA.</li>
+    </ul>
+  </div>
+  <div class="section" id="third-party">
+    <div class="section-header"><div class="section-icon">&#129309;</div><h2>5. Third-Party Services</h2></div>
+    <p>The App integrates the following third-party SDKs and services. Each has its own Privacy Policy:</p>
+    <table class="sdk-table">
+      <thead><tr><th>Service</th><th>Purpose</th><th>Type</th><th>Privacy Policy</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Google AdMob</strong></td><td>Banner, Interstitial, Native &amp; App Open Ads</td><td><span class="sdk-tag">Ads</span></td><td><a href="https://policies.google.com/privacy" target="_blank">View</a></td></tr>
+        <tr><td><strong>Facebook Audience Network</strong></td><td>Ad Mediation via Google AdMob</td><td><span class="sdk-tag">Ads</span></td><td><a href="https://www.facebook.com/privacy/policy/" target="_blank">View</a></td></tr>
+        <tr><td><strong>Firebase Analytics</strong></td><td>Anonymous usage statistics</td><td><span class="sdk-tag">Analytics</span></td><td><a href="https://firebase.google.com/support/privacy" target="_blank">View</a></td></tr>
+        <tr><td><strong>Firebase Crashlytics</strong></td><td>Crash reporting &amp; diagnostics</td><td><span class="sdk-tag">Diagnostics</span></td><td><a href="https://firebase.google.com/support/privacy" target="_blank">View</a></td></tr>
+        <tr><td><strong>Firebase Cloud Messaging</strong></td><td>Push notifications</td><td><span class="sdk-tag">Notifications</span></td><td><a href="https://firebase.google.com/support/privacy" target="_blank">View</a></td></tr>
+        <tr><td><strong>Firebase Realtime Database</strong></td><td>Remote app configuration &amp; ad management</td><td><span class="sdk-tag">Config</span></td><td><a href="https://firebase.google.com/support/privacy" target="_blank">View</a></td></tr>
+        <tr><td><strong>Firebase Storage / Firestore</strong></td><td>Cloud data storage</td><td><span class="sdk-tag">Storage</span></td><td><a href="https://firebase.google.com/support/privacy" target="_blank">View</a></td></tr>
+        <tr><td><strong>OneSignal</strong></td><td>Push notification delivery</td><td><span class="sdk-tag">Notifications</span></td><td><a href="https://onesignal.com/privacy_policy" target="_blank">View</a></td></tr>
+        <tr><td><strong>Google UMP (User Messaging Platform)</strong></td><td>GDPR consent management for EU users</td><td><span class="sdk-tag">Compliance</span></td><td><a href="https://policies.google.com/privacy" target="_blank">View</a></td></tr>
+        <tr><td><strong>Unsplash API</strong></td><td>Free stock photo browsing</td><td><span class="sdk-tag">Content</span></td><td><a href="https://unsplash.com/privacy" target="_blank">View</a></td></tr>
+        <tr><td><strong>Google Play Install Referrer</strong></td><td>App install attribution</td><td><span class="sdk-tag">Attribution</span></td><td><a href="https://policies.google.com/privacy" target="_blank">View</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="section" id="advertising">
+    <div class="section-header"><div class="section-icon">&#128227;</div><h2>6. Advertising &amp; Advertising ID</h2></div>
+    <p>Text Art is a <strong>free app</strong> supported by advertisements. We use Google AdMob (with Facebook Audience Network mediation) to show ads, which may include:</p>
+    <ul>
+      <li><strong>Banner Ads</strong> &#8212; small ads shown within the app interface</li>
+      <li><strong>Interstitial Ads</strong> &#8212; full-screen ads shown between actions</li>
+      <li><strong>Native Ads</strong> &#8212; ads styled to match the app design</li>
+      <li><strong>App Open Ads</strong> &#8212; shown when resuming the app from background</li>
+    </ul>
+    <h3>Managing Your Advertising ID</h3>
+    <p>You can opt out of personalized ads or reset your Advertising ID at any time:</p>
+    <ul>
+      <li>Go to <strong>Settings &#8594; Google &#8594; Ads</strong> on your Android device</li>
+      <li>Select <strong>"Opt out of Ads Personalization"</strong> or <strong>"Reset Advertising ID"</strong></li>
+    </ul>
+    <div class="callout warn"><strong>&#9888; EU/EEA Users (GDPR)</strong>If you are in the European Economic Area, you will see a <strong>consent dialog</strong> (powered by Google UMP) when you first open the app. You can choose whether to allow personalized ads. Non-personalized ads will be shown if consent is not given.</div>
+    <h3>Ad Frequency</h3>
+    <p>We display ads in a balanced, non-intrusive way. Interstitial ads are shown after a minimum number of user interactions to ensure your primary experience &#8212; editing photos &#8212; is never interrupted excessively. Publisher content is always displayed first and is more prominent than advertisements.</p>
+  </div>
+  <div class="section" id="children">
+    <div class="section-header"><div class="section-icon">&#128118;</div><h2>7. Children's Privacy (COPPA)</h2></div>
+    <p>Text Art is designed for a <strong>general audience (13+)</strong>. We do <strong>not</strong> knowingly collect personal information from children under the age of 13.</p>
+    <p>If we become aware that a child under 13 has provided us with personal information, we will take steps to delete such information promptly.</p>
+    <p>If you are a parent or guardian and believe your child has used this app in a way that violates this policy, please contact us immediately.</p>
+    <div class="callout warn"><strong>&#9888; For Parents</strong>The app contains advertisements which may be personalized based on Advertising ID. You can disable personalized ads for your child's device via Android Settings &#8594; Google &#8594; Ads.</div>
+  </div>
+  <div class="section" id="user-rights">
+    <div class="section-header"><div class="section-icon">&#9878;</div><h2>8. Your Rights</h2></div>
+    <h3>All Users</h3>
+    <ul>
+      <li>Revoke any permission (Camera, Storage, Notifications) at any time via Android Settings &#8594; Apps &#8594; Text Art &#8594; Permissions.</li>
+      <li>Reset or opt out of Advertising ID via Android Settings &#8594; Google &#8594; Ads.</li>
+      <li>Disable push notifications via Android Settings &#8594; Apps &#8594; Text Art &#8594; Notifications.</li>
+    </ul>
+    <h3>EU / EEA Users (GDPR)</h3>
+    <ul>
+      <li><strong>Right of Access:</strong> Request a copy of the personal data we hold about you.</li>
+      <li><strong>Right to Erasure:</strong> Request deletion of your personal data.</li>
+      <li><strong>Right to Rectification:</strong> Request correction of inaccurate data.</li>
+      <li><strong>Right to Restrict Processing:</strong> Ask us to limit how we use your data.</li>
+      <li><strong>Right to Object:</strong> Object to data processing for direct marketing.</li>
+      <li><strong>Right to Data Portability:</strong> Receive your data in a portable format.</li>
+      <li><strong>Withdraw Consent:</strong> Withdraw ad personalization consent at any time through the in-app consent dialog or Android Settings.</li>
+    </ul>
+    <h3>California Users (CCPA)</h3>
+    <ul>
+      <li>You have the right to know what personal information is collected and how it is used.</li>
+      <li>You have the right to opt out of the "sale" of personal information. <em>We do not sell personal information.</em></li>
+      <li>You have the right to non-discrimination for exercising your CCPA rights.</li>
+    </ul>
+  </div>
+  <div class="section" id="data-retention">
+    <div class="section-header"><div class="section-icon">&#128194;</div><h2>9. Data Retention</h2></div>
+    <ul>
+      <li><strong>Photos &amp; Edited Images:</strong> Stored only on your device. We have no access. Deleted when you uninstall the app or manually delete them.</li>
+      <li><strong>Firebase Analytics Data:</strong> Retained for up to <strong>14 months</strong> by Google (Firebase default settings).</li>
+      <li><strong>Crash Logs (Crashlytics):</strong> Retained for <strong>90 days</strong> by Firebase/Google.</li>
+      <li><strong>Push Notification Tokens:</strong> Retained as long as the app is installed. Automatically invalidated on uninstall.</li>
+      <li><strong>Ad-related Data:</strong> Governed by Google AdMob and Facebook own data retention policies.</li>
+    </ul>
+    <p>You may request deletion of your data by contacting us. Upon receiving a valid request, we will delete or anonymize your data within <strong>30 days</strong>.</p>
+  </div>
+  <div class="section" id="security">
+    <div class="section-header"><div class="section-icon">&#128274;</div><h2>10. Security</h2></div>
+    <p>We take reasonable technical and organizational measures to protect your information:</p>
+    <ul>
+      <li>All network communication uses <strong>HTTPS / TLS encryption</strong>.</li>
+      <li>Photos are processed <strong>entirely on-device</strong> and never transmitted to external servers.</li>
+      <li>Firebase services use Google enterprise-grade security infrastructure.</li>
+      <li>Crash and analytics data is <strong>anonymized</strong> before storage.</li>
+    </ul>
+    <div class="callout info"><strong>&#8505; Note</strong>While we strive to use commercially acceptable means to protect your information, no method of transmission over the Internet is 100% secure. We cannot guarantee absolute security.</div>
+  </div>
+  <div class="section" id="changes">
+    <div class="section-header"><div class="section-icon">&#128221;</div><h2>11. Policy Changes</h2></div>
+    <p>We may update this Privacy Policy from time to time. When we do:</p>
+    <ul>
+      <li>The <strong>"Last Updated"</strong> date at the top of this page will be revised.</li>
+      <li>Significant changes will be notified via an in-app notification or push notification.</li>
+      <li>Continued use of the App after changes are made constitutes acceptance of the updated policy.</li>
+    </ul>
+    <p>We encourage you to review this Privacy Policy periodically to stay informed about how we protect your information.</p>
+  </div>
+  <div class="contact-card" id="contact">
+    <h2>&#128236; Contact Us</h2>
+    <p>Have questions about this Privacy Policy, or want to exercise your data rights? We are here to help.</p>
+    <a href="mailto:privacy@textart.app">privacy@textart.app</a>
+    <p style="margin-top:16px;font-size:13px;opacity:.7;"><strong>App:</strong> Text Art &#8211; Add Text on Photo<br/><strong>Package:</strong> com.addtext.textonphoto.textart<br/><strong>Version:</strong> 3.2 (Build 23)</p>
+  </div>
+</div>
+<footer>
+  <p>&#169; 2025 Text Art. All rights reserved.</p>
+  <p style="margin-top:6px;">This policy was last reviewed on <strong>August 17, 2025</strong>.</p>
+</footer>
+</body>
+</html>

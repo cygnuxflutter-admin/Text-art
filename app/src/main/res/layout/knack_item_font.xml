@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/font_section" android:padding="2dp" android:layout_width="90dp" android:layout_height="90dp" android:layout_marginRight="10dp">
+    <TextView android:textSize="50sp" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@+id/txt_font_demo" android:background="@drawable/knack_card_white" android:layout_width="match_parent" android:layout_height="match_parent" android:text="Aa"/>
+</FrameLayout>

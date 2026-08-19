@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="SpinKitViewStyle" format="reference" />
+    <attr name="SpinKit_Color" format="color" />
+    <attr name="gradientOrientation">
+        <enum name="horizontal" value="0" />
+        <enum name="vertical" value="1" />
+    </attr>
+    <attr name="alliance_animDuration" format="integer" />
+    <attr name="alliance_distanceMultiplier" format="integer" />
+    <attr name="alliance_dotsRadius" format="dimension" />
+    <attr name="alliance_drawOnlyStroke" format="boolean" />
+    <attr name="alliance_firstDotsColor" format="color" />
+    <attr name="alliance_secondDotsColor" format="color" />
+    <attr name="alliance_strokeWidth" format="dimension" />
+    <attr name="alliance_thirdDotsColor" format="color" />
+    <attr name="backGroundColor" format="color" />
+    <attr name="item_width" format="dimension|integer" />
+    <attr name="showBorder" format="boolean" />
+    <attr name="showIcons" format="boolean" />
+
+    <!-- ColorSlider attributes -->
+    <attr name="cs_colors" format="reference" />
+    <attr name="cs_from_color" format="color" />
+    <attr name="cs_hex_colors" format="reference" />
+    <attr name="cs_steps" format="integer" />
+    <attr name="cs_to_color" format="color" />
+
+    <!-- StickerView attributes -->
+    <attr name="borderColor" format="color" />
+    <attr name="bringToFrontCurrentSticker" format="boolean" />
+
+    <!-- PuzzleView attributes -->
+    <attr name="handle_bar_color" format="color" />
+    <attr name="line_color" format="color" />
+    <attr name="line_size" format="dimension" />
+    <attr name="need_draw_line" format="boolean" />
+    <attr name="need_draw_outer_line" format="boolean" />
+    <attr name="piece_padding" format="dimension" />
+    <attr name="radian" format="float" />
+    <attr name="selected_line_color" format="color" />
+
+    <!-- MaskImage attributes -->
+    <attr name="image" format="reference" />
+    <attr name="mask" format="reference" />
+
+    <!-- Custom view attributes -->
+    <attr name="animation_duration" format="integer" />
+    <attr name="borderAlpha" format="float" />
+    <attr name="frame" format="reference" />
+    <attr name="photo_src" format="reference" />
+    <attr name="strokeColor" format="color" />
+    <attr name="strokeWidth" format="dimension" />
+
+    <!-- RoundView attributes -->
+    <attr name="rv_backgroundColor" format="color" />
+    <attr name="rv_backgroundPressColor" format="color" />
+    <attr name="rv_cornerRadius" format="dimension" />
+    <attr name="rv_cornerRadius_BL" format="dimension" />
+    <attr name="rv_cornerRadius_BR" format="dimension" />
+    <attr name="rv_cornerRadius_TL" format="dimension" />
+    <attr name="rv_cornerRadius_TR" format="dimension" />
+    <attr name="rv_isRadiusHalfHeight" format="boolean" />
+    <attr name="rv_isRippleEnable" format="boolean" />
+    <attr name="rv_isWidthHeightEqual" format="boolean" />
+    <attr name="rv_strokeColor" format="color" />
+    <attr name="rv_strokePressColor" format="color" />
+    <attr name="rv_strokeWidth" format="dimension" />
+    <attr name="rv_textPressColor" format="color" />
+
+    <!-- RTL RecyclerTabLayout attributes -->
+    <attr name="rtl_scrollEnabled" format="boolean" />
+    <attr name="rtl_tabBackground" format="reference" />
+    <attr name="rtl_tabIndicatorColor" format="color" />
+    <attr name="rtl_tabIndicatorHeight" format="dimension" />
+    <attr name="rtl_tabMaxWidth" format="dimension" />
+    <attr name="rtl_tabMinWidth" format="dimension" />
+    <attr name="rtl_tabOnScreenLimit" format="integer" />
+    <attr name="rtl_tabPadding" format="dimension" />
+    <attr name="rtl_tabPaddingBottom" format="dimension" />
+    <attr name="rtl_tabPaddingEnd" format="dimension" />
+    <attr name="rtl_tabPaddingStart" format="dimension" />
+    <attr name="rtl_tabPaddingTop" format="dimension" />
+    <attr name="rtl_tabSelectedTextColor" format="color" />
+    <attr name="rtl_tabTextAppearance" format="reference" />
+</resources>

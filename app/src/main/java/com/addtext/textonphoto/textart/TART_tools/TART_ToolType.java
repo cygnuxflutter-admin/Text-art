@@ -1,0 +1,30 @@
+package com.addtext.textonphoto.textart.TART_tools;
+
+public enum TART_ToolType {
+    NONE,
+    BRUSH,
+    TEXT,
+    ERASER,
+    FILTER,
+    EMOJI,
+    CROP,
+    STICKER,
+    ADJUST,
+    OVERLAY,
+    INSTA,
+    SPLASH,
+    BLUR,
+    MOSAIC,
+    BEAUTY,
+    LAYOUT,
+    BORDER,
+    RATIO,
+    BACKGROUND,
+    ROTATE,
+    H_FLIP,
+    V_FLIP,
+    REPLACE,
+    PIECE,
+    COLOR,
+    BLEND
+}

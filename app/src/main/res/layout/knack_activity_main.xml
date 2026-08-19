@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/aler"
+            android:text="Text Art"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/btnSettings"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:src="@drawable/knack_ic_setting" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/main_image"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="25dp"
+            android:orientation="vertical"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <ImageView
+                    android:id="@+id/btGallery"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/knack_bg_gallary" />
+
+                <ImageView
+                    android:id="@+id/btCamera"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/knack_bg_camera" />
+
+                <!--                <Button-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="@dimen/_80sdp"-->
+                <!--                    android:layout_gravity="center"-->
+                <!--                    android:layout_weight="1"-->
+                <!--                    android:background="@drawable/bg_gallary"-->
+                <!--                    android:fontFamily="@font/robotoslab_bold"-->
+                <!--                    android:gravity="bottom"-->
+                <!--                    android:minWidth="300dp"-->
+                <!--                    android:minHeight="70dp"-->
+                <!--                    android:padding="@dimen/_5sdp"-->
+                <!--                    android:scaleType="centerCrop"-->
+                <!--                    android:textAllCaps="false"-->
+                <!--                    android:textColor="@android:color/white"-->
+                <!--                    android:textSize="20sp"-->
+                <!--                    android:theme="@style/CyanButtonTheme" />-->
+
+                <!--                <Button-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="@dimen/_60sdp"-->
+                <!--                    android:layout_gravity="center"-->
+                <!--                    android:layout_marginTop="@dimen/_10sdp"-->
+                <!--                    android:layout_weight="1"-->
+                <!--                    android:background="@drawable/bg_camera"-->
+                <!--                    android:fontFamily="@font/robotoslab_bold"-->
+                <!--                    android:gravity="bottom"-->
+                <!--                    android:minWidth="300dp"-->
+                <!--                    android:minHeight="70dp"-->
+                <!--                    android:padding="@dimen/_5sdp"-->
+                <!--                    android:scaleType="centerCrop"-->
+                <!--                    android:textAllCaps="false"-->
+                <!--                    android:textColor="@color/white"-->
+                <!--                    android:textSize="20sp"-->
+                <!--                    android:theme="@style/PinkButtonTheme" />-->
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <ImageView
+                    android:id="@+id/btSample"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/knack_bg_templates" />
+
+                <ImageView
+                    android:id="@+id/btrateButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/knack_bg_rate_us" />
+
+                <!--                <Button-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="@dimen/_60sdp"-->
+                <!--                    android:layout_gravity="center"-->
+                <!--                    android:layout_weight="1"-->
+                <!--                    android:background="@drawable/bg_templates"-->
+                <!--                    android:fontFamily="@font/robotoslab_bold"-->
+                <!--                    android:gravity="bottom"-->
+                <!--                    android:minWidth="300dp"-->
+                <!--                    android:minHeight="70dp"-->
+                <!--                    android:padding="@dimen/_5sdp"-->
+                <!--                    android:scaleType="centerCrop"-->
+                <!--                    android:textAllCaps="false"-->
+                <!--                    android:textColor="@color/white"-->
+                <!--                    android:textSize="20sp"-->
+                <!--                    android:theme="@style/CyanButtonTheme" />-->
+
+
+                <!--                <Button-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="@dimen/_80sdp"-->
+                <!--                    android:layout_gravity="center"-->
+                <!--                    android:layout_marginTop="@dimen/_10sdp"-->
+                <!--                    android:layout_weight="1"-->
+                <!--                    android:background="@drawable/bg_rate_us"-->
+                <!--                    android:fontFamily="@font/robotoslab_bold"-->
+                <!--                    android:gravity="bottom"-->
+                <!--                    android:minWidth="300dp"-->
+                <!--                    android:minHeight="70dp"-->
+                <!--                    android:padding="@dimen/_5sdp"-->
+                <!--                    android:scaleType="centerCrop"-->
+                <!--                    android:textAllCaps="false"-->
+                <!--                    android:textColor="@color/white"-->
+                <!--                    android:textSize="20sp"-->
+                <!--                    android:theme="@style/PinkButtonTheme" />-->
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Native Ad at bottom - secondary to content per AdMob policy -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="6dp"
+        app:cardCornerRadius="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="@drawable/knack_ad_bg">
+
+            <RelativeLayout
+                android:id="@+id/native_banner_ad_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/_4sdp"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btGallery_old"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_above="@+id/btSample_old"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/knack_transparent_bg_bordered"
+            android:fontFamily="@font/aler"
+            android:text="Photos"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="18dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btSample_old"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_above="@+id/btCamera_old"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/knack_transparent_bg_solid"
+            android:fontFamily="@font/aler"
+            android:text="Samples"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="18dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btCamera_old"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="80dp"
+            android:background="@drawable/knack_white_bg_bordered"
+            android:fontFamily="@font/aler"
+            android:text="Camera"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="18dp" />
+    </RelativeLayout>
+</LinearLayout>
