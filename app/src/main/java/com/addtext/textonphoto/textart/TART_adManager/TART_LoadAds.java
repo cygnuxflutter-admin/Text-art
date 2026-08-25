@@ -24,6 +24,12 @@ import com.google.android.gms.ads.LoadAdError;
 public class TART_LoadAds {
 
     public static void loadAdmobBannerAd(Activity activity, RelativeLayout mainLayout) {
+        if (mainLayout == null || activity == null) return;
+        if (com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
+            mainLayout.removeAllViews();
+            mainLayout.setVisibility(View.GONE);
+            return;
+        }
         mainLayout.removeAllViews();
         RelativeLayout.LayoutParams bannerParameters =
                 new RelativeLayout.LayoutParams(

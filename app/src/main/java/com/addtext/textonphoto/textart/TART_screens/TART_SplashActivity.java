@@ -62,16 +62,22 @@ public class TART_SplashActivity extends AppCompatActivity {
     final private int REQUEST_CAMERA_AND_STORAGE_PERMISSION = 100;
 
 
+    private boolean isNavigated = false;
+
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.knack_activity_splash);
         preferenceClass = new TART_PreferenceClass(this);
         MyApplication.isAdsSplash = true;
+
+        // Fallback timer: guarantees transition to MainActivity after max 4 seconds
+        new Handler().postDelayed(this::callMainActivity, 4000);
+
         if (TART_NetworkUtils.isNetworkAvailable(this)) {
             getData();
         } else {
-            TART_MaterialDialogUtils.getInstance().errorDialog(this, getResources().getString(R.string.internet_error));
+            next();
         }
     }
 
@@ -81,129 +87,133 @@ public class TART_SplashActivity extends AppCompatActivity {
 
     public void next() {
         new Handler().postDelayed(new Runnable() {
-            @Override // java.lang.Runnable
+            @Override
             public final void run() {
-
                 startToMainActivity();
             }
-        }, 3000);
+        }, 1500);
+    }
+
+    private String getStringSafe(DataSnapshot snapshot, String key) {
+        try {
+            if (snapshot != null && snapshot.hasChild(key) && snapshot.child(key).getValue() != null) {
+                return snapshot.child(key).getValue().toString();
+            }
+        } catch (Exception ignored) {}
+        return "";
+    }
+
+    private int getIntSafe(DataSnapshot snapshot, String key, int def) {
+        try {
+            String val = getStringSafe(snapshot, key);
+            if (!val.isEmpty()) {
+                return Integer.parseInt(val);
+            }
+        } catch (Exception ignored) {}
+        return def;
     }
 
     private void getData() {
-        if (TART_NetworkUtils.isNetworkAvailable(this)) {
+        if (!TART_NetworkUtils.isNetworkAvailable(this)) {
+            next();
+            return;
+        }
+
+        try {
             database = FirebaseDatabase.getInstance();
             project_data2 = database.getReference("TextArt_Data/Ads_data");
-            project_data2.addValueEventListener(new ValueEventListener() {
+            project_data2.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Log.e("TAG", "onDataChange: " + snapshot);
-
                     try {
-                        preferenceClass.setInt("splashscreen", Integer.parseInt(snapshot.child("SplashScreenAdsManage").getValue().toString()));
-                        preferenceClass.setInt("UpdateAvailable", Integer.parseInt(snapshot.child("UpdateAvailable").getValue().toString()));
-                        preferenceClass.setDataType("UpdateVersionName", Objects.requireNonNull(snapshot.child("UpdateVersionName").getValue()).toString());
+                        preferenceClass.setInt("splashscreen", getIntSafe(snapshot, "SplashScreenAdsManage", 0));
+                        preferenceClass.setInt("UpdateAvailable", getIntSafe(snapshot, "UpdateAvailable", 0));
+                        preferenceClass.setDataType("UpdateVersionName", getStringSafe(snapshot, "UpdateVersionName"));
 
-                        preferenceClass.setDataType("MainActivityGame", Objects.requireNonNull(snapshot.child("MainActivityGame").getValue()).toString());
-                        preferenceClass.setDataType("URL_MainActivityGame", Objects.requireNonNull(snapshot.child("URL_MainActivityGame").getValue()).toString());
-                        preferenceClass.setDataType("ImagePickerBanner", Objects.requireNonNull(snapshot.child("ImagePickerBanner").getValue()).toString());
-                        preferenceClass.setDataType("URL_ImagePickerBanner ", Objects.requireNonNull(snapshot.child("URL_ImagePickerBanner").getValue()).toString());
-                        preferenceClass.setDataType("ShareAcrivityBanner", Objects.requireNonNull(snapshot.child("ShareAcrivityBanner").getValue()).toString());
-                        preferenceClass.setDataType("URL_ShareAcrivityBanner", Objects.requireNonNull(snapshot.child("URL_ShareAcrivityBanner").getValue()).toString());
-                        preferenceClass.setDataType("BGActivityGame", Objects.requireNonNull(snapshot.child("BGActivityGame").getValue()).toString());
-                        preferenceClass.setDataType("URL_BGActivityGame", Objects.requireNonNull(snapshot.child("URL_BGActivityGame").getValue()).toString());
-                        preferenceClass.setDataType("BGActivityBanner2", Objects.requireNonNull(snapshot.child("BGActivityBanner2").getValue()).toString());
-                        preferenceClass.setDataType("URL_BGActivityBanner2", Objects.requireNonNull(snapshot.child("URL_BGActivityBanner2").getValue()).toString());
-                        preferenceClass.setDataType("BGActivityBanner1", Objects.requireNonNull(snapshot.child("BGActivityBanner1").getValue()).toString());
-                        preferenceClass.setDataType("URL_BGActivityBanner1", Objects.requireNonNull(snapshot.child("URL_BGActivityBanner1").getValue()).toString());
-                        preferenceClass.setDataType("SettingActivityGame", Objects.requireNonNull(snapshot.child("SettingActivityGame").getValue()).toString());
-                        preferenceClass.setDataType("URL_SettingActivityGame", Objects.requireNonNull(snapshot.child("URL_SettingActivityGame").getValue()).toString());
+                        preferenceClass.setDataType("MainActivityGame", getStringSafe(snapshot, "MainActivityGame"));
+                        preferenceClass.setDataType("URL_MainActivityGame", getStringSafe(snapshot, "URL_MainActivityGame"));
+                        preferenceClass.setDataType("ImagePickerBanner", getStringSafe(snapshot, "ImagePickerBanner"));
+                        preferenceClass.setDataType("URL_ImagePickerBanner ", getStringSafe(snapshot, "URL_ImagePickerBanner"));
+                        preferenceClass.setDataType("ShareAcrivityBanner", getStringSafe(snapshot, "ShareAcrivityBanner"));
+                        preferenceClass.setDataType("URL_ShareAcrivityBanner", getStringSafe(snapshot, "URL_ShareAcrivityBanner"));
+                        preferenceClass.setDataType("BGActivityGame", getStringSafe(snapshot, "BGActivityGame"));
+                        preferenceClass.setDataType("URL_BGActivityGame", getStringSafe(snapshot, "URL_BGActivityGame"));
+                        preferenceClass.setDataType("BGActivityBanner2", getStringSafe(snapshot, "BGActivityBanner2"));
+                        preferenceClass.setDataType("URL_BGActivityBanner2", getStringSafe(snapshot, "URL_BGActivityBanner2"));
+                        preferenceClass.setDataType("BGActivityBanner1", getStringSafe(snapshot, "BGActivityBanner1"));
+                        preferenceClass.setDataType("URL_BGActivityBanner1", getStringSafe(snapshot, "URL_BGActivityBanner1"));
+                        preferenceClass.setDataType("SettingActivityGame", getStringSafe(snapshot, "SettingActivityGame"));
+                        preferenceClass.setDataType("URL_SettingActivityGame", getStringSafe(snapshot, "URL_SettingActivityGame"));
 
-                        // ----------------------------------------------- Live ADS -----------------------------------------------
-                        preferenceClass.setDataType("GoogleBannerAd", Objects.requireNonNull(snapshot.child("GoogleBannerAd").getValue()).toString());
-                        preferenceClass.setDataType("GoogleAppopenAd", Objects.requireNonNull(snapshot.child("GoogleAppopenAd").getValue()).toString());
-                        preferenceClass.setDataType("GoogleInterstitialAd", Objects.requireNonNull(snapshot.child("GoogleInterstitialAd").getValue()).toString());
-                        preferenceClass.setDataType("GoogleInterstialRewardAd", Objects.requireNonNull(snapshot.child("GoogleInterstialRewardAd").getValue()).toString());
-                        preferenceClass.setDataType("GoogleRewardedAd", Objects.requireNonNull(snapshot.child("GoogleRewardedAd").getValue()).toString());
-                        preferenceClass.setDataType("GoogleNativeAd", Objects.requireNonNull(snapshot.child("GoogleNativeAd").getValue()).toString());
+                        // Live ADS
+                        preferenceClass.setDataType("GoogleBannerAd", getStringSafe(snapshot, "GoogleBannerAd"));
+                        preferenceClass.setDataType("GoogleAppopenAd", getStringSafe(snapshot, "GoogleAppopenAd"));
+                        preferenceClass.setDataType("GoogleInterstitialAd", getStringSafe(snapshot, "GoogleInterstitialAd"));
+                        preferenceClass.setDataType("GoogleInterstialRewardAd", getStringSafe(snapshot, "GoogleInterstialRewardAd"));
+                        preferenceClass.setDataType("GoogleRewardedAd", getStringSafe(snapshot, "GoogleRewardedAd"));
+                        preferenceClass.setDataType("GoogleNativeAd", getStringSafe(snapshot, "GoogleNativeAd"));
 
-                        preferenceClass.setDataType("FbNativeAd", Objects.requireNonNull(snapshot.child("FbNativeAd").getValue()).toString());
-                        preferenceClass.setDataType("FbInterstitialAd", Objects.requireNonNull(snapshot.child("FbInterstitialAd").getValue()).toString());
-                        preferenceClass.setDataType("FbBannerAd", Objects.requireNonNull(snapshot.child("FbBannerAd").getValue()).toString());
+                        preferenceClass.setDataType("FbNativeAd", getStringSafe(snapshot, "FbNativeAd"));
+                        preferenceClass.setDataType("FbInterstitialAd", getStringSafe(snapshot, "FbInterstitialAd"));
+                        preferenceClass.setDataType("FbBannerAd", getStringSafe(snapshot, "FbBannerAd"));
 
-                        preferenceClass.setInt("InerstialClickCount", Integer.parseInt(Objects.requireNonNull(snapshot.child("InerstialClickCount").getValue().toString())));
-                        preferenceClass.setInt("GoogleAdsTime", Integer.parseInt(Objects.requireNonNull(snapshot.child("GoogleAdsTime").getValue().toString())));
+                        preferenceClass.setInt("InerstialClickCount", getIntSafe(snapshot, "InerstialClickCount", 3));
+                        preferenceClass.setInt("GoogleAdsTime", getIntSafe(snapshot, "GoogleAdsTime", 10));
                     } catch (Exception e) {
-                        e.getMessage();
+                        e.printStackTrace();
                     }
 
                     try {
-                        if (preferenceClass.getInt("UpdateAvailable") == 1 && !preferenceClass.getAdsId("UpdateVersionName").equals(BuildConfig.VERSION_NAME)) {
-
+                        String updateVer = preferenceClass.getAdsId("UpdateVersionName");
+                        if (preferenceClass.getInt("UpdateAvailable") == 1 && updateVer != null && !updateVer.isEmpty() && !updateVer.equals(BuildConfig.VERSION_NAME)) {
                             @SuppressLint("ResourceType") Dialog materialDialog = new Dialog(TART_SplashActivity.this, 16974126);
                             materialDialog.requestWindowFeature(1);
                             materialDialog.setContentView(R.layout.knack_reward_dialog);
                             materialDialog.setCancelable(false);
 
-
-                            if (!materialDialog.isShowing())
-                                materialDialog.show();
+                            if (!materialDialog.isShowing()) materialDialog.show();
 
                             TextView tv_title = materialDialog.findViewById(R.id.title);
-                            TextView tv_description = materialDialog.findViewById(R.id.description);
-
                             TextView button1 = materialDialog.findViewById(R.id.button1);
                             TextView button2 = materialDialog.findViewById(R.id.button2);
 
                             tv_title.setText("Update is Available");
-//                        tv_description.setText(message);
-                            button1.setText("Cancal");
+                            button1.setText("Cancel");
                             button2.setText("Update Now");
-                            button2.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    try {
-                                        startActivity(new Intent("android.intent.action.VIEW", Uri.parse("market://details?id=" + getPackageName())));
-                                    } catch (ActivityNotFoundException unused) {
-                                        Toast.makeText(TART_SplashActivity.this, " unable to find market app", Toast.LENGTH_LONG).show();
-                                    }
-
-                                    if (materialDialog != null && materialDialog.isShowing()) {
-                                        materialDialog.dismiss();
-                                        next();
-                                    }
+                            button2.setOnClickListener(v -> {
+                                try {
+                                    startActivity(new Intent("android.intent.action.VIEW", Uri.parse("market://details?id=" + getPackageName())));
+                                } catch (ActivityNotFoundException unused) {
+                                    Toast.makeText(TART_SplashActivity.this, "unable to find market app", Toast.LENGTH_LONG).show();
+                                }
+                                if (materialDialog.isShowing()) {
+                                    materialDialog.dismiss();
+                                    next();
                                 }
                             });
-                            button1.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if (materialDialog != null && materialDialog.isShowing()) {
-                                        materialDialog.dismiss();
-                                        next();
-                                    }
+                            button1.setOnClickListener(v -> {
+                                if (materialDialog.isShowing()) {
+                                    materialDialog.dismiss();
+                                    next();
                                 }
                             });
-
                         } else {
                             next();
                         }
                     } catch (Exception e) {
-                        e.getMessage();
+                        e.printStackTrace();
+                        next();
                     }
-
-//
-//                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//                    startActivity(intent);
-//                    finish();
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    TART_MaterialDialogUtils.getInstance().errorDialog(TART_SplashActivity.this, getResources().getString(R.string.something_went_wrong));
+                    next();
                 }
             });
-        } else {
-            TART_MaterialDialogUtils.getInstance().errorDialog(this, getResources().getString(R.string.internet_error));
-
+        } catch (Exception e) {
+            e.printStackTrace();
+            next();
         }
     }
 
@@ -215,10 +225,17 @@ public class TART_SplashActivity extends AppCompatActivity {
         callMainActivity();
     }
 
-    public void callMainActivity() {
-        MyApplication.isAdsSplash = false;
-        ((MyApplication) getApplicationContext()).sendRequest();
-        ((MyApplication) getApplicationContext()).loadInterstitialAd();
+    public synchronized void callMainActivity() {
+        if (isNavigated) return;
+        isNavigated = true;
+
+        try {
+            MyApplication.isAdsSplash = false;
+            ((MyApplication) getApplicationContext()).sendRequest();
+            ((MyApplication) getApplicationContext()).loadInterstitialAd();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Intent intent = new Intent(getApplicationContext(), TART_MainActivity.class);
         startActivity(intent);

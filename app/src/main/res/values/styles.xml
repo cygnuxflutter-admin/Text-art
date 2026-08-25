@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:navigationBarColor">@color/backgroundEditActivity</item>
-        <item name="colorAccent">@color/cyan</item>
-        <item name="colorControlHighlight">@color/ripple_material_dark</item>
-        <item name="colorPrimary">@color/colorBlack</item>
-        <item name="colorPrimaryDark">@color/black</item>
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/bg_cream</item>
+        <item name="android:navigationBarColor">@color/bg_cream</item>
+        <item name="android:statusBarColor">@color/bg_cream</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m" xmlns:tools="http://schemas.android.com/tools">true</item>
+        <item name="colorAccent">@color/brand_orange</item>
+        <item name="colorControlHighlight">@color/brand_orange_light</item>
+        <item name="colorPrimary">@color/bg_cream</item>
+        <item name="colorPrimaryDark">@color/bg_cream</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="@style/AppTheme">
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -24,51 +27,51 @@
 
     <style name="rtl_RecyclerTabLayout">
         <item name="rtl_tabBackground">?selectableItemBackground</item>
-        <item name="rtl_tabIndicatorColor">?colorAccent</item>
-        <item name="rtl_tabIndicatorHeight">2.0dip</item>
+        <item name="rtl_tabIndicatorColor">@color/brand_orange</item>
+        <item name="rtl_tabIndicatorHeight">2.5dip</item>
         <item name="rtl_tabMaxWidth">50.0dip</item>
         <item name="rtl_tabMinWidth">40.0dip</item>
         <item name="rtl_tabPaddingEnd">6.0dip</item>
         <item name="rtl_tabPaddingStart">6.0dip</item>
-        <item name="rtl_tabSelectedTextColor">?android:textColorPrimary</item>
+        <item name="rtl_tabSelectedTextColor">@color/brand_orange</item>
         <item name="rtl_tabTextAppearance">@style/rtl_RecyclerTabLayout.Tab</item>
     </style>
 
     <style name="rtl_RecyclerTabLayout.Tab" parent="@style/rtl_RecyclerTabLayout">
         <item name="android:textSize">14.0sp</item>
-        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:textColor">@color/text_secondary</item>
         <item name="textAllCaps">true</item>
     </style>
 
-
     <style name="SCBSwitch_1" parent="@style/Theme.AppCompat.Light">
-        <item name="android:colorForeground">#c2b1b1b1</item>
-        <item name="colorControlActivated">@color/colorAccent</item>
-        <item name="colorSwitchThumbNormal">#A7A5A6</item>
+        <item name="android:colorForeground">@color/border_subtle</item>
+        <item name="colorControlActivated">@color/brand_orange</item>
+        <item name="colorSwitchThumbNormal">@color/pill_bg_unselected</item>
     </style>
 
     <style name="SeekBaStyle">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">20.0dip</item>
-        <item name="android:layout_marginLeft">56.0dip</item>
-        <item name="android:layout_marginRight">56.0dip</item>
-        <item name="android:progressDrawable">@drawable/knack_custom_progressbar_drawable</item>
-        <item name="android:thumb">@drawable/knack_custom_thumb</item>
+        <item name="android:layout_marginLeft">24.0dip</item>
+        <item name="android:layout_marginRight">24.0dip</item>
+        <item name="android:progressDrawable">@drawable/bg_slider_orange_progress</item>
+        <item name="android:thumb">@drawable/thumb_slider_orange</item>
         <item name="android:splitTrack">false</item>
     </style>
 
     <style name="SeekBaStyle_1">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">20.0dip</item>
-        <item name="android:layout_marginLeft">56.0dip</item>
-        <item name="android:layout_marginRight">56.0dip</item>
-        <item name="android:progressDrawable">@drawable/knack_custom_progressbar_drawable</item>
-        <item name="android:thumb">@drawable/knack_custom_thumb</item>
+        <item name="android:layout_marginLeft">24.0dip</item>
+        <item name="android:layout_marginRight">24.0dip</item>
+        <item name="android:progressDrawable">@drawable/bg_slider_orange_progress</item>
+        <item name="android:thumb">@drawable/thumb_slider_orange</item>
         <item name="android:splitTrack">false</item>
     </style>
-<style name="SeekBaStyle_2">
-        <item name="android:progressDrawable">@drawable/knack_custom_progressbar_drawable</item>
-        <item name="android:thumb">@drawable/knack_custom_thumb</item>
+
+    <style name="SeekBaStyle_2">
+        <item name="android:progressDrawable">@drawable/bg_slider_orange_progress</item>
+        <item name="android:thumb">@drawable/thumb_slider_orange</item>
         <item name="android:splitTrack">false</item>
     </style>
 
@@ -77,12 +80,12 @@
     </style>
 
     <style name="progressBar" parent="@style/Theme.AppCompat">
-        <item name="colorAccent">@color/edit_bg</item>
+        <item name="colorAccent">@color/brand_orange</item>
     </style>
 
     <style name="TextBelowImage" parent="@android:style/Widget.TextView">
         <item name="android:textSize">11sp</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/text_primary</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 </resources>

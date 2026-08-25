@@ -475,22 +475,12 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
 
         final float[] widgetDX = {0f};
         final float[] widgetDY = {0f};
-        this.rl_watermark.setOnTouchListener(new View.OnTouchListener() {
+        if (this.rl_watermark != null) {
+            this.rl_watermark.setOnTouchListener(new View.OnTouchListener() {
 
             private final GestureDetector gestureDetector = new GestureDetector(TART_EditImageActivity.this, new GestureDetector.SimpleOnGestureListener() {
                 @Override
                 public boolean onDoubleTap(MotionEvent e) {
-//                    MaterialDialogUtils.getInstance().rewardDialog(PosterEditActivity.this,
-//                            "Remove Watermark(One Time)", "Remove Watermark by watching Ads", materialDialog -> {
-//                        rewardType = "remWatermark";
-//                                AppOpenManager.loadRewardVideoAd(PosterEditActivity.this,() -> btn_watermark.setVisibility(View.GONE));
-////                                MyApplication.showInterstitialAd(PosterEditActivity.this,() -> btn_watermark.setVisibility(View.GONE));
-//                        if (materialDialog != null && materialDialog.isShowing())
-//                            materialDialog.dismiss();
-//                    }, materialDialog -> {
-//                        if (materialDialog != null && materialDialog.isShowing())
-//                            materialDialog.dismiss();
-//                    });
                     return super.onDoubleTap(e);
                 }
             });
@@ -525,8 +515,6 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
                         newY = Math.max(0F, newY);
                         newY = Math.min(yMax, newY);
                         v.setY(newY);
-                        //hideAllControls();
-                        // removeScroll();
                         break;
 
                     case MotionEvent.ACTION_UP:
@@ -536,31 +524,25 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
 
                         // Check for click event
                         if (Math.abs(endX - startX) < 10 && Math.abs(endY - startY) < 10 && touchDuration < CLICK_TIME_THRESHOLD) {
-
-                            // Handle click event here
-                            // Add your desired code logic for handling the click event
                             TART_MaterialDialogUtils.getInstance().rewardDialog(TART_EditImageActivity.this,
                                     "Remove Watermark(One Time)", "Remove Watermark by watching Ads", materialDialog -> {
                                         rewardType = "remWatermark";
                                         TART_PreferenceClass preferenceClass = new TART_PreferenceClass(TART_EditImageActivity.this);
-                                        // if(preferenceClass.getDataType("PremiumAdType")!=null && preferenceClass.getDataType("PremiumAdType").equals("Reward")) {
                                         TART_RewardVideoManager.showRewardVideoAd(TART_EditImageActivity.this, new TART_RewardVideoManager.OnRewardAdLoadInterface() {
                                             @Override
                                             public void onAdClose(boolean isWithReward) {
-                                                if (isWithReward) {
+                                                if (isWithReward && rl_watermark != null) {
                                                     rl_watermark.setVisibility(View.GONE);
                                                 }
                                             }
 
                                             @Override
                                             public void onAdFail() {
-                                                MyApplication.showFaceBookInterstitial(TART_EditImageActivity.this, () -> rl_watermark.setVisibility(View.GONE));
+                                                MyApplication.showFaceBookInterstitial(TART_EditImageActivity.this, () -> {
+                                                    if (rl_watermark != null) rl_watermark.setVisibility(View.GONE);
+                                                });
                                             }
                                         });
-                                       /* } else {
-                                            MyApplication.showInterstitialAd(EditImageActivity.this, () -> rl_watermark.setVisibility(View.GONE));
-                                        }*/
-//                                MyApplication.showInterstitialAd(PosterEditActivity.this,() -> btn_watermark.setVisibility(View.GONE));
                                         if (materialDialog != null && materialDialog.isShowing())
                                             materialDialog.dismiss();
                                     }, materialDialog -> {
@@ -577,13 +559,12 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
                 return true;
             }
         });
+        }
         saveBitmap.setOnClickListener(view -> {
-            this.btn_watermark_remove.setVisibility(View.GONE);
-//            if (PermissionsUtils.checkWriteStoragePermission(EditImageActivity.this)) {
+            if (this.btn_watermark_remove != null) {
+                this.btn_watermark_remove.setVisibility(View.GONE);
+            }
             new SaveBitmapAsFile().execute();
-//            }
-
-
         });
         this.compareAdjust = findViewById(R.id.compareAdjust);
         this.compareAdjust.setOnTouchListener(this.onCompareTouchListener);
@@ -1042,6 +1023,7 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
                 break;
             case TEXT:
                 slideUpSaveView();
+                this.mPhotoEditor.setBrushDrawingMode(false);
                 this.mPhotoEditorView.setLocked(false);
                 openTextFragment();
                 slideDown(this.mRvTools);

@@ -101,7 +101,7 @@ public class TART_SplashAdapter extends RecyclerView.Adapter<TART_SplashAdapter.
             return;
         }
         viewHolder.splash.setBorderColor(0);
-        viewHolder.splash.setBorderWidth(this.borderWidth);
+        viewHolder.splash.setBorderWidth(0);
     }
 
     public int getItemCount() {

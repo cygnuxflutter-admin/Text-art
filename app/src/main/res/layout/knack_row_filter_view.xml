@@ -3,37 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@id/wrapFilterItem"
     android:layout_width="wrap_content"
-    android:layout_height="80.0dip"
-    android:layout_marginLeft="3.0dip"
-    android:layout_marginRight="3.0dip">
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp"
+    android:paddingTop="6dp"
+    android:paddingBottom="4dp">
 
-    <com.github.siyamed.shapeimageview.RoundedImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@id/imgFilterView"
-        android:layout_width="60.0dip"
-        android:layout_height="60.0dip"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:scaleType="centerCrop"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:siBorderType="fill"
-        app:siRadius="6.0dip" />
+        app:riv_border_color="@color/brand_orange"
+        app:riv_border_width="0dp"
+        app:riv_corner_radius="14dp" />
 
     <ImageView
         android:id="@+id/iv_premium"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="-4dp"
+        android:layout_marginEnd="-4dp"
+        android:elevation="8dp"
         android:src="@drawable/knack_premium_filter"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@id/imgFilterView"
+        app:layout_constraintTop_toTopOf="@id/imgFilterView" />
 
     <TextView
         android:id="@id/txtFilterName"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_regular"
         android:gravity="center"
-        android:padding="4.0dip"
-        android:textColor="@color/black"
-        android:textSize="10.0sp"
+        android:maxLines="1"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:textColor="@color/text_primary"
+        android:textSize="11sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgFilterView" />

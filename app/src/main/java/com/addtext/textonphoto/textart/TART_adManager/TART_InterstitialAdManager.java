@@ -35,7 +35,9 @@ public class TART_InterstitialAdManager {
         Log.e("TAG", "TART_InterstitialAdManager@: "+fbInterstitialAdId );
         Log.e("TAG", "TART_InterstitialAdManager@@: "+preferenceClass.getDataType("GoogleInterstitialAd"));
         Log.e("TAG", "TART_InterstitialAdManager@@: "+preferenceClass.getDataType("FbInterstitialAd"));
-        fetchAdMobAd();
+        if (!com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
+            fetchAdMobAd();
+        }
      //   fetchFbAd();
     }
 
@@ -119,6 +121,11 @@ public class TART_InterstitialAdManager {
 
         public void showAdIfAvailable(Activity activity, OnAdLoadInterface onAdLoadInterface) {
         this.onAdLoadInterface = onAdLoadInterface;
+
+        if (com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
+            if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
+            return;
+        }
 
         if (isFailed) {
             isFailed = false;
@@ -252,6 +259,11 @@ public class TART_InterstitialAdManager {
     public void showInterstitialAd(Activity activity, OnAdLoadInterface onAdLoadInterface) {
         this.onAdLoadInterface = onAdLoadInterface;
 
+        if (com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
+            if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
+            return;
+        }
+
         if (isFailed) {
             isFailed = false;
             fetchAdMobAd();
@@ -309,6 +321,10 @@ public class TART_InterstitialAdManager {
 
     public void showFaceBookInterstitial(Activity activity, OnAdLoadInterface onAdLoadInterface) {
         this.onAdLoadInterface = onAdLoadInterface;
+        if (com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
+            if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
+            return;
+        }
         if (isFbAdAvailable()) {
             fbInterstitialAd.show();
         } else {
@@ -319,6 +335,11 @@ public class TART_InterstitialAdManager {
 
     public void showEDitAdIfAvailable(Activity activity, OnAdLoadInterface onAdLoadInterface) {
         this.onAdLoadInterface = onAdLoadInterface;
+
+        if (com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
+            if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
+            return;
+        }
 
         if (isFailed) {
             isFailed = false;

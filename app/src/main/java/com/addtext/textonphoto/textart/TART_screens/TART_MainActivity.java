@@ -34,6 +34,9 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.addtext.textonphoto.textart.AppData;
 import com.addtext.textonphoto.textart.DataBaseHelper;
@@ -83,8 +86,8 @@ public class TART_MainActivity extends AppCompatActivity implements View.OnClick
     AppData mAppData;
     SharedPreferences pref;
     View sample;
-    ImageView settings;
-    ImageView rateus_button;
+    View settings;
+    View rateus_button;
     boolean mRedirect = false;
     Boolean rateSubmit;
     Activity activity = TART_MainActivity.this;
@@ -110,48 +113,35 @@ public class TART_MainActivity extends AppCompatActivity implements View.OnClick
 
         initViews();
 
-        ConsentRequestParameters params = new ConsentRequestParameters
-                .Builder()
-                .build();
+        try {
+            ConsentRequestParameters params = new ConsentRequestParameters
+                    .Builder()
+                    .build();
 
-        consentInformation = UserMessagingPlatform.getConsentInformation(this);
-        consentInformation.requestConsentInfoUpdate(
-                this,
-                params,
-                (ConsentInformation.OnConsentInfoUpdateSuccessListener) () -> {
-                    UserMessagingPlatform.loadAndShowConsentFormIfRequired(
-                            this,
-                            (ConsentForm.OnConsentFormDismissedListener) loadAndShowError -> {
-                                if (loadAndShowError != null) {
-                                    Log.w("TAG52451", String.format("%s: %s",
-                                            loadAndShowError.getErrorCode(),
-                                            loadAndShowError.getMessage()));
+            consentInformation = UserMessagingPlatform.getConsentInformation(this);
+            consentInformation.requestConsentInfoUpdate(
+                    this,
+                    params,
+                    (ConsentInformation.OnConsentInfoUpdateSuccessListener) () -> {
+                        UserMessagingPlatform.loadAndShowConsentFormIfRequired(
+                                this,
+                                (ConsentForm.OnConsentFormDismissedListener) loadAndShowError -> {
+                                    if (loadAndShowError != null) {
+                                        Log.w("TAG52451", String.format("%s: %s",
+                                                loadAndShowError.getErrorCode(),
+                                                loadAndShowError.getMessage()));
+                                    }
                                 }
-                            }
-                    );
-                },
-                (ConsentInformation.OnConsentInfoUpdateFailureListener) requestConsentError -> {
-                    // Consent gathering failed.
-                    Log.w("TAG54697", String.format("%s: %s",
-                            requestConsentError.getErrorCode(),
-                            requestConsentError.getMessage()));
-                });
-
-//        String banner1 = preferenceClass.getDataType("URL_MainActivityGame", "");
-//        mainActivityGame = findViewById(R.id.ad_btn);
-//        Glide.with(TART_MainActivity.this)
-//                .load(preferenceClass.getDataType("MainActivityGame"))
-//                .placeholder(R.drawable.game_gif)
-//                .into(mainActivityGame);
-//
-//        mainActivityGame.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                CustomTabsIntent.Builder customIntent = new CustomTabsIntent.Builder();
-//                customIntent.setToolbarColor(ContextCompat.getColor(TART_MainActivity.this, R.color.custome_chrom_color));
-//                CustomTabChrom.openCustomTab(TART_MainActivity.this, customIntent.build(), Uri.parse(banner1));
-//            }
-//        });
+                        );
+                    },
+                    (ConsentInformation.OnConsentInfoUpdateFailureListener) requestConsentError -> {
+                        Log.w("TAG54697", String.format("%s: %s",
+                                requestConsentError.getErrorCode(),
+                                requestConsentError.getMessage()));
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         rateSubmit = preferenceClass.getRateSubmited("rateSubmitted");
 
@@ -181,13 +171,15 @@ public class TART_MainActivity extends AppCompatActivity implements View.OnClick
         this.dbhelper = new DataBaseHelper(this);
         new Async(this, this.dbhelper).execute(new Void[0]);
 
-        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
-
-        // OneSignal Initialization
-        OneSignal.initWithContext(TART_MainActivity.this);
-        OneSignal.setAppId("83d4adaf-4ae7-4f59-b91a-d0050698af6a");
-        OneSignal.promptForPushNotifications();
-        OneSignal.sendTag("Apps", "Text Art");
+        try {
+            OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
+            OneSignal.initWithContext(TART_MainActivity.this);
+            OneSignal.setAppId("83d4adaf-4ae7-4f59-b91a-d0050698af6a");
+            OneSignal.promptForPushNotifications();
+            OneSignal.sendTag("Apps", "Text Art");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -293,26 +285,107 @@ public class TART_MainActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void initViews() {
-//        Glide.with(MainActivity.this).load(Integer.valueOf((int) R.drawable.bg_main_activity)).centerCrop().into((ImageView) findViewById(R.id.main_image));
         sample = findViewById(R.id.btSample);
         camera = findViewById(R.id.btCamera);
         gallery = findViewById(R.id.btGallery);
-        settings = (ImageView) findViewById(R.id.btnSettings);
-        rateus_button = (ImageView) findViewById(R.id.btrateButton);
+        settings = findViewById(R.id.btnSettings);
+        rateus_button = findViewById(R.id.btrateButton);
 
-        TextView textView = (TextView) findViewById(R.id.title);
+        if (camera != null) camera.setOnClickListener(TART_MainActivity.this);
+        if (gallery != null) gallery.setOnClickListener(TART_MainActivity.this);
+        if (sample != null) sample.setOnClickListener(TART_MainActivity.this);
+        if (settings != null) settings.setOnClickListener(TART_MainActivity.this);
+        if (rateus_button != null) rateus_button.setOnClickListener(TART_MainActivity.this);
 
-        Typeface.createFromAsset(getAssets(), "font/Sofia-Regular.otf");
-        camera.setOnClickListener(TART_MainActivity.this);
-        gallery.setOnClickListener(TART_MainActivity.this);
-        sample.setOnClickListener(TART_MainActivity.this);
-        settings.setOnClickListener(TART_MainActivity.this);
-        rateus_button.setOnClickListener(TART_MainActivity.this);
+        setupBottomNav();
+        setupCategoryChips();
+        setupRecentProjects();
+        setupTrendingTemplates();
 
         RelativeLayout native_banner_ad_container = findViewById(R.id.native_banner_ad_container);
-        TART_NativeAdUtil.loadNativeAd(native_banner_ad_container, this);
+        if (native_banner_ad_container != null) {
+            TART_NativeAdUtil.loadNativeAd(native_banner_ad_container, this);
+        }
+    }
 
+    private void setupBottomNav() {
+        View navHome = findViewById(R.id.navHome);
+        View navTemplates = findViewById(R.id.navTemplates);
+        View navCreate = findViewById(R.id.navCreate);
+        View navGallery = findViewById(R.id.navGallery);
+        View navProfile = findViewById(R.id.navProfile);
 
+        if (navTemplates != null) {
+            navTemplates.setOnClickListener(v -> btSampleOnclickNext());
+        }
+        if (navCreate != null) {
+            navCreate.setOnClickListener(v -> MyApplication.showInterstitialAd(TART_MainActivity.this, this::pickFromGalery));
+        }
+        if (navGallery != null) {
+            navGallery.setOnClickListener(v -> MyApplication.showInterstitialAd(TART_MainActivity.this, this::pickFromGalery));
+        }
+        if (navProfile != null) {
+            navProfile.setOnClickListener(v -> SettingsNext());
+        }
+    }
+
+    private void setupCategoryChips() {
+        int[] chipIds = {R.id.chipForYou, R.id.chipQuotes, R.id.chipPoster, R.id.chipStory, R.id.chipBirthday, R.id.chipBusiness};
+        for (int chipId : chipIds) {
+            TextView chip = findViewById(chipId);
+            if (chip != null) {
+                chip.setOnClickListener(v -> {
+                    for (int id : chipIds) {
+                        TextView otherChip = findViewById(id);
+                        if (otherChip != null) {
+                            if (id == chipId) {
+                                otherChip.setBackgroundResource(R.drawable.bg_pill_selected);
+                                otherChip.setTextColor(ContextCompat.getColor(this, R.color.white));
+                            } else {
+                                otherChip.setBackgroundResource(R.drawable.bg_pill_unselected);
+                                otherChip.setTextColor(ContextCompat.getColor(this, R.color.pill_text_unselected));
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    private void setupRecentProjects() {
+        androidx.recyclerview.widget.RecyclerView rvRecent = findViewById(R.id.rvRecentProjects);
+        if (rvRecent != null) {
+            List<com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter.ProjectItem> list = new ArrayList<>();
+            list.add(new com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter.ProjectItem(R.drawable.knack_tt_nature8, "Morning Brew, Fresh Start.", "Edited 2h ago"));
+            list.add(new com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter.ProjectItem(R.drawable.knack_tt_nature2, "DREAM BIG", "Edited 4h ago"));
+            list.add(new com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter.ProjectItem(R.drawable.knack_color29, "MINIMAL FORM. MAXIMUM IMPACT.", "Edited yesterday"));
+            list.add(new com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter.ProjectItem(R.drawable.knack_lov1, "LOVE & WARMTH", "Edited 2d ago"));
+
+            com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter adapter =
+                    new com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter(this, list, item -> {
+                        MyApplication.showInterstitialAd(TART_MainActivity.this, this::pickFromGalery);
+                    });
+            rvRecent.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            rvRecent.setAdapter(adapter);
+        }
+    }
+
+    private void setupTrendingTemplates() {
+        androidx.recyclerview.widget.RecyclerView rvTemplates = findViewById(R.id.rvTrendingTemplates);
+        if (rvTemplates != null) {
+            List<com.addtext.textonphoto.textart.TART_viewadapter.TART_TrendingTemplatesAdapter.TemplateItem> list = new ArrayList<>();
+            list.add(new com.addtext.textonphoto.textart.TART_viewadapter.TART_TrendingTemplatesAdapter.TemplateItem(R.drawable.knack_tt_nature13, "Magazine Cover Layout"));
+            list.add(new com.addtext.textonphoto.textart.TART_viewadapter.TART_TrendingTemplatesAdapter.TemplateItem(R.drawable.knack_tt_nature9, "Social Media Story Frame"));
+            list.add(new com.addtext.textonphoto.textart.TART_viewadapter.TART_TrendingTemplatesAdapter.TemplateItem(R.drawable.knack_lov3, "Holiday Greeting Card"));
+            list.add(new com.addtext.textonphoto.textart.TART_viewadapter.TART_TrendingTemplatesAdapter.TemplateItem(R.drawable.knack_tt_nature6, "Quote graphic with sianve"));
+
+            com.addtext.textonphoto.textart.TART_viewadapter.TART_TrendingTemplatesAdapter adapter =
+                    new com.addtext.textonphoto.textart.TART_viewadapter.TART_TrendingTemplatesAdapter(this, list, item -> {
+                        btSampleOnclickNext();
+                    });
+            rvTemplates.setLayoutManager(new GridLayoutManager(this, 2));
+            rvTemplates.setAdapter(adapter);
+        }
     }
 
     private void dispatchTakePictureIntent() {

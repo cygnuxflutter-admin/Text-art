@@ -4,42 +4,36 @@
     android:id="@+id/root_setting"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/bg_cream">
 
     <RelativeLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_marginHorizontal="10dp">
+        android:background="@color/bg_cream"
+        android:paddingStart="12dp"
+        android:paddingEnd="16dp">
 
         <ImageView
             android:id="@+id/ivBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
+            android:background="?selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:src="@drawable/knack_ic_arrow_back_24dp"
-            app:tint="@color/selected" />
+            android:padding="8dp"
+            android:src="@drawable/ic_back_modern"
+            app:tint="@color/text_primary" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="10dp"
-            android:fontFamily="@font/san_bold"
+            android:fontFamily="@font/roboto_bold"
             android:gravity="center"
             android:text="@string/title_settings"
-            android:textColor="@color/selected"
+            android:textColor="@color/text_primary"
             android:textSize="18sp" />
-
-<!--        <pl.droidsonroids.gif.GifImageView-->
-<!--            android:id="@+id/iv_game"-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:layout_alignParentRight="true"-->
-<!--            android:layout_centerVertical="true"-->
-<!--            android:adjustViewBounds="true"-->
-<!--            android:src="@drawable/game_gif" />-->
     </RelativeLayout>
 
     <ScrollView
@@ -48,167 +42,156 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/btm"
         android:layout_below="@+id/toolbar"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp">
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:overScrollMode="never">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/card_white"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="2dp">
 
             <LinearLayout
-                android:id="@+id/rate_app"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/aler"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    android:text="@string/rate_app"
-                    android:textColor="@color/selected"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/feed_back"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:padding="8dp">
+
+                <LinearLayout
+                    android:id="@+id/rate_app"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="?selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/rate_app"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp" />
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/grey_400" />
+                    android:background="@color/border_subtle" />
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/feed_back"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/aler"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    android:text="@string/feed_back"
-                    android:textColor="@color/selected"
-                    android:textSize="16sp" />
-            </LinearLayout>
+                    android:layout_height="52dp"
+                    android:background="?selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/feed_back"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp" />
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/grey_400" />
+                    android:background="@color/border_subtle" />
 
                 <LinearLayout
                     android:id="@+id/checkupdates"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_height="52dp"
+                    android:background="?selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/aler"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="20dp"
+                        android:fontFamily="@font/roboto_medium"
                         android:text="@string/check_update"
-                        android:textColor="@color/selected"
-                        android:textSize="16sp" />
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp" />
                 </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:orientation="vertical">
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/grey_400" />
+                    android:background="@color/border_subtle" />
 
                 <LinearLayout
                     android:id="@+id/privacy_app"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_height="52dp"
+                    android:background="?selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/aler"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="20dp"
+                        android:fontFamily="@font/roboto_medium"
                         android:text="@string/privacy_policy"
-                        android:textColor="@color/selected"
-                        android:textSize="16sp" />
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp" />
                 </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:orientation="vertical">
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/grey_400" />
+                    android:background="@color/border_subtle" />
 
                 <LinearLayout
                     android:id="@+id/shareApp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_height="52dp"
+                    android:background="?selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
 
                     <TextView
                         android:id="@+id/tvShareApp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/aler"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="20dp"
+                        android:fontFamily="@font/roboto_medium"
                         android:text="@string/share_app"
-                        android:textColor="@color/selected"
-                        android:textSize="16sp" />
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </ScrollView>
 
     <RelativeLayout
         android:id="@+id/btm"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="10dp"
-        android:background="@drawable/knack_ad_bg">
+        android:layout_margin="16dp">
 
         <RelativeLayout
             android:id="@+id/native_banner_ad_container"
             android:layout_width="match_parent"
-            android:layout_height="260dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/_4sdp"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:layout_marginEnd="@dimen/_4sdp"
-            android:layout_marginBottom="@dimen/_4sdp"
+            android:layout_height="wrap_content"
+            android:minHeight="120dp"
             android:visibility="visible" />
     </RelativeLayout>
 </RelativeLayout>

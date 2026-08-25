@@ -50,6 +50,9 @@ public class TART_AppOpenManager implements LifecycleObserver, Application.Activ
      * Request an ad
      */
     public void fetchAd() {
+        if (com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
+            return;
+        }
         if (isAdAvailable()) {
             return;
         }
@@ -93,6 +96,9 @@ public class TART_AppOpenManager implements LifecycleObserver, Application.Activ
      * Utility method that checks if ad exists and can be shown.
      */
     public boolean isAdAvailable() {
+        if (com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
+            return false;
+        }
         return appOpenAd != null && wasLoadTimeLessThanNHoursAgo(4);
     }
 
@@ -104,6 +110,9 @@ public class TART_AppOpenManager implements LifecycleObserver, Application.Activ
      * Shows the ad if one isn't already showing and returning from background.
      */
     public void showAdIfAvailable() {
+        if (com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
+            return;
+        }
         if (!isShowingAd && isAdAvailable()) {
             if (MyApplication.isShowingAppOpen && currentActivity != null && !(currentActivity instanceof TART_SplashActivity)) {
                 FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {

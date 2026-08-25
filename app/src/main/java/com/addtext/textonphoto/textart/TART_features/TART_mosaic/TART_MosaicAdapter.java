@@ -62,7 +62,7 @@ public class TART_MosaicAdapter extends RecyclerView.Adapter<TART_MosaicAdapter.
             return;
         }
         viewHolder.mosaic.setBorderColor(0);
-        viewHolder.mosaic.setBorderWidth(this.borderWidth);
+        viewHolder.mosaic.setBorderWidth(0);
     }
 
     public int getItemCount() {

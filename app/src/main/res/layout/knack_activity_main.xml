@@ -1,262 +1,601 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="@color/bg_cream">
 
+    <!-- Top App Bar -->
     <RelativeLayout
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="12dp">
+        android:layout_height="56dp"
+        android:layout_alignParentTop="true"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:fontFamily="@font/aler"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/roboto_bold"
             android:text="Text Art"
-            android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textColor="@color/text_primary"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/btnSettings"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:src="@drawable/knack_ic_setting" />
-
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:src="@drawable/ic_settings_modern"
+            app:tint="@color/text_primary" />
     </RelativeLayout>
 
-    <LinearLayout
+    <!-- Main Scrollable Content -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical">
-
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomNavContainer"
+        android:layout_below="@+id/topBar"
+        android:fillViewport="true"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/main_image"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginBottom="25dp"
             android:orientation="vertical"
-            android:weightSum="2">
+            android:paddingBottom="24dp">
 
-            <LinearLayout
+            <!-- Subtitle Headline -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:layout_weight="1"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Create something beautiful"
+                android:textColor="@color/text_primary"
+                android:textSize="24sp" />
+
+            <!-- Search Bar -->
+            <LinearLayout
+                android:id="@+id/searchBarContainer"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bg_search_bar"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <ImageView
-                    android:id="@+id/btGallery"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_search_modern"
+                    app:tint="@color/text_secondary" />
+
+                <EditText
+                    android:id="@+id/etSearch"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/knack_bg_gallary" />
-
-                <ImageView
-                    android:id="@+id/btCamera"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/knack_bg_camera" />
-
-                <!--                <Button-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="@dimen/_80sdp"-->
-                <!--                    android:layout_gravity="center"-->
-                <!--                    android:layout_weight="1"-->
-                <!--                    android:background="@drawable/bg_gallary"-->
-                <!--                    android:fontFamily="@font/robotoslab_bold"-->
-                <!--                    android:gravity="bottom"-->
-                <!--                    android:minWidth="300dp"-->
-                <!--                    android:minHeight="70dp"-->
-                <!--                    android:padding="@dimen/_5sdp"-->
-                <!--                    android:scaleType="centerCrop"-->
-                <!--                    android:textAllCaps="false"-->
-                <!--                    android:textColor="@android:color/white"-->
-                <!--                    android:textSize="20sp"-->
-                <!--                    android:theme="@style/CyanButtonTheme" />-->
-
-                <!--                <Button-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="@dimen/_60sdp"-->
-                <!--                    android:layout_gravity="center"-->
-                <!--                    android:layout_marginTop="@dimen/_10sdp"-->
-                <!--                    android:layout_weight="1"-->
-                <!--                    android:background="@drawable/bg_camera"-->
-                <!--                    android:fontFamily="@font/robotoslab_bold"-->
-                <!--                    android:gravity="bottom"-->
-                <!--                    android:minWidth="300dp"-->
-                <!--                    android:minHeight="70dp"-->
-                <!--                    android:padding="@dimen/_5sdp"-->
-                <!--                    android:scaleType="centerCrop"-->
-                <!--                    android:textAllCaps="false"-->
-                <!--                    android:textColor="@color/white"-->
-                <!--                    android:textSize="20sp"-->
-                <!--                    android:theme="@style/PinkButtonTheme" />-->
-
-
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:background="@null"
+                    android:hint="Search templates, fonts, stickers..."
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_hint"
+                    android:textSize="14sp" />
             </LinearLayout>
 
+            <!-- Category Filter Chips -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingStart="20dp"
+                android:paddingEnd="12dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/categoriesContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <!-- Selected Chip -->
+                    <TextView
+                        android:id="@+id/chipForYou"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_pill_selected"
+                        android:gravity="center"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="For You"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/chipQuotes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_pill_unselected"
+                        android:gravity="center"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Quotes"
+                        android:textColor="@color/pill_text_unselected"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/chipPoster"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_pill_unselected"
+                        android:gravity="center"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Poster"
+                        android:textColor="@color/pill_text_unselected"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/chipStory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_pill_unselected"
+                        android:gravity="center"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Story"
+                        android:textColor="@color/pill_text_unselected"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/chipBirthday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_pill_unselected"
+                        android:gravity="center"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Birthday"
+                        android:textColor="@color/pill_text_unselected"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/chipBusiness"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_pill_unselected"
+                        android:gravity="center"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Business"
+                        android:textColor="@color/pill_text_unselected"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- Hero Orange Card: "+ Start from a Photo" -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btGallery"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?selectableItemBackground"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_hero_card_orange"
+                    android:gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/ic_plus_white" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/roboto_bold"
+                            android:text="Start from a Photo"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Quick Action Row (Camera, Samples, Rate) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="20dp"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="3">
 
-                <ImageView
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/btCamera"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackground"
+                    app:cardBackgroundColor="@color/card_white"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_nav_gallery"
+                            app:tint="@color/brand_orange" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Camera"
+                            android:textColor="@color/text_primary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
                     android:id="@+id/btSample"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackground"
+                    app:cardBackgroundColor="@color/card_white"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_nav_templates"
+                            app:tint="@color/brand_orange" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Templates"
+                            android:textColor="@color/text_primary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/btrateButton"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackground"
+                    app:cardBackgroundColor="@color/card_white"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_check_circle_orange" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Rate Us"
+                            android:textColor="@color/text_primary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <!-- Recent Projects Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Recent Projects"
+                android:textColor="@color/text_primary"
+                android:textSize="18sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRecentProjects"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:paddingStart="20dp"
+                android:paddingEnd="8dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <!-- Trending Templates Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Trending Templates"
+                android:textColor="@color/text_primary"
+                android:textSize="18sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTrendingTemplates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="14dp"
+                android:nestedScrollingEnabled="false" />
+
+            <!-- Native Ad Container -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                app:cardBackgroundColor="@color/card_white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <RelativeLayout
+                    android:id="@+id/native_banner_ad_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/knack_bg_templates" />
+                    android:minHeight="120dp"
+                    android:padding="8dp"
+                    android:visibility="visible" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Navigation Bar Container -->
+    <RelativeLayout
+        android:id="@+id/bottomNavContainer"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/card_white"
+        android:elevation="12dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/border_subtle" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <!-- Home Tab (Active) -->
+            <LinearLayout
+                android:id="@+id/navHome"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/btrateButton"
-                    android:layout_width="match_parent"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/ic_nav_home"
+                    app:tint="@color/brand_orange" />
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/knack_bg_rate_us" />
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Home"
+                    android:textColor="@color/brand_orange"
+                    android:textSize="11sp" />
+            </LinearLayout>
 
-                <!--                <Button-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="@dimen/_60sdp"-->
-                <!--                    android:layout_gravity="center"-->
-                <!--                    android:layout_weight="1"-->
-                <!--                    android:background="@drawable/bg_templates"-->
-                <!--                    android:fontFamily="@font/robotoslab_bold"-->
-                <!--                    android:gravity="bottom"-->
-                <!--                    android:minWidth="300dp"-->
-                <!--                    android:minHeight="70dp"-->
-                <!--                    android:padding="@dimen/_5sdp"-->
-                <!--                    android:scaleType="centerCrop"-->
-                <!--                    android:textAllCaps="false"-->
-                <!--                    android:textColor="@color/white"-->
-                <!--                    android:textSize="20sp"-->
-                <!--                    android:theme="@style/CyanButtonTheme" />-->
+            <!-- Templates Tab -->
+            <LinearLayout
+                android:id="@+id/navTemplates"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical">
 
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/ic_nav_templates"
+                    app:tint="@color/text_secondary" />
 
-                <!--                <Button-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="@dimen/_80sdp"-->
-                <!--                    android:layout_gravity="center"-->
-                <!--                    android:layout_marginTop="@dimen/_10sdp"-->
-                <!--                    android:layout_weight="1"-->
-                <!--                    android:background="@drawable/bg_rate_us"-->
-                <!--                    android:fontFamily="@font/robotoslab_bold"-->
-                <!--                    android:gravity="bottom"-->
-                <!--                    android:minWidth="300dp"-->
-                <!--                    android:minHeight="70dp"-->
-                <!--                    android:padding="@dimen/_5sdp"-->
-                <!--                    android:scaleType="centerCrop"-->
-                <!--                    android:textAllCaps="false"-->
-                <!--                    android:textColor="@color/white"-->
-                <!--                    android:textSize="20sp"-->
-                <!--                    android:theme="@style/PinkButtonTheme" />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Templates"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <!-- Center FAB Create Tab -->
+            <LinearLayout
+                android:id="@+id/navCreate"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_hero_card_orange">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_plus_white" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Create"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <!-- Gallery Tab -->
+            <LinearLayout
+                android:id="@+id/navGallery"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/ic_nav_gallery"
+                    app:tint="@color/text_secondary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Gallery"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <!-- Profile / Settings Tab -->
+            <LinearLayout
+                android:id="@+id/navProfile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/ic_nav_profile"
+                    app:tint="@color/text_secondary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Profile"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="11sp" />
             </LinearLayout>
         </LinearLayout>
-
-    </LinearLayout>
-
-    <!-- Native Ad at bottom - secondary to content per AdMob policy -->
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="6dp"
-        android:layout_marginBottom="6dp"
-        app:cardCornerRadius="10dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:background="@drawable/knack_ad_bg">
-
-            <RelativeLayout
-                android:id="@+id/native_banner_ad_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/_4sdp"
-                android:visibility="visible" />
-        </RelativeLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_alignParentBottom="true"
-        android:visibility="gone">
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btGallery_old"
-            android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:layout_above="@+id/btSample_old"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/knack_transparent_bg_bordered"
-            android:fontFamily="@font/aler"
-            android:text="Photos"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="18dp" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btSample_old"
-            android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:layout_above="@+id/btCamera_old"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/knack_transparent_bg_solid"
-            android:fontFamily="@font/aler"
-            android:text="Samples"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="18dp" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btCamera_old"
-            android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="80dp"
-            android:background="@drawable/knack_white_bg_bordered"
-            android:fontFamily="@font/aler"
-            android:text="Camera"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="18dp" />
     </RelativeLayout>
-</LinearLayout>
+</RelativeLayout>

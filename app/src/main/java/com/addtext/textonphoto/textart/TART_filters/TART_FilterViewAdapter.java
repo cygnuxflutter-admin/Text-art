@@ -19,7 +19,7 @@ import com.addtext.textonphoto.textart.adManager.TART_RewardVideoManager;
 import com.addtext.textonphoto.textart.TART_utils.TART_MaterialDialogUtils;
 import com.addtext.textonphoto.textart.TART_utils.TART_PreferenceClass;
 import com.addtext.textonphoto.textart.TART_utils.TART_SystemUtil;
-import com.github.siyamed.shapeimageview.RoundedImageView;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,22 +68,28 @@ public class TART_FilterViewAdapter extends RecyclerView.Adapter<TART_FilterView
     }
 
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.mTxtFilterName.setText(this.filterEffects.get(i).getName());
+        String name = this.filterEffects.get(i).getName();
+        if (name != null && !name.trim().isEmpty()) {
+            viewHolder.mTxtFilterName.setText(name);
+            viewHolder.mTxtFilterName.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.mTxtFilterName.setVisibility(View.GONE);
+        }
         viewHolder.mImageFilterView.setImageBitmap(this.filterModels.get(i).getBitmap());
-        viewHolder.mImageFilterView.setBorderColor(ContextCompat.getColor(context, R.color.selected));
         if (filterModels.get(i).isPremium) {
             viewHolder.iv_premium.setVisibility(View.VISIBLE);
         } else {
             viewHolder.iv_premium.setVisibility(View.GONE);
         }
         if (this.selectedFilterIndex == i) {
-            viewHolder.mImageFilterView.setBorderColor(ContextCompat.getColor(context, R.color.selected));
-            viewHolder.mImageFilterView.setBorderWidth(this.borderWidth);
-            return;
+            viewHolder.mImageFilterView.setBorderColor(ContextCompat.getColor(context, R.color.brand_orange));
+            viewHolder.mImageFilterView.setBorderWidth((float) this.borderWidth);
+            viewHolder.mTxtFilterName.setTextColor(ContextCompat.getColor(context, R.color.brand_orange));
+        } else {
+            viewHolder.mImageFilterView.setBorderColor(0);
+            viewHolder.mImageFilterView.setBorderWidth(0.0f);
+            viewHolder.mTxtFilterName.setTextColor(ContextCompat.getColor(context, R.color.text_primary));
         }
-        viewHolder.mImageFilterView.setBorderColor(0);
-        viewHolder.mImageFilterView.setBorderWidth(this.borderWidth);
-
     }
 
     public int getItemCount() {
