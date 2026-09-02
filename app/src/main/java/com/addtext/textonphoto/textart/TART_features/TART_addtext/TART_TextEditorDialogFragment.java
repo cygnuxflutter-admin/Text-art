@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.BitmapShader;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Shader;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -180,28 +178,19 @@ public class TART_TextEditorDialogFragment extends DialogFragment implements Vie
         this.addTextProperties = addTextProperties2;
     }
 
-    @Override
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_NoActionBar);
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         Dialog dialog = getDialog();
-        if (dialog != null && dialog.getWindow() != null) {
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        if (dialog != null) {
+            dialog.getWindow().setLayout(-1, -1);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         }
     }
 
     @Nullable
-    @Override
     public View onCreateView(@NonNull LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
-        if (getDialog() != null && getDialog().getWindow() != null) {
-            getDialog().getWindow().requestFeature(android.view.Window.FEATURE_NO_TITLE);
-        }
+        getDialog().getWindow().requestFeature(1);
+        getDialog().getWindow().setFlags(1024, 1024);
         return layoutInflater.inflate(R.layout.knack_add_text_dialog, viewGroup, false);
     }
 
@@ -216,47 +205,23 @@ public class TART_TextEditorDialogFragment extends DialogFragment implements Vie
         super.onActivityCreated(bundle);
     }
 
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
         super.onViewCreated(view, bundle);
-        this.colorItems = getColorItems();
-        this.textTextureItems = getTextTextures();
         initView(view);
         if (this.addTextProperties == null) {
             this.addTextProperties = TART_AddTextProperties.getDefaultProperties();
         }
         this.mAddTextEditText.setDialogFragment(this);
         initAddTextLayout();
-        if (getActivity() != null) {
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(new DisplayMetrics());
-            this.mInputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        }
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(new DisplayMetrics());
+        this.mInputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         setDefaultStyleForEdittext();
-        if (this.mInputMethodManager != null) {
-            this.mInputMethodManager.toggleSoftInput(2, 0);
-        }
+        this.mInputMethodManager.toggleSoftInput(2, 0);
         highlightFunction(this.showKeyboard);
-        this.lstFonts.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        this.lstFonts.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         this.fontAdapter = new TART_FontAdapter(getContext(), TART_FontUtils.getListFonts());
         this.fontAdapter.setClickListener(this);
-        if (this.addTextProperties != null && this.addTextProperties.getText() != null) {
-            this.fontAdapter.setPreviewText(this.addTextProperties.getText());
-        }
         this.lstFonts.setAdapter(this.fontAdapter);
-
-        setupFormattingButtons(view);
-        setupFontCategories(view);
-        setupAdjustmentSliders(view);
-
-        View btnBack = view.findViewById(R.id.btnBackText);
-        if (btnBack != null) {
-            btnBack.setOnClickListener(v -> {
-                if (this.mInputMethodManager != null) {
-                    this.mInputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
-                dismissAndShowSticker();
-            });
-        }
         this.lstShadows.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         this.shadowAdapter = new TART_ShadowAdapter(getContext(), TART_AddTextProperties.getLstTextShadow());
         this.shadowAdapter.setClickListener(this);
@@ -338,9 +303,6 @@ public class TART_TextEditorDialogFragment extends DialogFragment implements Vie
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
                 TART_TextEditorDialogFragment.this.previewText.setText(charSequence.toString());
                 TART_TextEditorDialogFragment.this.addTextProperties.setText(charSequence.toString());
-                if (TART_TextEditorDialogFragment.this.fontAdapter != null) {
-                    TART_TextEditorDialogFragment.this.fontAdapter.setPreviewText(charSequence.toString());
-                }
             }
         });
         this.switchBackgroundTexture.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -536,7 +498,17 @@ public class TART_TextEditorDialogFragment extends DialogFragment implements Vie
         }
         this.previewText.setPadding(TART_SystemUtil.dpToPx(getContext(), this.addTextProperties.getPaddingWidth()), this.previewText.getPaddingTop(), TART_SystemUtil.dpToPx(getContext(), this.addTextProperties.getPaddingWidth()), this.previewText.getPaddingBottom());
         this.previewText.setTextColor(this.addTextProperties.getTextColor());
-        this.previewText.setTextAlignment(this.addTextProperties.getTextAlign());
+        
+        int align = this.addTextProperties.getTextAlign();
+        this.previewText.setTextAlignment(align);
+        this.mAddTextEditText.setTextAlignment(align);
+        
+        int gravity = android.view.Gravity.CENTER;
+        if (align == 2) gravity = android.view.Gravity.START | android.view.Gravity.CENTER_VERTICAL;
+        else if (align == 3) gravity = android.view.Gravity.END | android.view.Gravity.CENTER_VERTICAL;
+        
+        this.previewText.setGravity(gravity);
+        this.mAddTextEditText.setGravity(gravity);
         this.previewText.setTextSize((float) this.addTextProperties.getTextSize());
         TART_FontUtils.setFontByName(getContext(), this.previewText, this.addTextProperties.getFontName());
         if (this.addTextProperties.getTextShadow() != null) {
@@ -549,179 +521,7 @@ public class TART_TextEditorDialogFragment extends DialogFragment implements Vie
     private void setDefaultStyleForEdittext() {
         this.mAddTextEditText.requestFocus();
         this.mAddTextEditText.setTextSize(20.0f);
-        this.mAddTextEditText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         this.mAddTextEditText.setTextColor(Color.parseColor("#424949"));
-    }
-
-    private boolean isBold = false;
-    private boolean isItalic = false;
-    private boolean isUnderline = false;
-    private boolean isAllCaps = false;
-
-    private void setupFormattingButtons(View view) {
-        TextView btnBold = view.findViewById(R.id.btnFormatBold);
-        TextView btnItalic = view.findViewById(R.id.btnFormatItalic);
-        TextView btnUnderline = view.findViewById(R.id.btnFormatUnderline);
-        TextView btnCase = view.findViewById(R.id.btnFormatCase);
-        ImageView btnAlignLeft = view.findViewById(R.id.btnAlignLeft);
-        ImageView btnAlignCenter = view.findViewById(R.id.btnAlignCenter);
-        ImageView btnAlignRight = view.findViewById(R.id.btnAlignRight);
-
-        if (btnBold != null) {
-            btnBold.setOnClickListener(v -> {
-                isBold = !isBold;
-                updateTypefaceStyle();
-                btnBold.setSelected(isBold);
-            });
-        }
-
-        if (btnItalic != null) {
-            btnItalic.setOnClickListener(v -> {
-                isItalic = !isItalic;
-                updateTypefaceStyle();
-                btnItalic.setSelected(isItalic);
-            });
-        }
-
-        if (btnUnderline != null) {
-            btnUnderline.setOnClickListener(v -> {
-                isUnderline = !isUnderline;
-                if (isUnderline) {
-                    previewText.setPaintFlags(previewText.getPaintFlags() | android.graphics.Paint.UNDERLINE_TEXT_FLAG);
-                    mAddTextEditText.setPaintFlags(mAddTextEditText.getPaintFlags() | android.graphics.Paint.UNDERLINE_TEXT_FLAG);
-                } else {
-                    previewText.setPaintFlags(previewText.getPaintFlags() & ~android.graphics.Paint.UNDERLINE_TEXT_FLAG);
-                    mAddTextEditText.setPaintFlags(mAddTextEditText.getPaintFlags() & ~android.graphics.Paint.UNDERLINE_TEXT_FLAG);
-                }
-                btnUnderline.setSelected(isUnderline);
-            });
-        }
-
-        if (btnCase != null) {
-            btnCase.setOnClickListener(v -> {
-                isAllCaps = !isAllCaps;
-                String curText = mAddTextEditText.getText().toString();
-                if (isAllCaps) {
-                    mAddTextEditText.setText(curText.toUpperCase());
-                    previewText.setText(curText.toUpperCase());
-                } else {
-                    mAddTextEditText.setText(curText.toLowerCase());
-                    previewText.setText(curText.toLowerCase());
-                }
-                btnCase.setSelected(isAllCaps);
-            });
-        }
-
-        if (btnAlignLeft != null) {
-            btnAlignLeft.setOnClickListener(v -> {
-                addTextProperties.setTextAlign(View.TEXT_ALIGNMENT_TEXT_START);
-                previewText.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-                mAddTextEditText.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-                btnAlignLeft.setColorFilter(ContextCompat.getColor(getContext(), R.color.brand_orange));
-                btnAlignCenter.setColorFilter(ContextCompat.getColor(getContext(), R.color.text_primary));
-                btnAlignRight.setColorFilter(ContextCompat.getColor(getContext(), R.color.text_primary));
-            });
-        }
-
-        if (btnAlignCenter != null) {
-            btnAlignCenter.setOnClickListener(v -> {
-                addTextProperties.setTextAlign(View.TEXT_ALIGNMENT_CENTER);
-                previewText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                mAddTextEditText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                btnAlignCenter.setColorFilter(ContextCompat.getColor(getContext(), R.color.brand_orange));
-                btnAlignLeft.setColorFilter(ContextCompat.getColor(getContext(), R.color.text_primary));
-                btnAlignRight.setColorFilter(ContextCompat.getColor(getContext(), R.color.text_primary));
-            });
-        }
-
-        if (btnAlignRight != null) {
-            btnAlignRight.setOnClickListener(v -> {
-                addTextProperties.setTextAlign(View.TEXT_ALIGNMENT_TEXT_END);
-                previewText.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
-                mAddTextEditText.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
-                btnAlignRight.setColorFilter(ContextCompat.getColor(getContext(), R.color.brand_orange));
-                btnAlignLeft.setColorFilter(ContextCompat.getColor(getContext(), R.color.text_primary));
-                btnAlignCenter.setColorFilter(ContextCompat.getColor(getContext(), R.color.text_primary));
-            });
-        }
-    }
-
-    private void updateTypefaceStyle() {
-        int style = android.graphics.Typeface.NORMAL;
-        if (isBold && isItalic) style = android.graphics.Typeface.BOLD_ITALIC;
-        else if (isBold) style = android.graphics.Typeface.BOLD;
-        else if (isItalic) style = android.graphics.Typeface.ITALIC;
-
-        previewText.setTypeface(previewText.getTypeface(), style);
-        mAddTextEditText.setTypeface(mAddTextEditText.getTypeface(), style);
-    }
-
-    private void setupFontCategories(View view) {
-        int[] chipIds = {R.id.fontCatRecent, R.id.fontCatSerif, R.id.fontCatSans, R.id.fontCatScript, R.id.fontCatDisplay, R.id.fontCat3D};
-        for (int chipId : chipIds) {
-            TextView chip = view.findViewById(chipId);
-            if (chip != null) {
-                chip.setOnClickListener(v -> {
-                    for (int id : chipIds) {
-                        TextView otherChip = view.findViewById(id);
-                        if (otherChip != null) {
-                            if (id == chipId) {
-                                otherChip.setBackgroundResource(R.drawable.bg_pill_selected);
-                                otherChip.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
-                            } else {
-                                otherChip.setBackgroundResource(R.drawable.bg_pill_unselected);
-                                otherChip.setTextColor(ContextCompat.getColor(getContext(), R.color.pill_text_unselected));
-                            }
-                        }
-                    }
-                });
-            }
-        }
-    }
-
-    private void setupAdjustmentSliders(View view) {
-        TextView tvSizeBadge = view.findViewById(R.id.tvSizeBadge);
-        TextView tvTrackingBadge = view.findViewById(R.id.tvTrackingBadge);
-        TextView tvLineBadge = view.findViewById(R.id.tvLineBadge);
-        SeekBar seekTracking = view.findViewById(R.id.seekTracking);
-        SeekBar seekLine = view.findViewById(R.id.seekLine);
-
-        if (this.textSize != null) {
-            this.textSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                public void onStartTrackingTouch(SeekBar seekBar) {}
-                public void onStopTrackingTouch(SeekBar seekBar) {}
-                public void onProgressChanged(SeekBar seekBar, int i, boolean z) {
-                    int size = Math.max(i, 12);
-                    if (tvSizeBadge != null) tvSizeBadge.setText(String.valueOf(size));
-                    previewText.setTextSize((float) size);
-                    addTextProperties.setTextSize(size);
-                }
-            });
-        }
-
-        if (seekTracking != null) {
-            seekTracking.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                public void onStartTrackingTouch(SeekBar seekBar) {}
-                public void onStopTrackingTouch(SeekBar seekBar) {}
-                public void onProgressChanged(SeekBar seekBar, int i, boolean z) {
-                    if (tvTrackingBadge != null) tvTrackingBadge.setText(String.valueOf(i));
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                        previewText.setLetterSpacing(i / 20f);
-                    }
-                }
-            });
-        }
-
-        if (seekLine != null) {
-            seekLine.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                public void onStartTrackingTouch(SeekBar seekBar) {}
-                public void onStopTrackingTouch(SeekBar seekBar) {}
-                public void onProgressChanged(SeekBar seekBar, int i, boolean z) {
-                    if (tvLineBadge != null) tvLineBadge.setText(i + "%");
-                    previewText.setLineSpacing(0, i / 100f);
-                }
-            });
-        }
     }
 
     private void initAddTextLayout() {
@@ -799,7 +599,18 @@ public class TART_TextEditorDialogFragment extends DialogFragment implements Vie
                     this.addTextProperties.setTextAlign(4);
                     this.changeAlign.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.knack_img_alignment_center));
                 }
-                this.previewText.setTextAlignment(this.addTextProperties.getTextAlign());
+                
+                int align = this.addTextProperties.getTextAlign();
+                this.previewText.setTextAlignment(align);
+                this.mAddTextEditText.setTextAlignment(align);
+                
+                int gravity = android.view.Gravity.CENTER;
+                if (align == 2) gravity = android.view.Gravity.START | android.view.Gravity.CENTER_VERTICAL;
+                else if (align == 3) gravity = android.view.Gravity.END | android.view.Gravity.CENTER_VERTICAL;
+                
+                this.previewText.setGravity(gravity);
+                this.mAddTextEditText.setGravity(gravity);
+
                 TextView textView = this.previewText;
                 textView.setText(this.previewText.getText().toString().trim() + " ");
                 this.previewText.setText(this.previewText.getText().toString().trim());

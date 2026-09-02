@@ -40,8 +40,11 @@ public class TART_BackgroundImageAdapter2 extends RecyclerView.Adapter<TART_Back
         return viewHolderImage2;
     }
 
-    public  void lambda$onCreateViewHolder$0$BackgroundImageAdapter2(ViewHolderImage2 viewHolderImage2, View view) {
-        this.itemClickListener.onItemClick(view, viewHolderImage2.getLayoutPosition());
+    public  void lambda$onCreateViewHolder$0$BackgroundImageAdapter2(ViewHolderImage2 viewHolderImage, View view) {
+        int pos = viewHolderImage.getAdapterPosition();
+        if (pos != RecyclerView.NO_POSITION) {
+            this.itemClickListener.onItemClick(view, pos);
+        }
     }
 
     @Override

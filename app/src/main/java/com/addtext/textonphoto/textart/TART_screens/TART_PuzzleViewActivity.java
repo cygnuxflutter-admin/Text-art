@@ -139,98 +139,93 @@ public class TART_PuzzleViewActivity extends TART_BaseActivity implements TART_E
     public RecyclerView mRvTools;
     private ConstraintLayout mainActivity;
     public View.OnClickListener onClickListener = view -> {
-        switch (view.getId()) {
-            case R.id.imgCloseBackground:
-            case R.id.imgCloseFilter:
-            case R.id.imgCloseLayout:
-            case R.id.imgCloseSticker:
-            case R.id.imgCloseText:
-                TART_PuzzleViewActivity.this.slideDownSaveView();
-                TART_PuzzleViewActivity.this.onBackPressed();
-                return;
-            case R.id.imgSaveBackground:
-                TART_PuzzleViewActivity.this.slideDown(TART_PuzzleViewActivity.this.changeBackgroundLayout);
-                TART_PuzzleViewActivity.this.slideUp(TART_PuzzleViewActivity.this.mRvTools);
-                TART_PuzzleViewActivity.this.slideDownSaveView();
-                TART_PuzzleViewActivity.this.showDownFunction();
-                TART_PuzzleViewActivity.this.puzzleView.setLocked(true);
-                TART_PuzzleViewActivity.this.puzzleView.setTouchEnable(true);
-                if (TART_PuzzleViewActivity.this.puzzleView.getBackgroundResourceMode() == 0) {
-                    TART_PuzzleViewActivity.this.currentBackgroundState.isColor = true;
-                    TART_PuzzleViewActivity.this.currentBackgroundState.isBitmap = false;
-                    TART_PuzzleViewActivity.this.currentBackgroundState.drawableId = ((ColorDrawable) TART_PuzzleViewActivity.this.puzzleView.getBackground()).getColor();
-                    TART_PuzzleViewActivity.this.currentBackgroundState.drawable = null;
-                } else if (TART_PuzzleViewActivity.this.puzzleView.getBackgroundResourceMode() == 1) {
-                    TART_PuzzleViewActivity.this.currentBackgroundState.isColor = false;
-                    TART_PuzzleViewActivity.this.currentBackgroundState.isBitmap = false;
-                    TART_PuzzleViewActivity.this.currentBackgroundState.drawable = TART_PuzzleViewActivity.this.puzzleView.getBackground();
-                } else {
-                    TART_PuzzleViewActivity.this.currentBackgroundState.isColor = false;
-                    TART_PuzzleViewActivity.this.currentBackgroundState.isBitmap = true;
-                    TART_PuzzleViewActivity.this.currentBackgroundState.drawable = TART_PuzzleViewActivity.this.puzzleView.getBackground();
-                }
-                TART_PuzzleViewActivity.this.currentMode = TART_ToolType.NONE;
-                return;
-            case R.id.imgSaveFilter:
-                TART_PuzzleViewActivity.this.slideDown(TART_PuzzleViewActivity.this.filterLayout);
-                TART_PuzzleViewActivity.this.slideUp(TART_PuzzleViewActivity.this.mRvTools);
-                TART_PuzzleViewActivity.this.currentMode = TART_ToolType.NONE;
-                return;
-            case R.id.imgSaveLayout:
-                TART_PuzzleViewActivity.this.slideUp(TART_PuzzleViewActivity.this.mRvTools);
-                TART_PuzzleViewActivity.this.slideDown(TART_PuzzleViewActivity.this.changeLayoutLayout);
-                TART_PuzzleViewActivity.this.slideDownSaveView();
-                TART_PuzzleViewActivity.this.showDownFunction();
-                TART_PuzzleViewActivity.this.puzzleLayout = TART_PuzzleViewActivity.this.puzzleView.getPuzzleLayout();
-                TART_PuzzleViewActivity.this.pieceBorderRadius = TART_PuzzleViewActivity.this.puzzleView.getPieceRadian();
-                TART_PuzzleViewActivity.this.piecePadding = TART_PuzzleViewActivity.this.puzzleView.getPiecePadding();
-                TART_PuzzleViewActivity.this.puzzleView.setLocked(true);
-                TART_PuzzleViewActivity.this.puzzleView.setTouchEnable(true);
-                TART_PuzzleViewActivity.this.currentAspect = TART_PuzzleViewActivity.this.puzzleView.getAspectRatio();
-                TART_PuzzleViewActivity.this.currentMode = TART_ToolType.NONE;
-                return;
-            case R.id.imgSaveSticker:
-                TART_PuzzleViewActivity.this.puzzleView.setHandlingSticker(null);
-                TART_PuzzleViewActivity.this.stickerAlpha.setVisibility(View.GONE);
-                TART_PuzzleViewActivity.this.addNewSticker.setVisibility(View.GONE);
-                TART_PuzzleViewActivity.this.slideUp(TART_PuzzleViewActivity.this.wrapStickerList);
-                TART_PuzzleViewActivity.this.slideDown(TART_PuzzleViewActivity.this.stickerLayout);
-                TART_PuzzleViewActivity.this.slideUp(TART_PuzzleViewActivity.this.mRvTools);
-                TART_PuzzleViewActivity.this.slideDownSaveView();
-                TART_PuzzleViewActivity.this.puzzleView.setLocked(true);
-                TART_PuzzleViewActivity.this.puzzleView.setTouchEnable(true);
-                TART_PuzzleViewActivity.this.currentMode = TART_ToolType.NONE;
-                return;
-            case R.id.imgSaveText:
-                TART_PuzzleViewActivity.this.puzzleView.setHandlingSticker(null);
-                TART_PuzzleViewActivity.this.puzzleView.setLocked(true);
-                TART_PuzzleViewActivity.this.addNewText.setVisibility(View.GONE);
-                TART_PuzzleViewActivity.this.slideDown(TART_PuzzleViewActivity.this.textLayout);
-                TART_PuzzleViewActivity.this.slideUp(TART_PuzzleViewActivity.this.mRvTools);
-                TART_PuzzleViewActivity.this.slideDownSaveView();
-                TART_PuzzleViewActivity.this.puzzleView.setLocked(true);
-                TART_PuzzleViewActivity.this.puzzleView.setTouchEnable(true);
-                TART_PuzzleViewActivity.this.currentMode = TART_ToolType.NONE;
-                return;
-            case R.id.tv_blur:
-                TART_PuzzleViewActivity.this.selectBackgroundBlur();
-                return;
-            case R.id.tv_change_border:
-                TART_PuzzleViewActivity.this.selectBorderTool();
-                return;
-            case R.id.tv_change_layout:
-                TART_PuzzleViewActivity.this.selectLayoutTool();
-                return;
-            case R.id.tv_change_ratio:
-                TART_PuzzleViewActivity.this.selectRadiusTool();
-                return;
-            case R.id.tv_color:
-                TART_PuzzleViewActivity.this.selectBackgroundColorTab();
-                return;
-            case R.id.tv_radian:
-                TART_PuzzleViewActivity.this.selectBackgroundGradientTab();
-                return;
-            default:
+        int id = view.getId();
+        if (id == R.id.imgCloseBackground || id == R.id.imgCloseFilter || id == R.id.imgCloseLayout || id == R.id.imgCloseSticker || id == R.id.imgCloseText) {
+            TART_PuzzleViewActivity.this.slideDownSaveView();
+            TART_PuzzleViewActivity.this.onBackPressed();
+            return;
+        } else if (id == R.id.imgSaveBackground) {
+            TART_PuzzleViewActivity.this.slideDown(TART_PuzzleViewActivity.this.changeBackgroundLayout);
+            TART_PuzzleViewActivity.this.slideUp(TART_PuzzleViewActivity.this.mRvTools);
+            TART_PuzzleViewActivity.this.slideDownSaveView();
+            TART_PuzzleViewActivity.this.showDownFunction();
+            TART_PuzzleViewActivity.this.puzzleView.setLocked(true);
+            TART_PuzzleViewActivity.this.puzzleView.setTouchEnable(true);
+            if (TART_PuzzleViewActivity.this.puzzleView.getBackgroundResourceMode() == 0) {
+                TART_PuzzleViewActivity.this.currentBackgroundState.isColor = true;
+                TART_PuzzleViewActivity.this.currentBackgroundState.isBitmap = false;
+                TART_PuzzleViewActivity.this.currentBackgroundState.drawableId = ((ColorDrawable) TART_PuzzleViewActivity.this.puzzleView.getBackground()).getColor();
+                TART_PuzzleViewActivity.this.currentBackgroundState.drawable = null;
+            } else if (TART_PuzzleViewActivity.this.puzzleView.getBackgroundResourceMode() == 1) {
+                TART_PuzzleViewActivity.this.currentBackgroundState.isColor = false;
+                TART_PuzzleViewActivity.this.currentBackgroundState.isBitmap = false;
+                TART_PuzzleViewActivity.this.currentBackgroundState.drawable = TART_PuzzleViewActivity.this.puzzleView.getBackground();
+            } else {
+                TART_PuzzleViewActivity.this.currentBackgroundState.isColor = false;
+                TART_PuzzleViewActivity.this.currentBackgroundState.isBitmap = true;
+                TART_PuzzleViewActivity.this.currentBackgroundState.drawable = TART_PuzzleViewActivity.this.puzzleView.getBackground();
+            }
+            TART_PuzzleViewActivity.this.currentMode = TART_ToolType.NONE;
+            return;
+        } else if (id == R.id.imgSaveFilter) {
+            TART_PuzzleViewActivity.this.slideDown(TART_PuzzleViewActivity.this.filterLayout);
+            TART_PuzzleViewActivity.this.slideUp(TART_PuzzleViewActivity.this.mRvTools);
+            TART_PuzzleViewActivity.this.currentMode = TART_ToolType.NONE;
+            return;
+        } else if (id == R.id.imgSaveLayout) {
+            TART_PuzzleViewActivity.this.slideUp(TART_PuzzleViewActivity.this.mRvTools);
+            TART_PuzzleViewActivity.this.slideDown(TART_PuzzleViewActivity.this.changeLayoutLayout);
+            TART_PuzzleViewActivity.this.slideDownSaveView();
+            TART_PuzzleViewActivity.this.showDownFunction();
+            TART_PuzzleViewActivity.this.puzzleLayout = TART_PuzzleViewActivity.this.puzzleView.getPuzzleLayout();
+            TART_PuzzleViewActivity.this.pieceBorderRadius = TART_PuzzleViewActivity.this.puzzleView.getPieceRadian();
+            TART_PuzzleViewActivity.this.piecePadding = TART_PuzzleViewActivity.this.puzzleView.getPiecePadding();
+            TART_PuzzleViewActivity.this.puzzleView.setLocked(true);
+            TART_PuzzleViewActivity.this.puzzleView.setTouchEnable(true);
+            TART_PuzzleViewActivity.this.currentAspect = TART_PuzzleViewActivity.this.puzzleView.getAspectRatio();
+            TART_PuzzleViewActivity.this.currentMode = TART_ToolType.NONE;
+            return;
+        } else if (id == R.id.imgSaveSticker) {
+            TART_PuzzleViewActivity.this.puzzleView.setHandlingSticker(null);
+            TART_PuzzleViewActivity.this.stickerAlpha.setVisibility(View.GONE);
+            TART_PuzzleViewActivity.this.addNewSticker.setVisibility(View.GONE);
+            TART_PuzzleViewActivity.this.slideUp(TART_PuzzleViewActivity.this.wrapStickerList);
+            TART_PuzzleViewActivity.this.slideDown(TART_PuzzleViewActivity.this.stickerLayout);
+            TART_PuzzleViewActivity.this.slideUp(TART_PuzzleViewActivity.this.mRvTools);
+            TART_PuzzleViewActivity.this.slideDownSaveView();
+            TART_PuzzleViewActivity.this.puzzleView.setLocked(true);
+            TART_PuzzleViewActivity.this.puzzleView.setTouchEnable(true);
+            TART_PuzzleViewActivity.this.currentMode = TART_ToolType.NONE;
+            return;
+        } else if (id == R.id.imgSaveText) {
+            TART_PuzzleViewActivity.this.puzzleView.setHandlingSticker(null);
+            TART_PuzzleViewActivity.this.puzzleView.setLocked(true);
+            TART_PuzzleViewActivity.this.addNewText.setVisibility(View.GONE);
+            TART_PuzzleViewActivity.this.slideDown(TART_PuzzleViewActivity.this.textLayout);
+            TART_PuzzleViewActivity.this.slideUp(TART_PuzzleViewActivity.this.mRvTools);
+            TART_PuzzleViewActivity.this.slideDownSaveView();
+            TART_PuzzleViewActivity.this.puzzleView.setLocked(true);
+            TART_PuzzleViewActivity.this.puzzleView.setTouchEnable(true);
+            TART_PuzzleViewActivity.this.currentMode = TART_ToolType.NONE;
+            return;
+        } else if (id == R.id.tv_blur) {
+            TART_PuzzleViewActivity.this.selectBackgroundBlur();
+            return;
+        } else if (id == R.id.tv_change_border) {
+            TART_PuzzleViewActivity.this.selectBorderTool();
+            return;
+        } else if (id == R.id.tv_change_layout) {
+            TART_PuzzleViewActivity.this.selectLayoutTool();
+            return;
+        } else if (id == R.id.tv_change_ratio) {
+            TART_PuzzleViewActivity.this.selectRadiusTool();
+            return;
+        } else if (id == R.id.tv_color) {
+            TART_PuzzleViewActivity.this.selectBackgroundColorTab();
+            return;
+        } else if (id == R.id.tv_radian) {
+            TART_PuzzleViewActivity.this.selectBackgroundGradientTab();
+            return;
         }
     };
     public SeekBar.OnSeekBarChangeListener onSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
@@ -241,13 +236,11 @@ public class TART_PuzzleViewActivity extends TART_BaseActivity implements TART_E
         }
 
         public void onProgressChanged(SeekBar seekBar, int i, boolean z) {
-            switch (seekBar.getId()) {
-                case R.id.sk_border:
-                    TART_PuzzleViewActivity.this.puzzleView.setPiecePadding((float) i);
-                    break;
-                case R.id.sk_border_radius:
-                    TART_PuzzleViewActivity.this.puzzleView.setPieceRadian((float) i);
-                    break;
+            int id = seekBar.getId();
+            if (id == R.id.sk_border) {
+                TART_PuzzleViewActivity.this.puzzleView.setPiecePadding((float) i);
+            } else if (id == R.id.sk_border_radius) {
+                TART_PuzzleViewActivity.this.puzzleView.setPieceRadian((float) i);
             }
             TART_PuzzleViewActivity.this.puzzleView.invalidate();
         }
@@ -656,9 +649,6 @@ public class TART_PuzzleViewActivity extends TART_BaseActivity implements TART_E
             }
 
             public void onBackButton() {
-                if (TART_PuzzleViewActivity.this.puzzleView.getStickers().isEmpty()) {
-                    TART_PuzzleViewActivity.this.onBackPressed();
-                }
             }
         };
         this.textEditorDialogFragment.setOnTextEditorListener(this.textEditor);

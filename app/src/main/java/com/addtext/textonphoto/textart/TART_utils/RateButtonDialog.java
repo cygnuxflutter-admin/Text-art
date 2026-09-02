@@ -74,8 +74,10 @@ public class RateButtonDialog {
                                           if (rate > 3) {
                                               preferenceClass.setRateSubmited("rateSubmitted", true);
                                               submitRateToPlayStore(rate);
+                                              if (listener != null) listener.onRatingSelected(rate);
                                           } else {
                                               showThankYouDialog();
+                                              if (listener != null) listener.onRatingSelected(rate);
                                               dialog.dismiss();
                                           }
                                           dialog.dismiss();
@@ -89,6 +91,7 @@ public class RateButtonDialog {
                                           public void onClick(View view) {
                                               if (dialog != null)
                                                   dialog.dismiss();
+                                              if (listener != null) listener.onDialogCancelled();
                                               submitRate = false;
                                           }
                                       }

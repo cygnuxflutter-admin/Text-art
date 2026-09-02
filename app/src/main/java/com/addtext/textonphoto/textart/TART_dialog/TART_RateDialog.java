@@ -63,29 +63,26 @@ public class TART_RateDialog extends Dialog implements View.OnClickListener {
         int id = view.getId();
         if (id != R.id.tv_later) {
             if (id != R.id.tv_submit) {
-                switch (id) {
-                    case R.id.star_1:
-                        this.star_number = 1;
-                        setStarBar();
-                        return;
-                    case R.id.star_2:
-                        this.star_number = 2;
-                        setStarBar();
-                        return;
-                    case R.id.star_3:
-                        this.star_number = 3;
-                        setStarBar();
-                        return;
-                    case R.id.star_4:
-                        this.star_number = 4;
-                        setStarBar();
-                        return;
-                    case R.id.star_5:
-                        this.star_number = 5;
-                        setStarBar();
-                        return;
-                    default:
-
+                if (id == R.id.star_1) {
+                    this.star_number = 1;
+                    setStarBar();
+                    return;
+                } else if (id == R.id.star_2) {
+                    this.star_number = 2;
+                    setStarBar();
+                    return;
+                } else if (id == R.id.star_3) {
+                    this.star_number = 3;
+                    setStarBar();
+                    return;
+                } else if (id == R.id.star_4) {
+                    this.star_number = 4;
+                    setStarBar();
+                    return;
+                } else if (id == R.id.star_5) {
+                    this.star_number = 5;
+                    setStarBar();
+                    return;
                 }
             } else if (this.star_number >= 4) {
                 this.context.startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));

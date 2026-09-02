@@ -1,127 +1,46 @@
 {
   "project_info": {
-    "project_number": "828915209422",
-    "firebase_url": "https://poster-maker-new-e8be9-default-rtdb.firebaseio.com",
-    "project_id": "poster-maker-new-e8be9",
-    "storage_bucket": "poster-maker-new-e8be9.appspot.com"
+    "project_number": "270868846641",
+    "firebase_url": "https://poster---text-art-default-rtdb.firebaseio.com",
+    "project_id": "poster---text-art",
+    "storage_bucket": "poster---text-art.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:828915209422:android:256d74d1334746504cac9f",
+        "mobilesdk_app_id": "1:270868846641:android:9d303ce7ebb9c3d6a55d10",
         "android_client_info": {
           "package_name": "com.addtext.textonphoto.textart"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "828915209422-71do11gcsi2v220kv8oirmq0aijlu06v.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC5JaZPKHpahD1ucb-QJo5wE3zijjp_VDI"
+          "current_key": "AIzaSyA1WQ9fLAzeQkzGbHGHNTwrslyN7clDXfk"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "828915209422-71do11gcsi2v220kv8oirmq0aijlu06v.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:828915209422:android:d4eaf218fee308584cac9f",
+        "mobilesdk_app_id": "1:270868846641:android:3bde6cdda22ce488a55d10",
         "android_client_info": {
           "package_name": "com.festival.flyer.postermaker"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "828915209422-kcbl6kf69rt7i742m4338p3cmdio6nov.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.festival.flyer.postermaker",
-            "certificate_hash": "583420a127df151c917c7b5c45d943e5ccba05b2"
-          }
-        },
-        {
-          "client_id": "828915209422-kg8l15gud9mah7gahanq48jno2k66dcj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.festival.flyer.postermaker",
-            "certificate_hash": "caf903cd549eb9aab8f1c301a055e37f7bf13755"
-          }
-        },
-        {
-          "client_id": "828915209422-lq3d7patv7skdgsdk1g67v680ce903d6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.festival.flyer.postermaker",
-            "certificate_hash": "95174412b1dcd8f2fa38c12bbb0170d435163407"
-          }
-        },
-        {
-          "client_id": "828915209422-upv539ngsulafcotfg30ntvondeasbro.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.festival.flyer.postermaker",
-            "certificate_hash": "a8bd90ae30ef95ca25e7bf463d3523fbad424143"
-          }
-        },
-        {
-          "client_id": "828915209422-71do11gcsi2v220kv8oirmq0aijlu06v.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC5JaZPKHpahD1ucb-QJo5wE3zijjp_VDI"
+          "current_key": "AIzaSyA1WQ9fLAzeQkzGbHGHNTwrslyN7clDXfk"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "828915209422-71do11gcsi2v220kv8oirmq0aijlu06v.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:828915209422:android:9821e91910b2cef34cac9f",
-        "android_client_info": {
-          "package_name": "com.textonphoto.photoedit.textart"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "828915209422-71do11gcsi2v220kv8oirmq0aijlu06v.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC5JaZPKHpahD1ucb-QJo5wE3zijjp_VDI"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "828915209422-71do11gcsi2v220kv8oirmq0aijlu06v.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

@@ -41,15 +41,27 @@ public class TART_BackgroundColorAdapter extends RecyclerView.Adapter<TART_Backg
     }
 
     public  void lambda$onCreateViewHolder$0$BackgroundColorAdapter(ViewHolderColor viewHolderColor, View view) {
-        this.itemClickListener.onItemClick(view, viewHolderColor.getLayoutPosition());
+        int pos = viewHolderColor.getAdapterPosition();
+        if (pos != RecyclerView.NO_POSITION) {
+            this.itemClickListener.onItemClick(view, pos);
+        }
     }
 
     @Override
     public void onBindViewHolder(ViewHolderColor viewHolderColor, int i) {
-        Glide.with(this.context).load(Integer.valueOf(this.sampleArrayList.get(i).getImgSample())).thumbnail(0.1f).into(viewHolderColor.circleImageView);
+        viewHolderColor.circleImageView.setImageDrawable(null);
+        Glide.with(this.context)
+                .load(Integer.valueOf(this.sampleArrayList.get(i).getImgSample()))
+                .thumbnail(0.1f)
+                .into(viewHolderColor.circleImageView);
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override // androidx.recyclerview.widget.RecyclerView.Adapter
     public int getItemCount() {
         return this.sampleArrayList.size();
     }

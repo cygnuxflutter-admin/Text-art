@@ -5,6 +5,7 @@
     android:id="@id/activitylayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:background="@color/bg_cream"
     android:orientation="vertical">
 
@@ -83,9 +84,29 @@
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/text_primary" />
 
-        <!-- Export / Save Button -->
+        <!-- Save Project Button -->
         <TextView
-            android:id="@id/save"
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginEnd="12dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/export"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Export / Share Button -->
+        <TextView
+            android:id="@+id/export"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:background="@drawable/bg_btn_orange_pill"
@@ -539,18 +560,7 @@
                     android:layout_height="match_parent" />
             </LinearLayout>
 
-            <ImageView
-                android:id="@id/addNewSticker"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginBottom="60dp"
-                android:background="@drawable/bg_btn_orange_pill"
-                android:padding="8dp"
-                android:src="@drawable/knack_ic_plus"
-                app:layout_constraintBottom_toTopOf="@id/stickerControl"
-                app:layout_constraintStart_toStartOf="parent"
-                app:tint="@color/white" />
+            <ImageView android:id="@id/addNewSticker" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginBottom="24dp" android:background="@drawable/bg_btn_orange_pill" android:padding="10dp" android:src="@drawable/ic_plus_white" app:layout_constraintBottom_toTopOf="@id/stickerAlpha" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" />
 
             <SeekBar
                 android:id="@id/stickerAlpha"
@@ -756,16 +766,13 @@
         <!-- Add Text Floating Button -->
         <ImageView
             android:id="@id/addNewText"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginBottom="60dp"
-            android:background="@drawable/bg_btn_orange_pill"
-            android:padding="8dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp"
             android:src="@drawable/knack_ic_plus"
             app:layout_constraintBottom_toTopOf="@id/textControl"
-            app:layout_constraintStart_toStartOf="parent"
-            app:tint="@color/white" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <!-- Add Text Control -->
         <androidx.constraintlayout.widget.ConstraintLayout

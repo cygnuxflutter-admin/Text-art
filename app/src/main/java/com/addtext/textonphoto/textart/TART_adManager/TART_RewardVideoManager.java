@@ -37,12 +37,6 @@ public class TART_RewardVideoManager {
     public static com.facebook.ads.InterstitialAd interstitialFB;
 
     public static void showRewardVideoAd(final Activity context, OnRewardAdLoadInterface onAdLoadInterface) {
-        if (com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
-            if (onAdLoadInterface != null) {
-                onAdLoadInterface.onAdClose(true);
-            }
-            return;
-        }
         isUserEarnReward = false;
         if (preferenceClass == null) {
             preferenceClass = new TART_PreferenceClass(context);

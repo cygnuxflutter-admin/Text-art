@@ -66,31 +66,24 @@ public class TART_BeautyDialog extends DialogFragment {
     public OnBeautySave onBeautySave;
     View.OnClickListener onClickListener = new View.OnClickListener() {
         public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.resetWaist:
-                    TART_BeautyDialog.this.glSurfaceView.flush(true, new Runnable() {
-                        public void run() {
-                            if (TART_BeautyDialog.this.mDeformWrapper != null) {
-                                TART_BeautyDialog.this.mDeformWrapper.restore();
-                                TART_BeautyDialog.this.glSurfaceView.requestRender();
-                            }
+            int id = view.getId();
+            if (id == R.id.resetWaist) {
+                TART_BeautyDialog.this.glSurfaceView.flush(true, new Runnable() {
+                    public void run() {
+                        if (TART_BeautyDialog.this.mDeformWrapper != null) {
+                            TART_BeautyDialog.this.mDeformWrapper.restore();
+                            TART_BeautyDialog.this.glSurfaceView.requestRender();
                         }
-                    });
-                    return;
-                case R.id.wrapBoobs:
-                    TART_BeautyDialog.this.showAdjustBoobs();
-                    return;
-                case R.id.wrapFace:
-                    TART_BeautyDialog.this.showAdjustFace();
-                    return;
-                case R.id.wrapHip:
-                    TART_BeautyDialog.this.showAdjustHipOne();
-                    return;
-                case R.id.wrapWaist:
-                    TART_BeautyDialog.this.showWaist();
-                    return;
-                default:
-                    return;
+                    }
+                });
+            } else if (id == R.id.wrapBoobs) {
+                TART_BeautyDialog.this.showAdjustBoobs();
+            } else if (id == R.id.wrapFace) {
+                TART_BeautyDialog.this.showAdjustFace();
+            } else if (id == R.id.wrapHip) {
+                TART_BeautyDialog.this.showAdjustHipOne();
+            } else if (id == R.id.wrapWaist) {
+                TART_BeautyDialog.this.showWaist();
             }
         }
     };

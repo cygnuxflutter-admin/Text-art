@@ -7,14 +7,18 @@ plugins {
 
 android {
     namespace 'com.addtext.textonphoto.textart'
-    compileSdk 34
+    compileSdk 36
+
+    buildFeatures {
+        buildConfig true
+    }
 
     defaultConfig {
         applicationId "com.addtext.textonphoto.textart"
         minSdk 21
-        targetSdk 34
-        versionCode 26
-        versionName "3.5"
+        targetSdk 36
+        versionCode 29
+        versionName "3.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {
@@ -28,8 +32,18 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            storeFile file("../KeyStore/TextArt.jks")
+            storePassword "TextArt"
+            keyAlias "TextArt"
+            keyPassword "TextArt"
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -59,6 +73,7 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation "androidx.work:work-runtime:2.8.1"
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.5.2'

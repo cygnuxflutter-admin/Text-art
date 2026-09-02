@@ -216,9 +216,8 @@ public class TART_MainActivity extends AppCompatActivity implements View.OnClick
                 case R.id.btSample:
                     MyApplication.showInterstitialAd(TART_MainActivity.this, () -> btSampleOnclickNext());
                     return;
-                case R.id.btnSettings:
-
-                    MyApplication.showInterstitialAd(TART_MainActivity.this, () -> SettingsNext());
+                case R.id.btnNotification:
+                    startActivity(new Intent(TART_MainActivity.this, com.addtext.textonphoto.textart.TART_notifications.TART_NotificationActivity.class));
                     return;
                 case R.id.btrateButton:
 /*//                    MyApplication.showInterstitialAdWithOutCount(MainActivity.this, () ->    SettingsNext());
@@ -288,7 +287,7 @@ public class TART_MainActivity extends AppCompatActivity implements View.OnClick
         sample = findViewById(R.id.btSample);
         camera = findViewById(R.id.btCamera);
         gallery = findViewById(R.id.btGallery);
-        settings = findViewById(R.id.btnSettings);
+        settings = findViewById(R.id.btnNotification);
         rateus_button = findViewById(R.id.btrateButton);
 
         if (camera != null) camera.setOnClickListener(TART_MainActivity.this);
@@ -297,14 +296,22 @@ public class TART_MainActivity extends AppCompatActivity implements View.OnClick
         if (settings != null) settings.setOnClickListener(TART_MainActivity.this);
         if (rateus_button != null) rateus_button.setOnClickListener(TART_MainActivity.this);
 
+        androidx.swiperefreshlayout.widget.SwipeRefreshLayout swipeRefresh = findViewById(R.id.swipeRefresh);
+        if (swipeRefresh != null) {
+            swipeRefresh.setOnRefreshListener(() -> {
+                setupRecentProjects();
+                swipeRefresh.setRefreshing(false);
+            });
+        }
+
         setupBottomNav();
         setupCategoryChips();
         setupRecentProjects();
         setupTrendingTemplates();
 
-        RelativeLayout native_banner_ad_container = findViewById(R.id.native_banner_ad_container);
-        if (native_banner_ad_container != null) {
-            TART_NativeAdUtil.loadNativeAd(native_banner_ad_container, this);
+        androidx.cardview.widget.CardView nativeAdContainer = findViewById(R.id.cvNativeAdContainerHome);
+        if (nativeAdContainer != null) {
+            TART_NativeAdUtil.loadNativeAd(nativeAdContainer, this);
         }
     }
 
@@ -316,10 +323,12 @@ public class TART_MainActivity extends AppCompatActivity implements View.OnClick
         View navProfile = findViewById(R.id.navProfile);
 
         if (navTemplates != null) {
-            navTemplates.setOnClickListener(v -> btSampleOnclickNext());
+            navTemplates.setOnClickListener(v -> MyApplication.showInterstitialAd(TART_MainActivity.this, this::btSampleOnclickNext));
         }
         if (navCreate != null) {
-            navCreate.setOnClickListener(v -> MyApplication.showInterstitialAd(TART_MainActivity.this, this::pickFromGalery));
+            navCreate.setOnClickListener(v -> MyApplication.showInterstitialAd(TART_MainActivity.this, () -> {
+                startActivity(new Intent(TART_MainActivity.this, TART_ColorPickerActivity.class));
+            }));
         }
         if (navGallery != null) {
             navGallery.setOnClickListener(v -> MyApplication.showInterstitialAd(TART_MainActivity.this, this::pickFromGalery));
@@ -330,43 +339,52 @@ public class TART_MainActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void setupCategoryChips() {
-        int[] chipIds = {R.id.chipForYou, R.id.chipQuotes, R.id.chipPoster, R.id.chipStory, R.id.chipBirthday, R.id.chipBusiness};
-        for (int chipId : chipIds) {
-            TextView chip = findViewById(chipId);
-            if (chip != null) {
-                chip.setOnClickListener(v -> {
-                    for (int id : chipIds) {
-                        TextView otherChip = findViewById(id);
-                        if (otherChip != null) {
-                            if (id == chipId) {
-                                otherChip.setBackgroundResource(R.drawable.bg_pill_selected);
-                                otherChip.setTextColor(ContextCompat.getColor(this, R.color.white));
-                            } else {
-                                otherChip.setBackgroundResource(R.drawable.bg_pill_unselected);
-                                otherChip.setTextColor(ContextCompat.getColor(this, R.color.pill_text_unselected));
-                            }
-                        }
-                    }
-                });
-            }
-        }
+        // Feature removed as per user request
     }
 
     private void setupRecentProjects() {
+        View layoutRecentHeader = findViewById(R.id.layoutRecentHeader);
+        TextView tvSeeAllProjects = findViewById(R.id.tvSeeAllProjects);
+        if (tvSeeAllProjects != null) {
+            tvSeeAllProjects.setOnClickListener(v -> startActivity(new Intent(TART_MainActivity.this, TART_SavedProjectsActivity.class)));
+        }
+
         androidx.recyclerview.widget.RecyclerView rvRecent = findViewById(R.id.rvRecentProjects);
         if (rvRecent != null) {
             List<com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter.ProjectItem> list = new ArrayList<>();
-            list.add(new com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter.ProjectItem(R.drawable.knack_tt_nature8, "Morning Brew, Fresh Start.", "Edited 2h ago"));
-            list.add(new com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter.ProjectItem(R.drawable.knack_tt_nature2, "DREAM BIG", "Edited 4h ago"));
-            list.add(new com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter.ProjectItem(R.drawable.knack_color29, "MINIMAL FORM. MAXIMUM IMPACT.", "Edited yesterday"));
-            list.add(new com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter.ProjectItem(R.drawable.knack_lov1, "LOVE & WARMTH", "Edited 2d ago"));
+            java.io.File dir = new java.io.File(android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_PICTURES), "TextOnPhoto");
+            if (dir.exists() && dir.isDirectory()) {
+                java.io.File[] files = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png"));
+                if (files != null && files.length > 0) {
+                    java.util.Arrays.sort(files, (f1, f2) -> Long.compare(f2.lastModified(), f1.lastModified()));
+                    int count = Math.min(files.length, 5);
+                    for (int i = 0; i < count; i++) {
+                        java.io.File file = files[i];
+                        if (file.exists() && file.length() > 0) {
+                            CharSequence relativeTime = android.text.format.DateUtils.getRelativeTimeSpanString(file.lastModified(), System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS);
+                            list.add(new com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter.ProjectItem(file.getAbsolutePath(), file.getName(), relativeTime.toString()));
+                        }
+                    }
+                }
+            }
 
-            com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter adapter =
-                    new com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter(this, list, item -> {
-                        MyApplication.showInterstitialAd(TART_MainActivity.this, this::pickFromGalery);
-                    });
-            rvRecent.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-            rvRecent.setAdapter(adapter);
+            View layoutNoRecent = findViewById(R.id.layoutNoRecentProjects);
+
+            if (list.isEmpty()) {
+                rvRecent.setVisibility(View.GONE);
+                if (layoutNoRecent != null) layoutNoRecent.setVisibility(View.VISIBLE);
+            } else {
+                rvRecent.setVisibility(View.VISIBLE);
+                if (layoutNoRecent != null) layoutNoRecent.setVisibility(View.GONE);
+                com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter adapter =
+                        new com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter(this, list, false, item -> {
+                            Intent intent = new Intent(TART_MainActivity.this, TART_ShareActivity.class);
+                            intent.putExtra("path", item.imagePath);
+                            startActivity(intent);
+                        });
+                rvRecent.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false));
+                rvRecent.setAdapter(adapter);
+            }
         }
     }
 

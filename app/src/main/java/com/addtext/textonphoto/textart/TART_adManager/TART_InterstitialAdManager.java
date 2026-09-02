@@ -321,10 +321,6 @@ public class TART_InterstitialAdManager {
 
     public void showFaceBookInterstitial(Activity activity, OnAdLoadInterface onAdLoadInterface) {
         this.onAdLoadInterface = onAdLoadInterface;
-        if (com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
-            if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
-            return;
-        }
         if (isFbAdAvailable()) {
             fbInterstitialAd.show();
         } else {

@@ -40,6 +40,7 @@ public class TART_SettingsActivity extends AppCompatActivity implements View.OnC
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.knack_activity_settings);
+        com.addtext.textonphoto.textart.TART_utils.TART_BottomNavHelper.setupBottomNav(this, R.id.navProfile);
         this.ltRate = (LinearLayout) findViewById(R.id.rate_app);
         this.ltFeedback = (LinearLayout) findViewById(R.id.feed_back);
         this.ltUpdate = (LinearLayout) findViewById(R.id.checkupdates);
@@ -52,9 +53,16 @@ public class TART_SettingsActivity extends AppCompatActivity implements View.OnC
         this.ltPrivacy.setOnClickListener(this);
         this.ltShareApp.setOnClickListener(this);
         this.ivBack.setOnClickListener(this);
+        
+        View savedPhotos = findViewById(R.id.saved_photos);
+        if (savedPhotos != null) {
+            savedPhotos.setOnClickListener(this);
+        }
 
-        RelativeLayout native_banner_ad_container = findViewById(R.id.native_banner_ad_container);
-        TART_NativeAdUtil.loadNativeAd(native_banner_ad_container, this);
+        RelativeLayout rl_banner_settings = findViewById(R.id.rl_banner_settings);
+        if (rl_banner_settings != null) {
+            com.addtext.textonphoto.textart.adManager.TART_LoadAds.loadAdmobBannerAd(this, rl_banner_settings);
+        }
 
         /*String url = new TART_PreferenceClass(this).getDataType("URL_SettingActivityGame", "");
 
@@ -77,27 +85,21 @@ public class TART_SettingsActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.checkupdates:
-                launchMarket();
-                return;
-            case R.id.feed_back:
-                sendFeedBack();
-                return;
-            case R.id.ivBack:
-                finish();
-                return;
-            case R.id.privacy_app:
-                startActivity(new Intent("android.intent.action.VIEW", Uri.parse(Utils.privacy_policy)));
-                return;
-            case R.id.rate_app:
-                launchMarket();
-                return;
-            case R.id.shareApp:
-                shareApp();
-                return;
-            default:
-                return;
+        int id = view.getId();
+        if (id == R.id.checkupdates) {
+            launchMarket();
+        } else if (id == R.id.feed_back) {
+            sendFeedBack();
+        } else if (id == R.id.ivBack) {
+            finish();
+        } else if (id == R.id.privacy_app) {
+            startActivity(new Intent("android.intent.action.VIEW", Uri.parse(Utils.privacy_policy)));
+        } else if (id == R.id.rate_app) {
+            launchMarket();
+        } else if (id == R.id.shareApp) {
+            shareApp();
+        } else if (id == R.id.saved_photos) {
+            startActivity(new Intent(TART_SettingsActivity.this, TART_SavedProjectsActivity.class));
         }
     }
 

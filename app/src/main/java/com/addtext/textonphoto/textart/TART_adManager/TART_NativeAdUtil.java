@@ -24,7 +24,6 @@ import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.VideoOptions;
-import com.google.android.gms.ads.nativead.MediaView;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.gms.ads.nativead.NativeAdView;
@@ -52,13 +51,8 @@ public class TART_NativeAdUtil {
         this.preferenceClass = new TART_PreferenceClass(context);
     }
 
-    public static void loadNativeAd(RelativeLayout nativeAdContainer, Activity context) {
+    public static void loadNativeAd(android.view.ViewGroup nativeAdContainer, Activity context) {
         if (nativeAdContainer == null || context == null) return;
-        if (com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
-            nativeAdContainer.removeAllViews();
-            nativeAdContainer.setVisibility(View.GONE);
-            return;
-        }
         try {
             TART_PreferenceClass pref = new TART_PreferenceClass(context);
             String adId = pref.getAdsId("GoogleNativeAd");
@@ -90,10 +84,12 @@ public class TART_NativeAdUtil {
         return adView;
     }
 
-    public void fillAdmobNativeAd(final RelativeLayout nativeAdContainer) {
+    public void fillAdmobNativeAd(final android.view.ViewGroup nativeAdContainer) {
         try {
             String adUnitId = preferenceClass != null ? preferenceClass.getAdsId("GoogleNativeAd") : null;
+            android.util.Log.e("ADMOB_DEBUG_LOG", "=== NATIVE REQUEST with ID: [" + adUnitId + "] ===");
             if (adUnitId == null || adUnitId.trim().isEmpty()) {
+                android.util.Log.e("ADMOB_DEBUG_LOG", "Native ID is EMPTY in SharedPreferences! Skipping Google Native.");
                 fbNativeAd(nativeAdContainer);
                 return;
             }
@@ -102,6 +98,7 @@ public class TART_NativeAdUtil {
 
             builder.forNativeAd(nativeAd -> {
                 try {
+                    android.util.Log.e("ADMOB_DEBUG_LOG", ">>> NATIVE AD LOADED SUCCESSFULLY!");
                     if (this.nativeAd != null) {
                         this.nativeAd.destroy();
                     }
@@ -111,7 +108,7 @@ public class TART_NativeAdUtil {
                     if (nativeAdContainer != null) {
                         nativeAdContainer.removeAllViews();
                         nativeAdContainer.addView(adView);
-                        nativeAdContainer.setBackgroundColor(Color.parseColor("#151515"));
+                        nativeAdContainer.setBackgroundColor(Color.TRANSPARENT);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -125,6 +122,10 @@ public class TART_NativeAdUtil {
             AdLoader adLoader = builder.withAdListener(new AdListener() {
                 @Override
                 public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    android.util.Log.e("ADMOB_DEBUG_LOG", ">>> NATIVE AD FAILED TO LOAD!");
+                    android.util.Log.e("ADMOB_DEBUG_LOG", "Error Message: " + loadAdError.getMessage());
+                    android.util.Log.e("ADMOB_DEBUG_LOG", "Error Code: " + loadAdError.getCode() + " (0=Internal, 1=InvalidRequest, 2=Network, 3=NoFill)");
+                    android.util.Log.e("ADMOB_DEBUG_LOG", "Error Domain: " + loadAdError.getDomain());
                     fbNativeAd(nativeAdContainer);
                 }
             }).build();
@@ -136,11 +137,14 @@ public class TART_NativeAdUtil {
         }
     }
 
-    private void fbNativeAd(final RelativeLayout nativeAdContainer) {
+    private void fbNativeAd(final android.view.ViewGroup nativeAdContainer) {
         try {
             String fbAdId = preferenceClass != null ? preferenceClass.getAdsId("FbNativeAd") : null;
             if (fbAdId == null || fbAdId.trim().isEmpty()) {
-                if (nativeAdContainer != null) nativeAdContainer.setVisibility(View.GONE);
+                if (nativeAdContainer != null) {
+                    nativeAdContainer.removeAllViews();
+                    nativeAdContainer.setVisibility(View.GONE);
+                }
                 return;
             }
 
@@ -193,74 +197,21 @@ public class TART_NativeAdUtil {
     }
 
     public void populateUnifiedNativeAdView(NativeAd unifiedNativeAd, NativeAdView unifiedNativeAdView) {
-
-        RelativeLayout relativeLayout = unifiedNativeAdView.findViewById(R.id.parentLyt);
-
-        /*if (width != -1 && height != -1) {
-            relativeLayout.getLayoutParams().width = width;
-            relativeLayout.getLayoutParams().height = 300;
-            relativeLayout.invalidate();
-        }*/
-
-        MediaView mediaView = unifiedNativeAdView.findViewById(R.id.ad_media);
-        unifiedNativeAdView.setMediaView(mediaView);
-
         unifiedNativeAdView.setHeadlineView(unifiedNativeAdView.findViewById(R.id.ad_headline));
         unifiedNativeAdView.setBodyView(unifiedNativeAdView.findViewById(R.id.ad_body));
         unifiedNativeAdView.setCallToActionView(unifiedNativeAdView.findViewById(R.id.ad_call_to_action));
+        unifiedNativeAdView.setIconView(unifiedNativeAdView.findViewById(R.id.ad_app_icon));
 
-        ImageView imageView = unifiedNativeAdView.findViewById(R.id.unified_image_view);
-
-        populateNativeAdView(unifiedNativeAd, unifiedNativeAdView, mediaView, imageView);
+        populateNativeAdView(unifiedNativeAd, unifiedNativeAdView);
     }
 
-    private void populateNativeAdView(NativeAd unifiedNativeAd, NativeAdView unifiedNativeAdView, MediaView mediaView, ImageView imageView) {
-        int i = 0;
-       /* MediaContent mediaContent = unifiedNativeAd.getMediaContent();
-        if (mediaContent != null) {
-            boolean hasVideo = mediaContent.getVideoController().hasVideoContent();
-            if (hasVideo) {
-
-                unifiedNativeAdView.setMediaView(mediaView);
-                imageView.setVisibility(View.GONE);
-            } else {
-                unifiedNativeAdView.setImageView(imageView);
-                mediaView.setVisibility(View.GONE);
-                List<NativeAd.Image> images = unifiedNativeAd.getImages();
-                if (images.size() > 0) {
-                    while (true) {
-                        if (i >= images.size()) {
-                            break;
-                        }
-                        NativeAd.Image image = images.get(i);
-                        if (image != null) {
-                            Drawable drawable = image.getDrawable();
-                            imageView.setImageDrawable(drawable);
-                            break;
-                        }
-                        i++;
-                    }
-                }
-            }
+    private void populateNativeAdView(NativeAd unifiedNativeAd, NativeAdView unifiedNativeAdView) {
+        if (unifiedNativeAd.getIcon() != null) {
+            ((ImageView) unifiedNativeAdView.getIconView()).setImageDrawable(unifiedNativeAd.getIcon().getDrawable());
+            unifiedNativeAdView.getIconView().setVisibility(View.VISIBLE);
         } else {
-            unifiedNativeAdView.setImageView(imageView);
-            mediaView.setVisibility(View.GONE);
-            List<NativeAd.Image> images = unifiedNativeAd.getImages();
-            if (images.size() > 0) {
-                while (true) {
-                    if (i >= images.size()) {
-                        break;
-                    }
-                    NativeAd.Image image = images.get(i);
-                    if (image != null) {
-                        Drawable drawable = image.getDrawable();
-                        imageView.setImageDrawable(drawable);
-                        break;
-                    }
-                    i++;
-                }
-            }
-        }*/
+            unifiedNativeAdView.getIconView().setVisibility(View.GONE);
+        }
 
         TextView headlineView = (TextView) unifiedNativeAdView.getHeadlineView();
         if (headlineView != null) {

@@ -3,20 +3,172 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/knack_splash_bg"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:background="#FFFBF7">
 
+    <!-- Outer Ring (behind logo) -->
+    <ImageView
+        android:id="@+id/ringOuter"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:src="@drawable/splash_ring_outer"
+        android:alpha="0"
+        android:rotation="-15"
+        app:layout_constraintBottom_toBottomOf="@id/splashLogo"
+        app:layout_constraintEnd_toEndOf="@id/splashLogo"
+        app:layout_constraintStart_toStartOf="@id/splashLogo"
+        app:layout_constraintTop_toTopOf="@id/splashLogo" />
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/progressAnimationView"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
+    <!-- Inner Ring (behind logo) -->
+    <ImageView
+        android:id="@+id/ringInner"
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:src="@drawable/splash_ring"
+        android:alpha="0"
+        android:rotation="10"
+        app:layout_constraintBottom_toBottomOf="@id/splashLogo"
+        app:layout_constraintEnd_toEndOf="@id/splashLogo"
+        app:layout_constraintStart_toStartOf="@id/splashLogo"
+        app:layout_constraintTop_toTopOf="@id/splashLogo" />
+
+    <!-- Floating Stars -->
+    <ImageView
+        android:id="@+id/star1"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/knack_ic_star"
+        app:tint="@color/brand_orange"
+        android:alpha="0"
+        app:layout_constraintBottom_toTopOf="@id/splashLogo"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="70dp"
+        android:layout_marginBottom="10dp" />
+
+    <ImageView
+        android:id="@+id/star2"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:src="@drawable/knack_ic_star"
+        app:tint="@color/brand_orange"
+        android:alpha="0"
+        app:layout_constraintTop_toTopOf="@id/splashLogo"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="60dp"
+        android:layout_marginTop="30dp" />
+
+    <ImageView
+        android:id="@+id/star3"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/knack_ic_star"
+        app:tint="@color/brand_orange"
+        android:alpha="0"
+        app:layout_constraintBottom_toBottomOf="@id/splashLogo"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="50dp"
+        android:layout_marginBottom="10dp" />
+
+    <ImageView
+        android:id="@+id/star4"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:src="@drawable/knack_ic_star"
+        app:tint="@color/brand_orange"
+        android:alpha="0"
+        app:layout_constraintTop_toBottomOf="@id/splashLogo"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="70dp"
+        android:layout_marginTop="10dp" />
+
+    <!-- Small Dots -->
+    <View
+        android:id="@+id/dot1"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:background="@drawable/splash_dot"
+        android:alpha="0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="180dp"
+        android:layout_marginEnd="50dp" />
+
+    <View
+        android:id="@+id/dot2"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:background="@drawable/splash_dot"
+        android:alpha="0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="220dp"
+        android:layout_marginStart="40dp" />
+
+    <View
+        android:id="@+id/dot3"
+        android:layout_width="7dp"
+        android:layout_height="7dp"
+        android:background="@drawable/splash_dot"
+        android:alpha="0"
+        app:layout_constraintBottom_toTopOf="@id/splashText"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="20dp" />
+
+    <!-- Logo -->
+    <ImageView
+        android:id="@+id/splashLogo"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:src="@drawable/splash_logo_hd"
+        android:scaleType="fitCenter"
+        android:alpha="0"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/loading" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.36" />
 
+    <!-- App Name -->
+    <TextView
+        android:id="@+id/splashText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Text Art"
+        android:textColor="@color/brand_orange"
+        android:textSize="38sp"
+        android:alpha="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/splashLogo" />
+        
+    <!-- Tagline -->
+    <TextView
+        android:id="@+id/splashSubText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="Your Words. Your Style."
+        android:textColor="@color/text_primary"
+        android:textSize="16sp"
+        android:alpha="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/splashText" />
+
+    <!-- Loader -->
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/splashLoader"
+        style="@style/SpinKitView.Large.ThreeBounce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        app:SpinKit_Color="@color/brand_orange"
+        android:alpha="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

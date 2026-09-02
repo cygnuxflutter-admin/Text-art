@@ -20,31 +20,20 @@ public class MyApplication extends android.app.Application {
     public static MyApplication mInstance;
 
     public static void showInterstitialAd(Activity activity, TART_InterstitialAdManager.OnAdLoadInterface onAdLoadInterface) {
-        if (BuildConfig.DEBUG) {
-            if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
-            return;
-        }
-        ((MyApplication) activity.getApplication()).getInterstitialAdManager().showAdIfAvailable(activity, onAdLoadInterface);
+        com.addtext.textonphoto.textart.TART_utils.TART_LoadingDialog dialog = new com.addtext.textonphoto.textart.TART_utils.TART_LoadingDialog(activity);
+        dialog.show();
+        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+            dialog.dismiss();
+            ((MyApplication) activity.getApplication()).getInterstitialAdManager().showAdIfAvailable(activity, onAdLoadInterface);
+        }, 800);
     }
     public static void showInterstitialAdWithOutCount(Activity activity, TART_InterstitialAdManager.OnAdLoadInterface onAdLoadInterface) {
-        if (BuildConfig.DEBUG) {
-            if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
-            return;
-        }
         ((MyApplication) activity.getApplication()).getInterstitialAdManager().showInterstitialAd(activity, onAdLoadInterface);
     }
     public static void showFaceBookInterstitial(Activity activity, TART_InterstitialAdManager.OnAdLoadInterface onAdLoadInterface) {
-        if (BuildConfig.DEBUG) {
-            if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
-            return;
-        }
         ((MyApplication) activity.getApplication()).getInterstitialAdManager().showFaceBookInterstitial(activity, onAdLoadInterface);
     }
     public static void showEditInterstitialAd(Activity activity, TART_InterstitialAdManager.OnAdLoadInterface onAdLoadInterface) {
-        if (BuildConfig.DEBUG) {
-            if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
-            return;
-        }
         ((MyApplication) activity.getApplication()).getInterstitialAdManager().showEDitAdIfAvailable(activity, onAdLoadInterface);
     }
 
@@ -56,7 +45,6 @@ public class MyApplication extends android.app.Application {
     }
 
     public void loadInterstitialAd() {
-        if (BuildConfig.DEBUG) return;
         if (interstitialAdManager == null)
             interstitialAdManager = new TART_InterstitialAdManager(MyApplication.this);
     }
@@ -66,11 +54,19 @@ public class MyApplication extends android.app.Application {
         super.onCreate();
         mInstance = this;
 
-        if (!BuildConfig.DEBUG) {
-            AudienceNetworkAds.initialize(this);
-            MobileAds.initialize(this, initializationStatus -> Log.d(" AD", " poster open ad"));
-            appOpenManager = new TART_AppOpenManager(this);
+        try {
+            OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
+            OneSignal.initWithContext(this);
+            OneSignal.setAppId("abd91acb-cb03-410a-80c3-3ab7f58e7734");
+            OneSignal.promptForPushNotifications();
+            OneSignal.sendTag("Apps", "Text Art");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        AudienceNetworkAds.initialize(this);
+        MobileAds.initialize(this, initializationStatus -> Log.d(" AD", " Google MobileAds initialized"));
+        appOpenManager = new TART_AppOpenManager(this);
     }
 
     public static synchronized MyApplication getInstance() {
@@ -86,7 +82,7 @@ public class MyApplication extends android.app.Application {
     }
 
     public void showAdIfAvailable(@NonNull Activity activity, @NonNull OnShowAdCompleteListener onShowAdCompleteListener) {
-        if (BuildConfig.DEBUG || appOpenManager == null) {
+        if (appOpenManager == null) {
             if (onShowAdCompleteListener != null) onShowAdCompleteListener.onShowAdComplete();
             return;
         }
@@ -94,7 +90,7 @@ public class MyApplication extends android.app.Application {
     }
 
     public void showAdIfHomeAvailable(@NonNull Activity activity, @NonNull OnShowAdCompleteListener onShowAdCompleteListener) {
-        if (BuildConfig.DEBUG || appOpenManager == null) {
+        if (appOpenManager == null) {
             if (onShowAdCompleteListener != null) onShowAdCompleteListener.onShowAdComplete();
             return;
         }
@@ -102,12 +98,12 @@ public class MyApplication extends android.app.Application {
     }
 
     public void sendRequest() {
-        if (BuildConfig.DEBUG || appOpenManager == null) return;
+        if (appOpenManager == null) return;
         appOpenManager.sendRequest();
     }
 
     public boolean isAdAvailable() {
-        if (BuildConfig.DEBUG || appOpenManager == null) return false;
+        if (appOpenManager == null) return false;
         return appOpenManager.isAdAvailable();
     }
 

@@ -1,119 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmerLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:shimmer_auto_start="true"
+        app:shimmer_base_alpha="0.7"
+        app:shimmer_highlight_alpha="1.0">
 
-        <com.google.android.gms.ads.nativead.NativeAdView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="12dp">
 
-            <RelativeLayout
-                android:id="@+id/parentLyt"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical">
+            <!-- Shimmer Icon Placeholder -->
+            <View
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:background="@drawable/bg_badge_gray" />
 
-                <RelativeLayout
+            <!-- Shimmer Text Lines Placeholder -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="12dp"
+                    android:background="@drawable/bg_badge_gray" />
+
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:background="@color/unselected_color"
-                    android:orientation="vertical">
+                    android:layout_height="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_badge_gray" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                <View
+                    android:layout_width="160dp"
+                    android:layout_height="8dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_badge_gray" />
+            </LinearLayout>
 
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_weight="1"
-                            android:gravity="center">
+            <!-- Shimmer Button Placeholder -->
+            <View
+                android:layout_width="72dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_badge_gray" />
 
-                            <ImageView
-                                android:id="@+id/unified_image_view"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop" />
-
-                            <com.google.android.gms.ads.nativead.MediaView
-                                android:id="@+id/ad_media"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
-
-                        </RelativeLayout>
-
-
-                        <TextView
-                            android:id="@+id/ad_headline"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_4sdp"
-                            android:maxLines="2"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="5dp"
-                            android:paddingRight="5dp"
-                            android:text="Ads Loading Here "
-                            android:textColor="@color/black"
-                            android:textSize="23sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/ad_body"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_4sdp"
-                            android:maxLines="1"
-                            android:paddingLeft="5dp"
-                            android:paddingRight="5dp"
-                            android:paddingBottom="5dp"
-                            android:text="Waiting for Ads..."
-                            android:textColor="@color/black"
-                            android:textSize="12sp" />
-
-                        <Button
-                            android:id="@+id/ad_call_to_action"
-                            style="?android:attr/borderlessButtonStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="35dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginRight="8dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@drawable/knack_button_bg"
-                            android:gravity="center"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:text="Install"
-                            android:textColor="@android:color/black"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/ad_attribution"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:background="#FFCC66"
-                        android:paddingLeft="2dp"
-                        android:paddingRight="2dp"
-                        android:text="Ad"
-                        android:textColor="#FFFFFF"
-                        android:textSize="12sp" />
-
-                </RelativeLayout>
-            </RelativeLayout>
-
-        </com.google.android.gms.ads.nativead.NativeAdView>
-
+        </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>
-
 </RelativeLayout>

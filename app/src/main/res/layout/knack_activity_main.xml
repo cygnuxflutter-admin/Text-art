@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:background="@color/bg_cream">
 
     <!-- Top App Bar -->
@@ -26,189 +27,64 @@
             android:textSize="22sp"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/btnSettings"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+        <FrameLayout
+            android:id="@+id/btnNotification"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="?selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:focusable="true"
-            android:padding="8dp"
-            android:src="@drawable/ic_settings_modern"
-            app:tint="@color/text_primary" />
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:src="@drawable/ic_notification_bell"
+                app:tint="@color/text_primary" />
+
+            <View
+                android:id="@+id/notificationBadge"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bg_badge_red"
+                android:visibility="gone" />
+        </FrameLayout>
     </RelativeLayout>
 
-    <!-- Main Scrollable Content -->
-    <androidx.core.widget.NestedScrollView
+    <!-- Main Scrollable Content with Swipe Refresh -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottomNavContainer"
-        android:layout_below="@+id/topBar"
-        android:fillViewport="true"
-        android:overScrollMode="never">
+        android:layout_below="@+id/topBar">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="24dp">
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:overScrollMode="never">
 
-            <!-- Subtitle Headline -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="20dp"
-                android:fontFamily="@font/roboto_bold"
-                android:text="Create something beautiful"
-                android:textColor="@color/text_primary"
-                android:textSize="24sp" />
-
-            <!-- Search Bar -->
             <LinearLayout
-                android:id="@+id/searchBarContainer"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/bg_search_bar"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_search_modern"
-                    app:tint="@color/text_secondary" />
-
-                <EditText
-                    android:id="@+id/etSearch"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:background="@null"
-                    android:hint="Search templates, fonts, stickers..."
-                    android:imeOptions="actionSearch"
-                    android:inputType="text"
-                    android:textColor="@color/text_primary"
-                    android:textColorHint="@color/text_hint"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <!-- Category Filter Chips -->
-            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:clipToPadding="false"
-                android:overScrollMode="never"
-                android:paddingStart="20dp"
-                android:paddingEnd="12dp"
-                android:scrollbars="none">
+                android:orientation="vertical"
+                android:paddingBottom="24dp">
 
-                <LinearLayout
-                    android:id="@+id/categoriesContainer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
 
-                    <!-- Selected Chip -->
-                    <TextView
-                        android:id="@+id/chipForYou"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="@drawable/bg_pill_selected"
-                        android:gravity="center"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:text="For You"
-                        android:textColor="@color/white"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/chipQuotes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="@drawable/bg_pill_unselected"
-                        android:gravity="center"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:text="Quotes"
-                        android:textColor="@color/pill_text_unselected"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/chipPoster"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="@drawable/bg_pill_unselected"
-                        android:gravity="center"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:text="Poster"
-                        android:textColor="@color/pill_text_unselected"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/chipStory"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="@drawable/bg_pill_unselected"
-                        android:gravity="center"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:text="Story"
-                        android:textColor="@color/pill_text_unselected"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/chipBirthday"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="@drawable/bg_pill_unselected"
-                        android:gravity="center"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:text="Birthday"
-                        android:textColor="@color/pill_text_unselected"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/chipBusiness"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="@drawable/bg_pill_unselected"
-                        android:gravity="center"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:text="Business"
-                        android:textColor="@color/pill_text_unselected"
-                        android:textSize="13sp" />
-                </LinearLayout>
-            </HorizontalScrollView>
-
-            <!-- Hero Orange Card: "+ Start from a Photo" -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/btGallery"
-                android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
+                <!-- Hero Orange Card: "+ Start from a Photo" -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/btGallery"
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="20dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?selectableItemBackground"
@@ -265,7 +141,7 @@
                     android:foreground="?selectableItemBackground"
                     app:cardBackgroundColor="@color/card_white"
                     app:cardCornerRadius="14dp"
-                    app:cardElevation="2dp">
+                    app:cardElevation="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -302,7 +178,7 @@
                     android:foreground="?selectableItemBackground"
                     app:cardBackgroundColor="@color/card_white"
                     app:cardCornerRadius="14dp"
-                    app:cardElevation="2dp">
+                    app:cardElevation="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -338,7 +214,7 @@
                     android:foreground="?selectableItemBackground"
                     app:cardBackgroundColor="@color/card_white"
                     app:cardCornerRadius="14dp"
-                    app:cardElevation="2dp">
+                    app:cardElevation="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -364,16 +240,39 @@
             </LinearLayout>
 
             <!-- Recent Projects Section -->
-            <TextView
+            <RelativeLayout
+                android:id="@+id/layoutRecentHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="24dp"
-                android:layout_marginEnd="20dp"
-                android:fontFamily="@font/roboto_bold"
-                android:text="Recent Projects"
-                android:textColor="@color/text_primary"
-                android:textSize="18sp" />
+                android:layout_marginEnd="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="Recent Projects"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tvSeeAllProjects"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="@font/roboto_medium"
+                    android:padding="4dp"
+                    android:text="See All"
+                    android:textColor="@color/brand_orange"
+                    android:textSize="14sp" />
+            </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvRecentProjects"
@@ -386,6 +285,46 @@
                 android:paddingStart="20dp"
                 android:paddingEnd="8dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <LinearLayout
+                android:id="@+id/layoutNoRecentProjects"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bg_pill_unselected"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_nav_gallery"
+                    app:tint="@color/text_secondary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="No Recent Projects"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- Native Ad Section -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvNativeAdContainerHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="20dp"
+                app:cardBackgroundColor="@color/card_white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                android:minHeight="100dp" />
 
             <!-- Trending Templates Section -->
             <TextView
@@ -407,195 +346,9 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="14dp"
                 android:nestedScrollingEnabled="false" />
-
-            <!-- Native Ad Container -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                app:cardBackgroundColor="@color/card_white"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp">
-
-                <RelativeLayout
-                    android:id="@+id/native_banner_ad_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="120dp"
-                    android:padding="8dp"
-                    android:visibility="visible" />
-            </androidx.cardview.widget.CardView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <!-- Bottom Navigation Bar Container -->
-    <RelativeLayout
-        android:id="@+id/bottomNavContainer"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/card_white"
-        android:elevation="12dp">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentTop="true"
-            android:background="@color/border_subtle" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="5">
-
-            <!-- Home Tab (Active) -->
-            <LinearLayout
-                android:id="@+id/navHome"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?selectableItemBackground"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:src="@drawable/ic_nav_home"
-                    app:tint="@color/brand_orange" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="Home"
-                    android:textColor="@color/brand_orange"
-                    android:textSize="11sp" />
-            </LinearLayout>
-
-            <!-- Templates Tab -->
-            <LinearLayout
-                android:id="@+id/navTemplates"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?selectableItemBackground"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:src="@drawable/ic_nav_templates"
-                    app:tint="@color/text_secondary" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@font/roboto_regular"
-                    android:text="Templates"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="11sp" />
-            </LinearLayout>
-
-            <!-- Center FAB Create Tab -->
-            <LinearLayout
-                android:id="@+id/navCreate"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?selectableItemBackground"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:background="@drawable/bg_hero_card_orange">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/ic_plus_white" />
-                </RelativeLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="Create"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="10sp" />
-            </LinearLayout>
-
-            <!-- Gallery Tab -->
-            <LinearLayout
-                android:id="@+id/navGallery"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?selectableItemBackground"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:src="@drawable/ic_nav_gallery"
-                    app:tint="@color/text_secondary" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@font/roboto_regular"
-                    android:text="Gallery"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="11sp" />
-            </LinearLayout>
-
-            <!-- Profile / Settings Tab -->
-            <LinearLayout
-                android:id="@+id/navProfile"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?selectableItemBackground"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:src="@drawable/ic_nav_profile"
-                    app:tint="@color/text_secondary" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@font/roboto_regular"
-                    android:text="Profile"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="11sp" />
-            </LinearLayout>
-        </LinearLayout>
-    </RelativeLayout>
+    <include layout="@layout/knack_bottom_nav" />
 </RelativeLayout>

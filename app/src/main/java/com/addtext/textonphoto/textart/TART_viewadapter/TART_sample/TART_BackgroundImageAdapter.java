@@ -41,12 +41,24 @@ public class TART_BackgroundImageAdapter extends RecyclerView.Adapter<TART_Backg
     }
 
     public  void lambda$onCreateViewHolder$0$BackgroundImageAdapter(ViewHolderImage viewHolderImage, View view) {
-        this.itemClickListener.onItemClick(view, viewHolderImage.getLayoutPosition());
+        int pos = viewHolderImage.getAdapterPosition();
+        if (pos != RecyclerView.NO_POSITION) {
+            this.itemClickListener.onItemClick(view, pos);
+        }
     }
 
     @Override // androidx.recyclerview.widget.RecyclerView.Adapter
     public void onBindViewHolder(ViewHolderImage viewHolderImage, int i) {
-        Glide.with(this.context).load(Integer.valueOf(this.sampleArrayList.get(i).getImgSample())).thumbnail(0.1f).into(viewHolderImage.roundedImageView);
+        viewHolderImage.roundedImageView.setImageDrawable(null);
+        Glide.with(this.context)
+                .load(Integer.valueOf(this.sampleArrayList.get(i).getImgSample()))
+                .thumbnail(0.1f)
+                .into(viewHolderImage.roundedImageView);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override // androidx.recyclerview.widget.RecyclerView.Adapter

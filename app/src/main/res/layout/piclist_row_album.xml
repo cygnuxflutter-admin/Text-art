@@ -48,7 +48,7 @@
             android:maxLines="1"
             android:singleLine="true"
             android:text="Name album"
-            android:textColor="@color/toptextcolor"
+            android:textColor="@color/white"
             android:textSize="@dimen/_12sdp" />
 
         <TextView

@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import com.addtext.textonphoto.textart.MyApplication;
@@ -57,7 +58,11 @@ public class TART_SampleActivity extends AppCompatActivity {
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.knack_activity_sample);
-        preferenceClass = new TART_PreferenceClass(this);
+        com.addtext.textonphoto.textart.TART_utils.TART_BottomNavHelper.setupBottomNav(this, R.id.navTemplates);
+        RelativeLayout rl_ad = findViewById(R.id.rl_ad);
+        if (rl_ad != null) {
+            com.addtext.textonphoto.textart.adManager.TART_LoadAds.loadAdmobBannerAd(this, rl_ad);
+        }
        /* String banner1 = preferenceClass.getDataType("URL_BGActivityGame");
         String banner2 = preferenceClass.getDataType("URL_BGActivityBanner1");
         String banner3 = preferenceClass.getDataType("URL_BGActivityBanner2");
@@ -125,19 +130,35 @@ public class TART_SampleActivity extends AppCompatActivity {
             }
         });
         this.recyclerNature = (RecyclerView) findViewById(R.id.recyclerNature);
+        this.recyclerNature.setItemViewCacheSize(0);
         setRecyclerNature();
         this.recyclerLove = (RecyclerView) findViewById(R.id.recyclerLove);
+        this.recyclerLove.setItemViewCacheSize(0);
         setRecyclerLove();
         this.recyclerLifeStyle = (RecyclerView) findViewById(R.id.recyclerLifeStyle);
+        this.recyclerLifeStyle.setItemViewCacheSize(0);
         setRecyclerLifeStyle();
         this.recyclerMacro = (RecyclerView) findViewById(R.id.recyclerMacro);
+        this.recyclerMacro.setItemViewCacheSize(0);
         setRecyclerMacro();
         this.recyclerLight = (RecyclerView) findViewById(R.id.recyclerLight);
+        this.recyclerLight.setItemViewCacheSize(0);
         setRecyclerLight();
-        this.recyclerColors = (RecyclerView) findViewById(R.id.recyclerColor);
-        setRecyclerColors();
-        RelativeLayout rl_ad = this.findViewById(R.id.rl_ad);
-        if (TART_NetworkUtils.isNetworkAvailable(this)) {
+
+        SwipeRefreshLayout swipeRefresh = findViewById(R.id.swipeRefresh);
+        if (swipeRefresh != null) {
+            swipeRefresh.setColorSchemeResources(R.color.brand_orange, R.color.brand_orange_dark);
+            swipeRefresh.setOnRefreshListener(() -> {
+                setRecyclerNature();
+                setRecyclerLove();
+                setRecyclerLifeStyle();
+                setRecyclerMacro();
+                setRecyclerLight();
+                swipeRefresh.setRefreshing(false);
+            });
+        }
+
+        if (rl_ad != null && TART_NetworkUtils.isNetworkAvailable(this)) {
             TART_LoadAds.loadAdmobBannerAd(this, rl_ad);
         }
 
@@ -207,17 +228,7 @@ public class TART_SampleActivity extends AppCompatActivity {
         }));
     }
 
-    private void setRecyclerColors() {
-        this.recyclerColors.setHasFixedSize(true);
-        this.recyclerColors.setLayoutManager(new LinearLayoutManager(this, 0, false));
-        this.recyclerColors.setAdapter(new TART_BackgroundColorAdapter(TART_GenDataBackGround.colorList(), this, new TART_ItemClickListener() { // from class: com.addtext.textonphoto.textart.screens.-$$Lambda$SampleActivity$g3bqQKavw6MiMQqD71f4IChM72M
-            @Override
-            public final void onItemClick(View view, int i) {
-                MyApplication.showInterstitialAd(TART_SampleActivity.this, () -> sendData(TART_GenDataBackGround.colorList().get(i)));
-//                sendData(TART_GenDataBackGround.colorList().get(i));
-            }
-        }));
-    }
+
 
 
     public void sendData(TART_Sample sample) {

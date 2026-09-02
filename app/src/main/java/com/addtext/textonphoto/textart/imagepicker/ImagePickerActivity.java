@@ -75,7 +75,7 @@ public class ImagePickerActivity extends AppCompatActivity implements OnClickLis
     AlertDialog sortDialog;
     TextView txtTotalImage;
     private Handler mHandler;
-    private ProgressDialog pd;
+    private com.addtext.textonphoto.textart.TART_utils.TART_LoadingDialog pd;
     private int position = 0;
 
     ProgressBar progress;
@@ -155,9 +155,7 @@ public class ImagePickerActivity extends AppCompatActivity implements OnClickLis
         this.gridViewAlbum = (GridView) findViewById(R.id.gridViewAlbum);
 
 
-        pd = new ProgressDialog(ImagePickerActivity.this);
-        pd.setIndeterminate(true);
-        pd.setMessage("Loading...");
+        pd = new com.addtext.textonphoto.textart.TART_utils.TART_LoadingDialog(ImagePickerActivity.this);
 
         mHandler = new Handler() {
             @Override

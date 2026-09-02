@@ -128,6 +128,7 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
     public ImageView compareFilter;
     public ImageView compareOverlay;
     public TART_ToolType currentMode = TART_ToolType.NONE;
+    public boolean isImageSaved = false;
     private ImageView erase;
     private SeekBar eraseSize;
     public SeekBar filterIntensity;
@@ -564,8 +565,19 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
             if (this.btn_watermark_remove != null) {
                 this.btn_watermark_remove.setVisibility(View.GONE);
             }
-            new SaveBitmapAsFile().execute();
+            new SaveBitmapAsFile(false).execute();
         });
+
+        TextView exportBitmap = findViewById(R.id.export);
+        if (exportBitmap != null) {
+            exportBitmap.setOnClickListener(view -> {
+                if (this.btn_watermark_remove != null) {
+                    this.btn_watermark_remove.setVisibility(View.GONE);
+                }
+                new SaveBitmapAsFile(true).execute();
+            });
+        }
+
         this.compareAdjust = findViewById(R.id.compareAdjust);
         this.compareAdjust.setOnTouchListener(this.onCompareTouchListener);
         this.compareAdjust.setVisibility(View.GONE);
@@ -856,101 +868,95 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
     }
 
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.imgCloseAdjust:
-            case R.id.imgCloseBrush:
-            case R.id.imgCloseFilter:
-            case R.id.imgCloseOverlay:
-            case R.id.imgCloseSticker:
-            case R.id.imgCloseText:
-                slideDownSaveView();
-                onBackPressed();
-                return;
-            case R.id.imgSaveAdjust:
-                new SaveFilterAsBitmap().execute();
-                this.compareAdjust.setVisibility(View.GONE);
-                slideDown(this.adjustLayout);
-                slideUp(this.mRvTools);
-                slideDownSaveView();
-                this.currentMode = TART_ToolType.NONE;
-                return;
-            case R.id.imgSaveBrush:
-                showLoading(true);
-                runOnUiThread(() -> {
-                    mPhotoEditor.setBrushDrawingMode(false);
-                    undo.setVisibility(View.GONE);
-                    redo.setVisibility(View.GONE);
-                    erase.setVisibility(View.GONE);
-                    slideDown(brushLayout);
-                    slideUp(mRvTools);
-                    ConstraintSet constraintSet = new ConstraintSet();
-                    constraintSet.clone(mRootView);
-                    if (!TART_SharePreferenceUtil.isPurchased(getApplicationContext())) {
-                        constraintSet.connect(wrapPhotoView.getId(), 3, mRootView.getId(), 3, TART_SystemUtil.dpToPx(getApplicationContext(), 50));
-                    } else {
-                        constraintSet.connect(wrapPhotoView.getId(), 3, mRootView.getId(), 3, 0);
-                    }
-                    constraintSet.connect(wrapPhotoView.getId(), 1, mRootView.getId(), 1, 0);
-                    constraintSet.connect(wrapPhotoView.getId(), 4, mRvTools.getId(), 3, 0);
-                    constraintSet.connect(wrapPhotoView.getId(), 2, mRootView.getId(), 2, 0);
-                    constraintSet.applyTo(mRootView);
-                    mPhotoEditorView.setImageSource(mPhotoEditor.getBrushDrawingView().getDrawBitmap(mPhotoEditorView.getCurrentBitmap()));
-                    mPhotoEditor.clearBrushAllViews();
-                    showLoading(false);
-                    updateLayout();
-                });
-                slideDownSaveView();
-                this.currentMode = TART_ToolType.NONE;
-                return;
-            case R.id.imgSaveFilter:
-                new SaveFilterAsBitmap().execute();
-                this.compareFilter.setVisibility(View.GONE);
-                slideDown(this.filterLayout);
-                slideUp(this.mRvTools);
-                slideDownSaveView();
-                this.currentMode = TART_ToolType.NONE;
-                return;
-            case R.id.imgSaveOverlay:
-                new SaveFilterAsBitmap().execute();
-                slideDown(this.overlayLayout);
-                slideUp(this.mRvTools);
-                this.compareOverlay.setVisibility(View.GONE);
-                slideDownSaveView();
-                this.currentMode = TART_ToolType.NONE;
-                return;
-            case R.id.imgSaveSticker:
-                this.mPhotoEditorView.setHandlingSticker(null);
-                this.mPhotoEditorView.setLocked(true);
-                this.stickerAlpha.setVisibility(View.GONE);
-                this.addNewSticker.setVisibility(View.GONE);
-                if (!this.mPhotoEditorView.getStickers().isEmpty()) {
-                    new SaveStickerAsBitmap().execute();
+        int id = view.getId();
+        if (id == R.id.imgCloseAdjust || id == R.id.imgCloseBrush || id == R.id.imgCloseFilter || id == R.id.imgCloseOverlay || id == R.id.imgCloseSticker || id == R.id.imgCloseText) {
+            slideDownSaveView();
+            onBackPressed();
+            return;
+        } else if (id == R.id.imgSaveAdjust) {
+            new SaveFilterAsBitmap().execute();
+            this.compareAdjust.setVisibility(View.GONE);
+            slideDown(this.adjustLayout);
+            slideUp(this.mRvTools);
+            slideDownSaveView();
+            this.currentMode = TART_ToolType.NONE;
+            return;
+        } else if (id == R.id.imgSaveBrush) {
+            showLoading(true);
+            runOnUiThread(() -> {
+                mPhotoEditor.setBrushDrawingMode(false);
+                undo.setVisibility(View.GONE);
+                redo.setVisibility(View.GONE);
+                erase.setVisibility(View.GONE);
+                slideDown(brushLayout);
+                slideUp(mRvTools);
+                ConstraintSet constraintSet = new ConstraintSet();
+                constraintSet.clone(mRootView);
+                if (!TART_SharePreferenceUtil.isPurchased(getApplicationContext())) {
+                    constraintSet.connect(wrapPhotoView.getId(), 3, mRootView.getId(), 3, TART_SystemUtil.dpToPx(getApplicationContext(), 50));
+                } else {
+                    constraintSet.connect(wrapPhotoView.getId(), 3, mRootView.getId(), 3, 0);
                 }
-                slideUp(this.wrapStickerList);
-                slideDown(this.stickerLayout);
-                slideUp(this.mRvTools);
-                slideDownSaveView();
-                this.currentMode = TART_ToolType.NONE;
-                return;
-            case R.id.imgSaveText:
-                this.mPhotoEditorView.setHandlingSticker(null);
-                this.mPhotoEditorView.setLocked(true);
-                this.addNewText.setVisibility(View.GONE);
-                if (!this.mPhotoEditorView.getStickers().isEmpty()) {
-                    new SaveStickerAsBitmap().execute();
-                }
-                slideDown(this.textLayout);
-                slideUp(this.mRvTools);
-                slideDownSaveView();
-                this.currentMode = TART_ToolType.NONE;
-                return;
-            case R.id.redo:
-                this.mPhotoEditor.redoBrush();
-                return;
-            case R.id.undo:
-                this.mPhotoEditor.undoBrush();
-                return;
-            default:
+                constraintSet.connect(wrapPhotoView.getId(), 1, mRootView.getId(), 1, 0);
+                constraintSet.connect(wrapPhotoView.getId(), 4, R.id.floatingBottomDock, 3, 0);
+                constraintSet.connect(wrapPhotoView.getId(), 2, mRootView.getId(), 2, 0);
+                constraintSet.applyTo(mRootView);
+                mPhotoEditorView.setImageSource(mPhotoEditor.getBrushDrawingView().getDrawBitmap(mPhotoEditorView.getCurrentBitmap()));
+                mPhotoEditor.clearBrushAllViews();
+                showLoading(false);
+                updateLayout();
+            });
+            slideDownSaveView();
+            this.currentMode = TART_ToolType.NONE;
+            return;
+        } else if (id == R.id.imgSaveFilter) {
+            new SaveFilterAsBitmap().execute();
+            this.compareFilter.setVisibility(View.GONE);
+            slideDown(this.filterLayout);
+            slideUp(this.mRvTools);
+            slideDownSaveView();
+            this.currentMode = TART_ToolType.NONE;
+            return;
+        } else if (id == R.id.imgSaveOverlay) {
+            new SaveFilterAsBitmap().execute();
+            slideDown(this.overlayLayout);
+            slideUp(this.mRvTools);
+            this.compareOverlay.setVisibility(View.GONE);
+            slideDownSaveView();
+            this.currentMode = TART_ToolType.NONE;
+            return;
+        } else if (id == R.id.imgSaveSticker) {
+            this.mPhotoEditorView.setHandlingSticker(null);
+            this.mPhotoEditorView.setLocked(true);
+            this.stickerAlpha.setVisibility(View.GONE);
+            this.addNewSticker.setVisibility(View.GONE);
+            if (!this.mPhotoEditorView.getStickers().isEmpty()) {
+                new SaveStickerAsBitmap().execute();
+            }
+            slideUp(this.wrapStickerList);
+            slideDown(this.stickerLayout);
+            slideUp(this.mRvTools);
+            slideDownSaveView();
+            this.currentMode = TART_ToolType.NONE;
+            return;
+        } else if (id == R.id.imgSaveText) {
+            this.mPhotoEditorView.setHandlingSticker(null);
+            this.mPhotoEditorView.setLocked(true);
+            this.addNewText.setVisibility(View.GONE);
+            if (!this.mPhotoEditorView.getStickers().isEmpty()) {
+                new SaveStickerAsBitmap().execute();
+            }
+            slideDown(this.textLayout);
+            slideUp(this.mRvTools);
+            slideDownSaveView();
+            this.currentMode = TART_ToolType.NONE;
+            return;
+        } else if (id == R.id.redo) {
+            this.mPhotoEditor.redoBrush();
+            return;
+        } else if (id == R.id.undo) {
+            this.mPhotoEditor.undoBrush();
+            return;
         }
     }
 
@@ -982,23 +988,28 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
 
 
     public void openTextFragment() {
-        this.textEditorDialogFragment = TART_TextEditorDialogFragment.show(this);
-        this.textEditor = new TART_TextEditorDialogFragment.TextEditor() {
-            public void onDone(TART_AddTextProperties addTextProperties) {
-                TART_EditImageActivity.this.mPhotoEditorView.addSticker(new TART_TextSticker(TART_EditImageActivity.this.getApplicationContext(), addTextProperties));
-            }
-
-            public void onBackButton() {
-                if (TART_EditImageActivity.this.mPhotoEditorView.getStickers().isEmpty()) {
-                    TART_EditImageActivity.this.onBackPressed();
+        Log.d("TEXT_DEBUG", "[TART_EditImageActivity] openTextFragment called, showing TART_TextEditorDialogFragment...");
+        try {
+            this.textEditorDialogFragment = TART_TextEditorDialogFragment.show(this);
+            this.textEditor = new TART_TextEditorDialogFragment.TextEditor() {
+                public void onDone(TART_AddTextProperties addTextProperties) {
+                    Log.d("TEXT_DEBUG", "[TART_EditImageActivity] onDone called with text: " + (addTextProperties != null ? addTextProperties.getText() : "null"));
+                    TART_EditImageActivity.this.mPhotoEditorView.addSticker(new TART_TextSticker(TART_EditImageActivity.this.getApplicationContext(), addTextProperties));
                 }
-            }
-        };
-        this.textEditorDialogFragment.setOnTextEditorListener(this.textEditor);
+
+                public void onBackButton() {
+                    Log.d("TEXT_DEBUG", "[TART_EditImageActivity] onBackButton called from text editor");
+                }
+            };
+            this.textEditorDialogFragment.setOnTextEditorListener(this.textEditor);
+        } catch (Throwable t) {
+            Log.e("TEXT_DEBUG", "[TART_EditImageActivity] Exception opening text fragment: ", t);
+        }
     }
 
     public void onToolSelected(TART_ToolType toolType) {
         this.currentMode = toolType;
+        this.isImageSaved = false;
         switch (toolType) {
             case BRUSH:
                 showColorBrush();
@@ -1025,10 +1036,10 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
                 slideUpSaveView();
                 this.mPhotoEditor.setBrushDrawingMode(false);
                 this.mPhotoEditorView.setLocked(false);
-                openTextFragment();
                 slideDown(this.mRvTools);
                 slideUp(this.textLayout);
                 this.addNewText.setVisibility(View.VISIBLE);
+                openTextFragment();
                 break;
             case ADJUST:
                 slideUpSaveView();
@@ -1080,6 +1091,9 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
     }
 
     public void slideUp(View view) {
+        if (view != null && view.getId() == R.id.rvConstraintTools) {
+            view = findViewById(R.id.floatingBottomDock);
+        }
         ObjectAnimator.ofFloat(view, "translationY", (float) view.getHeight(), 0.0f).start();
     }
 
@@ -1100,6 +1114,9 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
     }
 
     public void slideDown(View view) {
+        if (view != null && view.getId() == R.id.rvConstraintTools) {
+            view = findViewById(R.id.floatingBottomDock);
+        }
         ObjectAnimator.ofFloat(view, "translationY", 0.0f, (float) view.getHeight()).start();
     }
 
@@ -1123,7 +1140,7 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
                             constraintSet.connect(this.wrapPhotoView.getId(), 3, this.mRootView.getId(), 3, 0);
                         }
                         constraintSet.connect(this.wrapPhotoView.getId(), 1, this.mRootView.getId(), 1, 0);
-                        constraintSet.connect(this.wrapPhotoView.getId(), 4, this.mRvTools.getId(), 3, 0);
+                        constraintSet.connect(this.wrapPhotoView.getId(), 4, R.id.floatingBottomDock, 3, 0);
                         constraintSet.connect(this.wrapPhotoView.getId(), 2, this.mRootView.getId(), 2, 0);
                         constraintSet.applyTo(this.mRootView);
                         this.mPhotoEditor.clearBrushAllViews();
@@ -1205,7 +1222,11 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
                         showDiscardDialog();
                         return;
                     case NONE:
-                        showDiscardDialog();
+                        if (this.isImageSaved) {
+                            super.onBackPressed();
+                        } else {
+                            showDiscardDialog();
+                        }
                         return;
                     default:
                         super.onBackPressed();
@@ -1582,16 +1603,15 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
     }
 
     class SaveBitmapAsFile extends AsyncTask<Void, String, String> {
+        private boolean isExporting;
 
-
-        SaveBitmapAsFile() {
+        SaveBitmapAsFile(boolean isExporting) {
+            this.isExporting = isExporting;
         }
-
 
         public void onPreExecute() {
             TART_EditImageActivity.this.showLoading(true);
         }
-
 
         public String doInBackground(Void... voidArr) {
             @SuppressLint("WrongThread") File saveBitmapAsFile = TART_FileUtils.saveBitmapAsFile(TART_EditImageActivity.this, TART_EditImageActivity.this.mPhotoEditorView.getSaveImg());
@@ -1622,12 +1642,12 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
                 Toast.makeText(TART_EditImageActivity.this.getApplicationContext(), "Oop! Something went wrong", Toast.LENGTH_LONG).show();
                 return;
             }
-            MyApplication.showInterstitialAd(TART_EditImageActivity.this, () -> startIntent(str));
-
-
-//            Intent intent = new Intent(EditImageActivity.this, SaveAndShareActivity.class);
-//            intent.putExtra("path", str);
-//            EditImageActivity.this.startActivity(intent);
+            TART_EditImageActivity.this.isImageSaved = true;
+            if (this.isExporting) {
+                MyApplication.showInterstitialAd(TART_EditImageActivity.this, () -> startIntent(str));
+            } else {
+                Toast.makeText(TART_EditImageActivity.this.getApplicationContext(), "Project Saved successfully!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

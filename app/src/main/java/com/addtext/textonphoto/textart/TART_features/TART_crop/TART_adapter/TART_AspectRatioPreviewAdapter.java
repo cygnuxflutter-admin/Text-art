@@ -41,9 +41,20 @@ public class TART_AspectRatioPreviewAdapter extends RecyclerView.Adapter<TART_As
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         TART_AspectRatioCustom aspectRatioCustom = this.ratios.get(i);
         if (i == this.lastSelectedView) {
-            viewHolder.ratioView.setImageResource(aspectRatioCustom.getSelectedIem());
-        } else {
+            // સિલેક્ટ થાય ત્યારે ઓરેન્જ બેકગ્રાઉન્ડ અને સફેદ આઇકન
             viewHolder.ratioView.setImageResource(aspectRatioCustom.getUnselectItem());
+            viewHolder.ratioView.setBackgroundResource(R.drawable.bg_btn_orange_pill);
+            viewHolder.ratioView.setColorFilter(android.graphics.Color.WHITE, android.graphics.PorterDuff.Mode.SRC_IN);
+            
+            // પેડિંગ સેટ કરો જેથી આઇકન વ્યવસ્થિત દેખાય
+            int padding = viewHolder.ratioView.getContext().getResources().getDimensionPixelSize(com.intuit.sdp.R.dimen._8sdp);
+            viewHolder.ratioView.setPadding(padding, padding, padding, padding);
+        } else {
+            // સિલેક્ટ ન હોય ત્યારે નોર્મલ દેખાવ
+            viewHolder.ratioView.setImageResource(aspectRatioCustom.getUnselectItem());
+            viewHolder.ratioView.setBackgroundResource(0); // બેકગ્રાઉન્ડ કાઢી નાખો
+            viewHolder.ratioView.clearColorFilter();
+            viewHolder.ratioView.setPadding(0, 0, 0, 0);
         }
     }
 

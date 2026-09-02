@@ -38,9 +38,7 @@ public class TART_PreferenceClass {
     }
 
     public String getAdsId(String type) {
-        if (prefs != null) {
-            return prefs.getString(type, "");
-        }
+        // Temporarily disabled for screenshots
         return "";
     }
   public String getBanner(String type) {

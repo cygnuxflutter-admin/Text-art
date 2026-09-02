@@ -91,30 +91,32 @@ public class TART_ShareActivity extends AppCompatActivity implements View.OnClic
         addControls();
 
         this.uri = getIntent().getData();
-        Log.d("Uri11", "" + this.uri);
+        String imagePath = getIntent().getStringExtra("path");
+
+        Log.d("Uri11", "uri: " + this.uri + " path: " + imagePath);
+        
         if (this.uri != null) {
-
-            imageView.setImageURI(uri);
-
-//            Snackbar.make(this.relativeLayout, "Image saved to gallery!", 0).setAction("OPEN", new View.OnClickListener() { // from class: quotes.photo.textonphoto.screens.-$$Lambda$ShareActivity$k2-S03lmIIJ0cxpt0YiA5zfFLzU
-//                @Override // android.view.View.OnClickListener
-//                public final void onClick(View view) {
-//                    openImage();
-//                }
-//            }).show();
+            imageView.setImageURI(this.uri);
+        } else if (imagePath != null) {
+            this.uri = Uri.fromFile(new File(imagePath));
+            Glide.with(this).load(new File(imagePath)).into(imageView);
         }
+
 //        findViewById(R.id.img_final_card).setOnClickListener(new View.OnClickListener() { // from class: quotes.photo.textonphoto.screens.-$$Lambda$ShareActivity$nh81uAJ90lOf3cnSZiLMBv5kyN4
 //            @Override // android.view.View.OnClickListener
 //            public final void onClick(View view) {
 //                openImage();
 //            }
 //        });
-        rate_buttonNext();
 
     }
 
 
     private void rate_buttonNext() {
+        rateSubmit = preferenceClass.getRateSubmited("rateSubmitted");
+        if (rateSubmit) {
+            return;
+        }
         // startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         /*  Drawable icon = getResources().getDrawable(R.drawable.dialog_icon);*/
         RateButtonDialog ratingDialog = new RateButtonDialog(TART_ShareActivity.this, "Rate the App", "Please rate the app and provide your feedback.", new RateButtonDialog.onRatingDialogListener() {
@@ -127,11 +129,7 @@ public class TART_ShareActivity extends AppCompatActivity implements View.OnClic
             }
         }, uri);
 
-        if (!rateSubmit) {
-            ratingDialog.Show();
-        } else {
-            Toast.makeText(this, "rating submitted allready", Toast.LENGTH_SHORT).show();
-        }
+        ratingDialog.Show();
     }
 
     private boolean isFirstTime() {
@@ -164,37 +162,43 @@ public class TART_ShareActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         if (view != null) {
-            switch (view.getId()) {
-                case R.id.btnBackShare:
-                    super.onBackPressed();
+            int id = view.getId();
+            if (id == R.id.btnBackShare) {
+                super.onBackPressed();
+                return;
+            } else if (id == R.id.btn_new) {
+                MyApplication.showInterstitialAd(TART_ShareActivity.this, () -> goToHome());
+                return;
+            } else if (id == R.id.ltShare) {
+                Uri createCacheFile = uri;
+                if (createCacheFile != null) {
+                    Uri contentUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".fileprovider", new File(createCacheFile.getPath()));
+                    Intent intent2 = new Intent();
+                    intent2.setAction(Intent.ACTION_SEND);
+                    intent2.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intent2.setDataAndType(contentUri, getContentResolver().getType(contentUri));
+                    intent2.putExtra(Intent.EXTRA_STREAM, contentUri);
+                    startActivity(Intent.createChooser(intent2, "Choose an app"));
+                    rate_buttonNext();
                     return;
-                case R.id.btn_new:
-                    MyApplication.showInterstitialAd(TART_ShareActivity.this, () -> goToHome());
-
-                    //   this.mTextApplication.showInterstitialBase(this);
-                    return;
-                case R.id.ltShare:
-                    Uri createCacheFile = uri;
-                    if (createCacheFile != null) {
-                        Uri contentUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".fileprovider", new File(createCacheFile.getPath()));
-                        Intent intent2 = new Intent();
-                        intent2.setAction(Intent.ACTION_SEND);
-                        intent2.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        intent2.setDataAndType(contentUri, getContentResolver().getType(contentUri));
-                        intent2.putExtra(Intent.EXTRA_STREAM, contentUri);
-                        startActivity(Intent.createChooser(intent2, "Choose an app"));
-                        return;
-                    }
-                    Toast.makeText(this, "Fail to share", Toast.LENGTH_SHORT).show();
-                    return;
-                case R.id.ltWall:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        MyApplication.showInterstitialAd(TART_ShareActivity.this, () -> setAsWallpaper());
-                    }
-
-                    return;
-                default:
-                    return;
+                }
+                Toast.makeText(this, "Fail to share", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (id == R.id.ltWall) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    new androidx.appcompat.app.AlertDialog.Builder(this)
+                            .setTitle("Set Wallpaper")
+                            .setMessage("Are you sure you want to set this image as your device wallpaper?")
+                            .setPositiveButton("OK", (dialog, which) -> {
+                                MyApplication.showInterstitialAd(TART_ShareActivity.this, () -> {
+                                    setAsWallpaper();
+                                    rate_buttonNext();
+                                });
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show();
+                }
+                return;
             }
         }
     }
