@@ -23,6 +23,11 @@ public class TART_LoadAds {
     public static void loadAdmobBannerAd(Activity activity, RelativeLayout mainLayout) {
         if (mainLayout == null || activity == null) return;
         mainLayout.removeAllViews();
+        View loadingView = android.view.LayoutInflater.from(activity).inflate(com.addtext.textonphoto.textart.R.layout.knack_banner_ad_layout_loading, mainLayout, false);
+        com.facebook.shimmer.ShimmerFrameLayout shimmer = loadingView.findViewById(com.addtext.textonphoto.textart.R.id.shimmerLayout);
+        if (shimmer != null) shimmer.startShimmer();
+        mainLayout.addView(loadingView);
+        mainLayout.setVisibility(View.VISIBLE);
 
         String bannerAdunitID = new TART_PreferenceClass(activity).getAdsId("GoogleBannerAd");
         android.util.Log.e("ADMOB_DEBUG_LOG", "=== BANNER REQUEST in " + activity.getClass().getSimpleName() + " with ID: [" + bannerAdunitID + "] ===");

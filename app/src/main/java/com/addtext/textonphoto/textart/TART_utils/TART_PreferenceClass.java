@@ -38,7 +38,19 @@ public class TART_PreferenceClass {
     }
 
     public String getAdsId(String type) {
-        // Temporarily disabled for screenshots
+        if (com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
+            switch (type) {
+                case "GoogleAppopenAd": return "ca-app-pub-3940256099942544/3419835294";
+                case "GoogleBannerAd": return "ca-app-pub-3940256099942544/6300978111";
+                case "GoogleInterstitialAd": return "ca-app-pub-3940256099942544/1033173712";
+                case "GoogleInterstialRewardAd": return "ca-app-pub-3940256099942544/5354046379";
+                case "GoogleRewardedAd": return "ca-app-pub-3940256099942544/5224354917";
+                case "GoogleNativeAd": return "ca-app-pub-3940256099942544/2247696110";
+            }
+        }
+        if (prefs != null) {
+            return prefs.getString(type, "");
+        }
         return "";
     }
   public String getBanner(String type) {
