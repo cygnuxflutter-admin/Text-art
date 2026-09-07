@@ -7,8 +7,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.addtext.textonphoto.textart.TART_utils.TART_PreferenceClass;
-import com.facebook.ads.Ad;
-import com.facebook.ads.InterstitialAdListener;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
@@ -18,11 +16,10 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 public class TART_InterstitialAdManager {
 
-    private final String admobInterstitialAdId, fbInterstitialAdId;
+    private final String admobInterstitialAdId;
     private final Context context;
     private final TART_PreferenceClass preferenceClass;
     private InterstitialAd admobInterstitialAd;
-    private com.facebook.ads.InterstitialAd fbInterstitialAd;
     private OnAdLoadInterface onAdLoadInterface;
     private boolean isFailed = false;
 
@@ -30,57 +27,10 @@ public class TART_InterstitialAdManager {
         this.context = context;
         preferenceClass = new TART_PreferenceClass(this.context);
         admobInterstitialAdId = preferenceClass.getAdsId("GoogleInterstitialAd");
-        fbInterstitialAdId = preferenceClass.getAdsId("FbInterstitialAd");
         Log.e("TAG", "TART_InterstitialAdManager@: "+admobInterstitialAdId );
-        Log.e("TAG", "TART_InterstitialAdManager@: "+fbInterstitialAdId );
-        Log.e("TAG", "TART_InterstitialAdManager@@: "+preferenceClass.getDataType("GoogleInterstitialAd"));
-        Log.e("TAG", "TART_InterstitialAdManager@@: "+preferenceClass.getDataType("FbInterstitialAd"));
         if (!com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
             fetchAdMobAd();
         }
-     //   fetchFbAd();
-    }
-
-    private void fetchFbAd() {
-
-        fbInterstitialAd = new com.facebook.ads.InterstitialAd(context, fbInterstitialAdId);
-
-        InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
-            @Override
-            public void onInterstitialDisplayed(Ad ad) {
-
-            }
-
-            @Override
-            public void onInterstitialDismissed(Ad ad) {
-                fetchAdMobAd();
-                fetchFbAd();
-                if (onAdLoadInterface != null) {
-                    onAdLoadInterface.onAdClose();
-                }
-            }
-
-            @Override
-            public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                isFailed = true;
-            }
-
-            @Override
-            public void onAdLoaded(Ad ad) {
-            }
-
-            @Override
-            public void onAdClicked(Ad ad) {
-            }
-
-            @Override
-            public void onLoggingImpression(Ad ad) {
-
-            }
-        };
-
-        fbInterstitialAd.loadAd(fbInterstitialAd.buildLoadAdConfig().withAdListener(interstitialAdListener).build());
-
     }
 
     public void fetchAdMobAd() {
@@ -97,8 +47,7 @@ public class TART_InterstitialAdManager {
 
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-
-                fetchFbAd();
+                isFailed = true;
             }
         };
         AdRequest request = getAdRequest();
@@ -115,9 +64,7 @@ public class TART_InterstitialAdManager {
         return admobInterstitialAd != null;
     }
 
-    public boolean isFbAdAvailable() {
-        return fbInterstitialAd != null && fbInterstitialAd.isAdLoaded() && !fbInterstitialAd.isAdInvalidated();
-    }
+    
 
         public void showAdIfAvailable(Activity activity, OnAdLoadInterface onAdLoadInterface) {
         this.onAdLoadInterface = onAdLoadInterface;
@@ -127,19 +74,11 @@ public class TART_InterstitialAdManager {
             return;
         }
 
-        if (isFailed) {
-            isFailed = false;
-            fetchAdMobAd();
-            onAdLoadInterface.onAdClose();
-            return;
-        }
-
         int interstitalAdStatus = preferenceClass.getAdsStatus("InerstialClickCount");
-
         int getClickCount = preferenceClass.getInt("getClickCount");
         if (getClickCount < interstitalAdStatus) {
             preferenceClass.setInt("getClickCount", getClickCount + 1);
-            onAdLoadInterface.onAdClose();
+            if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
             return;
         }
 
@@ -152,22 +91,19 @@ public class TART_InterstitialAdManager {
                     super.onAdFailedToShowFullScreenContent(adError);
                     admobInterstitialAd = null;
                     isFailed = true;
-                    onAdLoadInterface.onAdClose();
+                    if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
                 }
-
                 @Override
                 public void onAdShowedFullScreenContent() {
                     super.onAdShowedFullScreenContent();
                 }
-
                 @Override
                 public void onAdDismissedFullScreenContent() {
                     super.onAdDismissedFullScreenContent();
                     admobInterstitialAd = null;
                     fetchAdMobAd();
-                    onAdLoadInterface.onAdClose();
+                    if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
                 }
-
                 @Override
                 public void onAdImpression() {
                     super.onAdImpression();
@@ -175,12 +111,13 @@ public class TART_InterstitialAdManager {
             };
             admobInterstitialAd.setFullScreenContentCallback(fullScreenContentCallback);
             admobInterstitialAd.show(activity);
-        } else if(isFbAdAvailable()) {
-            fbInterstitialAd.show();
         } else {
-            onAdLoadInterface.onAdClose();
+            if (isFailed || admobInterstitialAd == null) {
+                isFailed = false;
+                fetchAdMobAd();
+            }
+            if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
         }
-
     }
 //    public void showAdIfAvailable(Activity activity, OnAdLoadInterface onAdLoadInterface) { // if google sec code implement open this method and comment above method
 //        this.onAdLoadInterface = onAdLoadInterface;
@@ -210,8 +147,8 @@ public class TART_InterstitialAdManager {
 //        long timeDifference = currentTime - lastGoogleAdShownTime;
 //
 //        if (timeDifference < googleAdsTime * 1000) {
-//            if (isFbAdAvailable()) {
-//                fbInterstitialAd.show();
+
+
 //            } else {
 //                onAdLoadInterface.onAdClose();
 //            }
@@ -248,8 +185,8 @@ public class TART_InterstitialAdManager {
 //                };
 //                admobInterstitialAd.setFullScreenContentCallback(fullScreenContentCallback);
 //                admobInterstitialAd.show(activity);
-//            } else if (isFbAdAvailable()) {
-//                fbInterstitialAd.show();
+
+
 //            } else {
 //                onAdLoadInterface.onAdClose();
 //            }
@@ -261,13 +198,6 @@ public class TART_InterstitialAdManager {
 
         if (com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
             if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
-            return;
-        }
-
-        if (isFailed) {
-            isFailed = false;
-            fetchAdMobAd();
-            onAdLoadInterface.onAdClose();
             return;
         }
         int interstitalAdStatus = preferenceClass.getAdsStatus("InerstialClickCount");
@@ -311,20 +241,12 @@ public class TART_InterstitialAdManager {
             };
             admobInterstitialAd.setFullScreenContentCallback(fullScreenContentCallback);
             admobInterstitialAd.show(activity);
-        } else if (isFbAdAvailable()) {
-            fbInterstitialAd.show();
-        } else {
-            onAdLoadInterface.onAdClose();
-        }
-
-    }
-
-    public void showFaceBookInterstitial(Activity activity, OnAdLoadInterface onAdLoadInterface) {
-        this.onAdLoadInterface = onAdLoadInterface;
-        if (isFbAdAvailable()) {
-            fbInterstitialAd.show();
-        } else {
-            onAdLoadInterface.onAdClose();
+        }  else {
+            if (isFailed || admobInterstitialAd == null) {
+                isFailed = false;
+                fetchAdMobAd();
+            }
+            if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
         }
 
     }
@@ -337,19 +259,12 @@ public class TART_InterstitialAdManager {
             return;
         }
 
-        if (isFailed) {
-            isFailed = false;
-            fetchAdMobAd();
-            onAdLoadInterface.onAdClose();
-            return;
-        }
-
         int interstitalAdStatus = preferenceClass.getAdsStatus("EditScreenAdCount");
 
         int getClickCount = preferenceClass.getInt("getEDitClickCount");
         if (getClickCount < interstitalAdStatus) {
             preferenceClass.setInt("getEDitClickCount", getClickCount + 1);
-            onAdLoadInterface.onAdClose();
+            if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
             return;
         }
 
@@ -362,7 +277,7 @@ public class TART_InterstitialAdManager {
                     super.onAdFailedToShowFullScreenContent(adError);
                     admobInterstitialAd = null;
                     isFailed = true;
-                    onAdLoadInterface.onAdClose();
+                    if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
                 }
 
                 @Override
@@ -375,7 +290,7 @@ public class TART_InterstitialAdManager {
                     super.onAdDismissedFullScreenContent();
                     admobInterstitialAd = null;
                     fetchAdMobAd();
-                    onAdLoadInterface.onAdClose();
+                    if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
                 }
 
                 @Override
@@ -385,10 +300,12 @@ public class TART_InterstitialAdManager {
             };
             admobInterstitialAd.setFullScreenContentCallback(fullScreenContentCallback);
             admobInterstitialAd.show(activity);
-        } else if (isFbAdAvailable()) {
-            fbInterstitialAd.show();
-        } else {
-            onAdLoadInterface.onAdClose();
+        }  else {
+            if (isFailed || admobInterstitialAd == null) {
+                isFailed = false;
+                fetchAdMobAd();
+            }
+            if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
         }
 
     }

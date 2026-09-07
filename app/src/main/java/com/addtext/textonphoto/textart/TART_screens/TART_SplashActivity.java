@@ -246,6 +246,7 @@ public class TART_SplashActivity extends AppCompatActivity {
 
                         preferenceClass.setInt("InerstialClickCount", getIntSafe(snapshot, "InerstialClickCount", 1));
                         preferenceClass.setInt("GoogleAdsTime", getIntSafe(snapshot, "GoogleAdsTime", 10));
+                        preferenceClass.setInt("SaveRewardAdStatus", getIntSafe(snapshot, "SaveRewardAdStatus", 0));
 
                         android.util.Log.e("FIREBASE_ADS_LOG", "==================================================");
                         android.util.Log.e("FIREBASE_ADS_LOG", "=== FIREBASE ADS DATA RECEIVED SUCCESSFULLY ===");
@@ -268,10 +269,12 @@ public class TART_SplashActivity extends AppCompatActivity {
                         String isUpdateStr = getStringSafe(snapshot, "UpdateAvailable");
                         boolean isUpdate = isUpdateStr.equals("1") || isUpdateStr.equalsIgnoreCase("true");
                         String updateVer = getStringSafe(snapshot, "UpdateVersionName");
+                        int forceUpdate = getIntSafe(snapshot, "ForceUpdate", 0);
                         
                         android.util.Log.e("UPDATE_LOG", "UpdateAvailable (String): " + isUpdateStr + " -> Boolean: " + isUpdate);
                         android.util.Log.e("UPDATE_LOG", "Firebase Version: " + updateVer);
                         android.util.Log.e("UPDATE_LOG", "App Version: " + BuildConfig.VERSION_NAME);
+                        android.util.Log.e("UPDATE_LOG", "ForceUpdate: " + forceUpdate);
                         
                         if (isUpdate && updateVer != null && !updateVer.isEmpty() && !updateVer.equals(BuildConfig.VERSION_NAME)) {
                             // Stop the 2.5 second fallback timer so the user has time to click!
@@ -291,8 +294,26 @@ public class TART_SplashActivity extends AppCompatActivity {
                             TextView button2 = materialDialog.findViewById(R.id.button2);
 
                             tv_title.setText("Update is Available");
-                            button1.setText("Cancel");
                             button2.setText("Update Now");
+                            
+                            if (forceUpdate == 1) {
+                                button1.setText("Exit");
+                                button1.setOnClickListener(v -> {
+                                    if (materialDialog.isShowing()) {
+                                        materialDialog.dismiss();
+                                    }
+                                    finish();
+                                });
+                            } else {
+                                button1.setText("Cancel");
+                                button1.setOnClickListener(v -> {
+                                    if (materialDialog.isShowing()) {
+                                        materialDialog.dismiss();
+                                        next();
+                                    }
+                                });
+                            }
+                            
                             button2.setOnClickListener(v -> {
                                 try {
                                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName()));
@@ -312,12 +333,6 @@ public class TART_SplashActivity extends AppCompatActivity {
                                 }
                                 // Finish the app so it doesn't continue loading in the background
                                 finish();
-                            });
-                            button1.setOnClickListener(v -> {
-                                if (materialDialog.isShowing()) {
-                                    materialDialog.dismiss();
-                                    next();
-                                }
                             });
                         } else {
                             next();

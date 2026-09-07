@@ -68,8 +68,16 @@ public class TART_CarouselPicker extends ViewPager {
                 i3 = measuredHeight;
             }
         }
+        
+        if (View.MeasureSpec.getMode(i2) == View.MeasureSpec.EXACTLY) {
+            i3 = View.MeasureSpec.getSize(i2);
+        } else if (i3 == 0) {
+            i3 = View.MeasureSpec.getSize(i2);
+        }
+        
         super.onMeasure(i, View.MeasureSpec.makeMeasureSpec(i3, MeasureSpec.EXACTLY));
-        setPageMargin((-getMeasuredWidth()) + TART_SystemUtil.dpToPx(this.context, this.itemWidth));
+        int width = View.MeasureSpec.getSize(i);
+        setPageMargin((-width) + TART_SystemUtil.dpToPx(this.context, this.itemWidth));
     }
 
     public void setAdapter(PagerAdapter pagerAdapter) {

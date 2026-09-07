@@ -51,31 +51,44 @@ public class TART_NativeAdUtil {
         this.preferenceClass = new TART_PreferenceClass(context);
     }
 
+        private static java.util.WeakHashMap<android.view.ViewGroup, NativeAd> activeNativeAds = new java.util.WeakHashMap<>();
+
     public static void loadNativeAd(android.view.ViewGroup nativeAdContainer, Activity context) {
+        loadNativeAd(nativeAdContainer, context, false);
+    }
+
+    public static void loadNativeAd(android.view.ViewGroup nativeAdContainer, Activity context, boolean collapseOnFail) {
         if (nativeAdContainer == null || context == null) return;
         try {
             TART_PreferenceClass pref = new TART_PreferenceClass(context);
             String adId = pref.getAdsId("GoogleNativeAd");
             String fbAdId = pref.getAdsId("FbNativeAd");
             if ((adId == null || adId.trim().isEmpty()) && (fbAdId == null || fbAdId.trim().isEmpty())) {
-                nativeAdContainer.setVisibility(View.GONE);
+                nativeAdContainer.setVisibility(collapseOnFail ? View.GONE : View.INVISIBLE);
                 return;
             }
+                        if (activeNativeAds.containsKey(nativeAdContainer)) {
+                NativeAd oldAd = activeNativeAds.get(nativeAdContainer);
+                if (oldAd != null) {
+                    oldAd.destroy();
+                }
+                activeNativeAds.remove(nativeAdContainer);
+            }
             nativeAdContainer.removeAllViews();
-            nativeAdContainer.addView(getLoadingView(context));
+            nativeAdContainer.addView(getLoadingView(context, nativeAdContainer));
             nativeAdContainer.setVisibility(View.VISIBLE);
             TART_NativeAdUtil nativeAdUtil = new TART_NativeAdUtil(context);
-            nativeAdUtil.fillAdmobNativeAd(nativeAdContainer);
+            nativeAdUtil.fillAdmobNativeAd(nativeAdContainer, collapseOnFail);
         } catch (Exception e) {
             e.printStackTrace();
             if (nativeAdContainer != null) {
-                nativeAdContainer.setVisibility(View.GONE);
+                nativeAdContainer.setVisibility(collapseOnFail ? View.GONE : View.INVISIBLE);
             }
         }
     }
 
-    private static View getLoadingView(Activity context) {
-        View adView = LayoutInflater.from(context).inflate(R.layout.knack_native_ad_layout_loading, null);
+    private static View getLoadingView(Activity context, android.view.ViewGroup parent) {
+        View adView = LayoutInflater.from(context).inflate(R.layout.knack_native_ad_layout_loading, parent, false);
         ShimmerFrameLayout shimmerLayout = adView.findViewById(R.id.shimmerLayout);
         if (shimmerLayout != null) {
             shimmerLayout.startShimmer();
@@ -84,13 +97,13 @@ public class TART_NativeAdUtil {
         return adView;
     }
 
-    public void fillAdmobNativeAd(final android.view.ViewGroup nativeAdContainer) {
+    public void fillAdmobNativeAd(final android.view.ViewGroup nativeAdContainer, final boolean collapseOnFail) {
         try {
             String adUnitId = preferenceClass != null ? preferenceClass.getAdsId("GoogleNativeAd") : null;
             android.util.Log.e("ADMOB_DEBUG_LOG", "=== NATIVE REQUEST with ID: [" + adUnitId + "] ===");
             if (adUnitId == null || adUnitId.trim().isEmpty()) {
                 android.util.Log.e("ADMOB_DEBUG_LOG", "Native ID is EMPTY in SharedPreferences! Skipping Google Native.");
-                fbNativeAd(nativeAdContainer);
+                if (nativeAdContainer != null) nativeAdContainer.setVisibility(collapseOnFail ? View.GONE : View.INVISIBLE);
                 return;
             }
 
@@ -103,12 +116,13 @@ public class TART_NativeAdUtil {
                         this.nativeAd.destroy();
                     }
                     this.nativeAd = nativeAd;
-                    adView = (NativeAdView) LayoutInflater.from(context).inflate(R.layout.knack_native_ad_layout, null);
+                    adView = (NativeAdView) LayoutInflater.from(context).inflate(R.layout.knack_native_ad_layout, nativeAdContainer, false);
                     populateUnifiedNativeAdView(nativeAd, adView);
                     if (nativeAdContainer != null) {
                         nativeAdContainer.removeAllViews();
                         nativeAdContainer.addView(adView);
                         nativeAdContainer.setBackgroundColor(Color.TRANSPARENT);
+                        nativeAdContainer.setVisibility(View.VISIBLE);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -126,73 +140,14 @@ public class TART_NativeAdUtil {
                     android.util.Log.e("ADMOB_DEBUG_LOG", "Error Message: " + loadAdError.getMessage());
                     android.util.Log.e("ADMOB_DEBUG_LOG", "Error Code: " + loadAdError.getCode() + " (0=Internal, 1=InvalidRequest, 2=Network, 3=NoFill)");
                     android.util.Log.e("ADMOB_DEBUG_LOG", "Error Domain: " + loadAdError.getDomain());
-                    fbNativeAd(nativeAdContainer);
+                    if (nativeAdContainer != null) nativeAdContainer.setVisibility(collapseOnFail ? View.GONE : View.INVISIBLE);
                 }
             }).build();
 
             adLoader.loadAd(new AdRequest.Builder().build());
         } catch (Exception e) {
             e.printStackTrace();
-            fbNativeAd(nativeAdContainer);
-        }
-    }
-
-    private void fbNativeAd(final android.view.ViewGroup nativeAdContainer) {
-        try {
-            String fbAdId = preferenceClass != null ? preferenceClass.getAdsId("FbNativeAd") : null;
-            if (fbAdId == null || fbAdId.trim().isEmpty()) {
-                if (nativeAdContainer != null) {
-                    nativeAdContainer.removeAllViews();
-                    nativeAdContainer.setVisibility(View.GONE);
-                }
-                return;
-            }
-
-            com.facebook.ads.NativeAd nativeAd = new com.facebook.ads.NativeAd(context, fbAdId);
-            NativeAdListener nativeAdListener = new NativeAdListener() {
-                @Override
-                public void onMediaDownloaded(Ad ad) {
-                }
-
-                @Override
-                public void onError(Ad ad, AdError adError) {
-                    if (nativeAdContainer != null) {
-                        nativeAdContainer.setVisibility(View.GONE);
-                    }
-                }
-
-                @Override
-                public void onAdLoaded(Ad ad) {
-                    try {
-                        if (nativeAd != ad) {
-                            return;
-                        }
-                        if (nativeAdContainer != null) {
-                            nativeAdContainer.removeAllViews();
-                            View adView = com.facebook.ads.NativeAdView.render(context, nativeAd);
-                            nativeAdContainer.addView(adView);
-                            nativeAdContainer.setBackgroundColor(Color.parseColor("#151515"));
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onAdClicked(Ad ad) {
-                }
-
-                @Override
-                public void onLoggingImpression(Ad ad) {
-                }
-            };
-
-            nativeAd.loadAd(nativeAd.buildLoadAdConfig().withAdListener(nativeAdListener).build());
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (nativeAdContainer != null) {
-                nativeAdContainer.setVisibility(View.GONE);
-            }
+            if (nativeAdContainer != null) nativeAdContainer.setVisibility(collapseOnFail ? View.GONE : View.INVISIBLE);
         }
     }
 

@@ -42,7 +42,7 @@
         android:id="@id/add_text_toolbar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="200.0dip"
+        android:layout_marginBottom="330.0dip"
         android:background="@color/white"
         android:orientation="horizontal"
         android:weightSum="5.0"
@@ -96,7 +96,7 @@
     <ScrollView
         android:id="@id/change_font_layout"
         android:layout_width="fill_parent"
-        android:layout_height="200.0dip"
+        android:layout_height="330.0dip"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
@@ -163,8 +163,10 @@
     <ScrollView
         android:id="@id/changeColorLayout"
         android:layout_width="fill_parent"
-        android:layout_height="200.0dip"
+        android:layout_height="330.0dip"
         android:background="@color/white"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
@@ -172,6 +174,8 @@
             android:layout_height="fill_parent"
             android:background="@color/white"
             android:orientation="vertical"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:padding="15.0dip">
 
             <TextView
@@ -201,6 +205,8 @@
             <FrameLayout
                 android:id="@id/colorSlider"
                 android:layout_width="fill_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:layout_height="wrap_content">
 
                 <com.addtext.textonphoto.textart.TART_features.TART_CarouselPicker
@@ -235,6 +241,8 @@
             <FrameLayout
                 android:id="@id/frameTextTextureSlider"
                 android:layout_width="fill_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:layout_height="wrap_content">
 
                 <com.addtext.textonphoto.textart.TART_features.TART_CarouselPicker
@@ -301,6 +309,8 @@
             <FrameLayout
                 android:id="@id/carouselBackgroundColor"
                 android:layout_width="fill_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:layout_height="wrap_content">
 
                 <com.addtext.textonphoto.textart.TART_features.TART_CarouselPicker

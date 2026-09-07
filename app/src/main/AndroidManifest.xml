@@ -101,6 +101,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
+            android:name="com.addtext.textonphoto.textart.TART_screens.TART_NoInternetActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".TART_screens.TART_UnsplashActivitiy"
             android:exported="false"
             android:screenOrientation="portrait"

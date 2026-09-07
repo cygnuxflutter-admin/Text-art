@@ -13,8 +13,8 @@ import androidx.appcompat.app.AlertDialog;
 import com.addtext.textonphoto.textart.R;
 
 import com.addtext.textonphoto.textart.TART_screens.TART_SplashActivity;
-import com.facebook.ads.Ad;
-import com.facebook.ads.InterstitialAdListener;
+
+
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
@@ -34,7 +34,7 @@ public class TART_RewardVideoManager {
     public static RewardedInterstitialAd mRewardedAd;
 
     static boolean isUserEarnReward = false;
-    public static com.facebook.ads.InterstitialAd interstitialFB;
+    
 
     public static void showRewardVideoAd(final Activity context, OnRewardAdLoadInterface onAdLoadInterface) {
         isUserEarnReward = false;
@@ -96,46 +96,6 @@ public class TART_RewardVideoManager {
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 super.onAdFailedToLoad(loadAdError);
-//                if (alertDialog != null) {
-//                    if (alertDialog.isShowing()) {
-//                        alertDialog.dismiss();
-//                    }
-//                }
-                fbInterstitial(context, onAdLoadInterface);
-
-//              isUserEarnReward = false;
-//              onAdLoadInterface.onAdClose(isUserEarnReward);
-            }
-        });
-
-    }
-
-    public static void fbInterstitial(Context context, OnRewardAdLoadInterface onAdLoadInterface) {
-        interstitialFB = new com.facebook.ads.InterstitialAd(context, preferenceClass.getAdsId("FbInterstitialAd"));
-        InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
-            @Override
-            public void onInterstitialDisplayed(Ad ad) {
-//                    Log.e("#1", "" + ad.toString());
-                // Interstitial ad displayed callback
-            }
-
-            @Override
-            public void onInterstitialDismissed(Ad ad) {
-//                    Log.e("#2", "" + ad.toString());
-                // Interstitial dismissed callback
-                if (alertDialog != null) {
-                    if (alertDialog.isShowing()) {
-                        alertDialog.dismiss();
-                    }
-                }
-                onAdLoadInterface.onAdClose(true);
-            }
-
-            @Override
-            public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                Log.e("#3", "" + adError.getErrorMessage());
-                Log.e("#3_1", "" + adError.getErrorCode());
-                // Ad error callback
                 if (alertDialog != null) {
                     if (alertDialog.isShowing()) {
                         alertDialog.dismiss();
@@ -143,33 +103,8 @@ public class TART_RewardVideoManager {
                 }
                 onAdLoadInterface.onAdFail();
             }
+        });
 
-            @Override
-            public void onAdLoaded(Ad ad) {
-                // Interstitial ad is loaded and ready to be displayed
-                // Show the ad
-//                    Log.e("#2", "" + ad.toString());
-                if (alertDialog != null) {
-                    if (alertDialog.isShowing()) {
-                        alertDialog.dismiss();
-                    }
-                }
-                interstitialFB.show();
-
-            }
-
-            @Override
-            public void onAdClicked(Ad ad) {
-                // Ad clicked callback
-            }
-
-            @Override
-            public void onLoggingImpression(Ad ad) {
-                // Ad impression logged callback
-            }
-        };
-        com.facebook.ads.InterstitialAd interstitialAd = interstitialFB;
-        interstitialAd.loadAd(interstitialAd.buildLoadAdConfig().withAdListener(interstitialAdListener).build());
     }
 
     public interface OnRewardAdLoadInterface {

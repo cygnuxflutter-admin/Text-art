@@ -158,9 +158,7 @@ public class TART_SampleActivity extends AppCompatActivity {
             });
         }
 
-        if (rl_ad != null && TART_NetworkUtils.isNetworkAvailable(this)) {
-            TART_LoadAds.loadAdmobBannerAd(this, rl_ad);
-        }
+        
 
 
     }

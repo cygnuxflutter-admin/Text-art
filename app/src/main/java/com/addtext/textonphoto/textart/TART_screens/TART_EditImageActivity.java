@@ -539,9 +539,7 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
 
                                             @Override
                                             public void onAdFail() {
-                                                MyApplication.showFaceBookInterstitial(TART_EditImageActivity.this, () -> {
-                                                    if (rl_watermark != null) rl_watermark.setVisibility(View.GONE);
-                                                });
+                                                if (rl_watermark != null) rl_watermark.setVisibility(View.GONE);
                                             }
                                         });
                                         if (materialDialog != null && materialDialog.isShowing())
@@ -561,21 +559,47 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
             }
         });
         }
-        saveBitmap.setOnClickListener(view -> {
+        View.OnClickListener saveClickListener = view -> {
             if (this.btn_watermark_remove != null) {
                 this.btn_watermark_remove.setVisibility(View.GONE);
             }
-            new SaveBitmapAsFile(false).execute();
-        });
+            TART_PreferenceClass pref = new TART_PreferenceClass(TART_EditImageActivity.this);
+            int saveRewardStatus = pref.getInt("SaveRewardAdStatus", 0);
+            boolean isExport = view.getId() == R.id.export;
+            
+            if (saveRewardStatus == 1) {
+                TART_MaterialDialogUtils.getInstance().rewardDialog(TART_EditImageActivity.this,
+                        "Save Photo", "Watch a short video to save your photo.", materialDialog -> {
+                            TART_RewardVideoManager.showRewardVideoAd(TART_EditImageActivity.this, new TART_RewardVideoManager.OnRewardAdLoadInterface() {
+                                @Override
+                                public void onAdClose(boolean isWithReward) {
+                                    if (isWithReward) {
+                                        new SaveBitmapAsFile(isExport).execute();
+                                    } else {
+                                        Toast.makeText(TART_EditImageActivity.this, "Please watch the full ad to save your photo.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                @Override
+                                public void onAdFail() {
+                                    new SaveBitmapAsFile(isExport).execute();
+                                }
+                            });
+                            if (materialDialog != null && materialDialog.isShowing())
+                                materialDialog.dismiss();
+                        }, materialDialog -> {
+                            if (materialDialog != null && materialDialog.isShowing())
+                                materialDialog.dismiss();
+                        });
+            } else {
+                new SaveBitmapAsFile(isExport).execute();
+            }
+        };
+
+        saveBitmap.setOnClickListener(saveClickListener);
 
         TextView exportBitmap = findViewById(R.id.export);
         if (exportBitmap != null) {
-            exportBitmap.setOnClickListener(view -> {
-                if (this.btn_watermark_remove != null) {
-                    this.btn_watermark_remove.setVisibility(View.GONE);
-                }
-                new SaveBitmapAsFile(true).execute();
-            });
+            exportBitmap.setOnClickListener(saveClickListener);
         }
 
         this.compareAdjust = findViewById(R.id.compareAdjust);

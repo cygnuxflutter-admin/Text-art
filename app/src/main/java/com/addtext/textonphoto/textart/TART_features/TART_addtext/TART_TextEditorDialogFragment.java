@@ -552,9 +552,14 @@ public class TART_TextEditorDialogFragment extends DialogFragment implements Vie
 
     }
 
-    public void updateAddTextBottomToolbarHeight(final int i) {
+    public void updateAddTextBottomToolbarHeight(final int rawHeight) {
         new Handler().post(new Runnable() {
             public void run() {
+                int minHeight = 0;
+                if (TART_TextEditorDialogFragment.this.getContext() != null) {
+                    minHeight = com.addtext.textonphoto.textart.TART_utils.TART_SystemUtil.dpToPx(TART_TextEditorDialogFragment.this.getContext(), 330);
+                }
+                int i = Math.max(rawHeight, minHeight);
                 ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) TART_TextEditorDialogFragment.this.addTextBottomToolbar.getLayoutParams();
                 layoutParams.bottomMargin = i;
                 TART_TextEditorDialogFragment.this.addTextBottomToolbar.setLayoutParams(layoutParams);
@@ -638,8 +643,10 @@ public class TART_TextEditorDialogFragment extends DialogFragment implements Vie
                     this.highlightTextTexture.setVisibility(View.VISIBLE);
                     this.colorArrow.setVisibility(View.INVISIBLE);
                     this.highlightColor.setVisibility(View.GONE);
+                    this.changeColorLayout.scrollTo(0, 0);
                     return;
                 }
+                this.changeColorLayout.scrollTo(0, 0);
                 return;
             case R.id.changeFont:
                 this.mInputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -651,6 +658,7 @@ public class TART_TextEditorDialogFragment extends DialogFragment implements Vie
                 this.textSize.setProgress(this.addTextProperties.getTextSize());
                 this.fontAdapter.setSelectedItem(this.addTextProperties.getFontIndex());
                 this.shadowAdapter.setSelectedItem(this.addTextProperties.getTextShadowIndex());
+                this.changeFontLayout.scrollTo(0, 0);
                 return;
             case R.id.saveChange:
                 if (this.addTextProperties.getText() == null || this.addTextProperties.getText().length() == 0) {

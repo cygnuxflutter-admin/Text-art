@@ -311,7 +311,7 @@ public class TART_MainActivity extends AppCompatActivity implements View.OnClick
 
         androidx.cardview.widget.CardView nativeAdContainer = findViewById(R.id.cvNativeAdContainerHome);
         if (nativeAdContainer != null) {
-            TART_NativeAdUtil.loadNativeAd(nativeAdContainer, this);
+            TART_NativeAdUtil.loadNativeAd(nativeAdContainer, this, true);
         }
     }
 

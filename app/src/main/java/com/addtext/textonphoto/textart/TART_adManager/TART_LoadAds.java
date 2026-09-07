@@ -10,8 +10,8 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 
 import com.addtext.textonphoto.textart.TART_utils.TART_PreferenceClass;
-import com.facebook.ads.Ad;
-import com.facebook.ads.AdError;
+
+
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -20,8 +20,17 @@ import com.google.android.gms.ads.LoadAdError;
 
 public class TART_LoadAds {
 
+        private static java.util.WeakHashMap<RelativeLayout, AdView> activeBannerAds = new java.util.WeakHashMap<>();
+
     public static void loadAdmobBannerAd(Activity activity, RelativeLayout mainLayout) {
         if (mainLayout == null || activity == null) return;
+        if (activeBannerAds.containsKey(mainLayout)) {
+            AdView oldAd = activeBannerAds.get(mainLayout);
+            if (oldAd != null) {
+                oldAd.destroy();
+            }
+            activeBannerAds.remove(mainLayout);
+        }
         mainLayout.removeAllViews();
         View loadingView = android.view.LayoutInflater.from(activity).inflate(com.addtext.textonphoto.textart.R.layout.knack_banner_ad_layout_loading, mainLayout, false);
         com.facebook.shimmer.ShimmerFrameLayout shimmer = loadingView.findViewById(com.addtext.textonphoto.textart.R.id.shimmerLayout);
@@ -33,7 +42,7 @@ public class TART_LoadAds {
         android.util.Log.e("ADMOB_DEBUG_LOG", "=== BANNER REQUEST in " + activity.getClass().getSimpleName() + " with ID: [" + bannerAdunitID + "] ===");
         if (bannerAdunitID == null || bannerAdunitID.trim().isEmpty()) {
             android.util.Log.e("ADMOB_DEBUG_LOG", "Banner ID is EMPTY in SharedPreferences! Skipping Google Banner.");
-            loadFBBannerAd(activity, mainLayout);
+            mainLayout.removeAllViews();
             return;
         }
 
@@ -57,13 +66,14 @@ public class TART_LoadAds {
                     android.util.Log.e("ADMOB_DEBUG_LOG", "Error Message: " + loadAdError.getMessage());
                     android.util.Log.e("ADMOB_DEBUG_LOG", "Error Code: " + loadAdError.getCode() + " (0=Internal, 1=InvalidRequest, 2=Network, 3=NoFill)");
                     android.util.Log.e("ADMOB_DEBUG_LOG", "Error Domain: " + loadAdError.getDomain());
-                    loadFBBannerAd(activity, mainLayout);
+                    mainLayout.removeAllViews();
                 }
 
                 @Override
                 public void onAdLoaded() {
                     super.onAdLoaded();
                     android.util.Log.e("ADMOB_DEBUG_LOG", ">>> BANNER LOADED SUCCESSFULLY in " + activity.getClass().getSimpleName() + "!");
+                    activeBannerAds.put(mainLayout, adView);
                     mainLayout.removeAllViews();
                     mainLayout.setVisibility(View.VISIBLE);
                     mainLayout.addView(adView, bannerParameters);
@@ -74,51 +84,7 @@ public class TART_LoadAds {
             adView.loadAd(adRequest);
         } catch (Exception e) {
             e.printStackTrace();
-            loadFBBannerAd(activity, mainLayout);
-        }
-    }
-
-    private static void loadFBBannerAd(Activity activity, RelativeLayout mainLayout) {
-        if (mainLayout == null || activity == null) return;
-        String fbBannerAdunitID = new TART_PreferenceClass(activity).getAdsId("FbBannerAd");
-        if (fbBannerAdunitID == null || fbBannerAdunitID.trim().isEmpty()) {
             mainLayout.removeAllViews();
-            mainLayout.setVisibility(View.GONE);
-            return;
-        }
-
-        try {
-            com.facebook.ads.AdView fbBannerView = new com.facebook.ads.AdView(activity, fbBannerAdunitID, com.facebook.ads.AdSize.BANNER_HEIGHT_50);
-            mainLayout.setGravity(Gravity.CENTER);
-
-            com.facebook.ads.AdListener adListener = new com.facebook.ads.AdListener() {
-                @Override
-                public void onError(Ad ad, AdError adError) {
-                    mainLayout.removeAllViews();
-                    mainLayout.setVisibility(View.GONE);
-                }
-
-                @Override
-                public void onAdLoaded(Ad ad) {
-                    mainLayout.removeAllViews();
-                    mainLayout.setVisibility(View.VISIBLE);
-                    mainLayout.addView(fbBannerView);
-                }
-
-                @Override
-                public void onAdClicked(Ad ad) {
-                }
-
-                @Override
-                public void onLoggingImpression(Ad ad) {
-                }
-            };
-
-            fbBannerView.loadAd(fbBannerView.buildLoadAdConfig().withAdListener(adListener).build());
-        } catch (Exception e) {
-            e.printStackTrace();
-            mainLayout.removeAllViews();
-            mainLayout.setVisibility(View.GONE);
         }
     }
 
