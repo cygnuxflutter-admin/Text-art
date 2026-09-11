@@ -38,6 +38,12 @@ public class TART_PreferenceClass {
     }
 
     public String getAdsId(String type) {
+        if (prefs != null) {
+            String liveId = prefs.getString(type, "");
+            if (liveId != null && !liveId.trim().isEmpty()) {
+                return liveId;
+            }
+        }
         if (com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
             switch (type) {
                 case "GoogleAppopenAd": return "ca-app-pub-3940256099942544/3419835294";
@@ -47,9 +53,6 @@ public class TART_PreferenceClass {
                 case "GoogleRewardedAd": return "ca-app-pub-3940256099942544/5224354917";
                 case "GoogleNativeAd": return "ca-app-pub-3940256099942544/2247696110";
             }
-        }
-        if (prefs != null) {
-            return prefs.getString(type, "");
         }
         return "";
     }

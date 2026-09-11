@@ -276,7 +276,23 @@ public class TART_SplashActivity extends AppCompatActivity {
                         android.util.Log.e("UPDATE_LOG", "App Version: " + BuildConfig.VERSION_NAME);
                         android.util.Log.e("UPDATE_LOG", "ForceUpdate: " + forceUpdate);
                         
-                        if (isUpdate && updateVer != null && !updateVer.isEmpty() && !updateVer.equals(BuildConfig.VERSION_NAME)) {
+                        boolean needsUpdate = false;
+                        if (isUpdate && updateVer != null && !updateVer.isEmpty()) {
+                            try {
+                                float fbVer = Float.parseFloat(updateVer);
+                                float appVer = Float.parseFloat(BuildConfig.VERSION_NAME);
+                                if (fbVer > appVer) {
+                                    needsUpdate = true;
+                                }
+                            } catch (NumberFormatException e) {
+                                // Fallback to string comparison if not a valid float
+                                if (!updateVer.equals(BuildConfig.VERSION_NAME)) {
+                                    needsUpdate = true;
+                                }
+                            }
+                        }
+
+                        if (needsUpdate) {
                             // Stop the 2.5 second fallback timer so the user has time to click!
                             fallbackHandler.removeCallbacks(fallbackRunnable);
                             

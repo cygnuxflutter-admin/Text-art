@@ -140,14 +140,14 @@ public class TART_NativeAdUtil {
                     android.util.Log.e("ADMOB_DEBUG_LOG", "Error Message: " + loadAdError.getMessage());
                     android.util.Log.e("ADMOB_DEBUG_LOG", "Error Code: " + loadAdError.getCode() + " (0=Internal, 1=InvalidRequest, 2=Network, 3=NoFill)");
                     android.util.Log.e("ADMOB_DEBUG_LOG", "Error Domain: " + loadAdError.getDomain());
-                    if (nativeAdContainer != null) nativeAdContainer.setVisibility(collapseOnFail ? View.GONE : View.INVISIBLE);
+                    // Box ane shimmer loader visible rakho — hide nahi karo
                 }
             }).build();
 
             adLoader.loadAd(new AdRequest.Builder().build());
         } catch (Exception e) {
             e.printStackTrace();
-            if (nativeAdContainer != null) nativeAdContainer.setVisibility(collapseOnFail ? View.GONE : View.INVISIBLE);
+            // Box ane shimmer loader visible rakho — hide nahi karo
         }
     }
 

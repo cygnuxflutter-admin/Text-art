@@ -66,7 +66,7 @@ public class TART_LoadAds {
                     android.util.Log.e("ADMOB_DEBUG_LOG", "Error Message: " + loadAdError.getMessage());
                     android.util.Log.e("ADMOB_DEBUG_LOG", "Error Code: " + loadAdError.getCode() + " (0=Internal, 1=InvalidRequest, 2=Network, 3=NoFill)");
                     android.util.Log.e("ADMOB_DEBUG_LOG", "Error Domain: " + loadAdError.getDomain());
-                    mainLayout.removeAllViews();
+                    // Box ane shimmer loader visible rakho — remove nahi karo
                 }
 
                 @Override

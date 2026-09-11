@@ -56,7 +56,6 @@ public class TART_SaveAndShareActivity extends TART_BaseActivity {
         }*/
         RelativeLayout native_banner_ad_container = this.findViewById(R.id.native_banner_ad_container);
         loadNativeAd(native_banner_ad_container, TART_SaveAndShareActivity.this);
-        findViewById(R.id.adsContainer).setVisibility(View.GONE);
     }
 
 

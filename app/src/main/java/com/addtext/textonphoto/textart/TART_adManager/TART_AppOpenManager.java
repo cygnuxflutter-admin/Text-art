@@ -136,14 +136,78 @@ public class TART_AppOpenManager implements LifecycleObserver, Application.Activ
     }
 
     public void showAdIfSplashAvailable(@NonNull final Activity activity, @NonNull MyApplication.OnShowAdCompleteListener onShowAdCompleteListener) {
-        if (onShowAdCompleteListener != null) {
-            onShowAdCompleteListener.onShowAdComplete();
+        if (!isShowingAd && isAdAvailable()) {
+            FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
+                @Override
+                public void onAdDismissedFullScreenContent() {
+                    appOpenAd = null;
+                    isShowingAd = false;
+                    fetchAd();
+                    if (onShowAdCompleteListener != null) {
+                        onShowAdCompleteListener.onShowAdComplete();
+                    }
+                }
+
+                @Override
+                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                    appOpenAd = null;
+                    isShowingAd = false;
+                    fetchAd();
+                    if (onShowAdCompleteListener != null) {
+                        onShowAdCompleteListener.onShowAdComplete();
+                    }
+                }
+
+                @Override
+                public void onAdShowedFullScreenContent() {
+                    isShowingAd = true;
+                }
+            };
+            appOpenAd.setFullScreenContentCallback(fullScreenContentCallback);
+            appOpenAd.show(activity);
+        } else {
+            fetchAd();
+            if (onShowAdCompleteListener != null) {
+                onShowAdCompleteListener.onShowAdComplete();
+            }
         }
     }
 
     public void showAdIfAvailable(@NonNull final Activity activity, @NonNull MyApplication.OnShowAdCompleteListener onShowAdCompleteListener) {
-        if (onShowAdCompleteListener != null) {
-            onShowAdCompleteListener.onShowAdComplete();
+        if (!isShowingAd && isAdAvailable()) {
+            FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
+                @Override
+                public void onAdDismissedFullScreenContent() {
+                    appOpenAd = null;
+                    isShowingAd = false;
+                    fetchAd();
+                    if (onShowAdCompleteListener != null) {
+                        onShowAdCompleteListener.onShowAdComplete();
+                    }
+                }
+
+                @Override
+                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                    appOpenAd = null;
+                    isShowingAd = false;
+                    fetchAd();
+                    if (onShowAdCompleteListener != null) {
+                        onShowAdCompleteListener.onShowAdComplete();
+                    }
+                }
+
+                @Override
+                public void onAdShowedFullScreenContent() {
+                    isShowingAd = true;
+                }
+            };
+            appOpenAd.setFullScreenContentCallback(fullScreenContentCallback);
+            appOpenAd.show(activity);
+        } else {
+            fetchAd();
+            if (onShowAdCompleteListener != null) {
+                onShowAdCompleteListener.onShowAdComplete();
+            }
         }
     }
 

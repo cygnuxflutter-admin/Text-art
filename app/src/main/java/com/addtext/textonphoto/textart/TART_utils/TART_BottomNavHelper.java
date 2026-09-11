@@ -97,10 +97,11 @@ public class TART_BottomNavHelper {
         });
 
         navGallery.setOnClickListener(v -> {
-            Intent intent = new Intent(activity, TART_MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            intent.putExtra("open_gallery", true);
-            activity.startActivity(intent);
+            com.addtext.textonphoto.textart.imagepicker.KSUtil.fromAlbum = false;
+            Intent intent = new Intent(activity, com.addtext.textonphoto.textart.imagepicker.ImagePickerActivity.class);
+            intent.putExtra(com.addtext.textonphoto.textart.imagepicker.ImagePickerActivity.KEY_LIMIT_MAX_IMAGE, 30);
+            intent.putExtra(com.addtext.textonphoto.textart.imagepicker.ImagePickerActivity.KEY_LIMIT_MIN_IMAGE, 4);
+            activity.startActivityForResult(intent, com.addtext.textonphoto.textart.imagepicker.ImagePickerActivity.PICKER_REQUEST_CODE);
         });
 
         navProfile.setOnClickListener(v -> {

@@ -290,6 +290,11 @@ public class TART_MainActivity extends AppCompatActivity implements View.OnClick
         settings = findViewById(R.id.btnNotification);
         rateus_button = findViewById(R.id.btrateButton);
 
+        RelativeLayout rl_banner = findViewById(R.id.rl_banner_home);
+        if (rl_banner != null) {
+            com.addtext.textonphoto.textart.adManager.TART_LoadAds.loadAdmobBannerAd(this, rl_banner);
+        }
+
         if (camera != null) camera.setOnClickListener(TART_MainActivity.this);
         if (gallery != null) gallery.setOnClickListener(TART_MainActivity.this);
         if (sample != null) sample.setOnClickListener(TART_MainActivity.this);
@@ -311,31 +316,12 @@ public class TART_MainActivity extends AppCompatActivity implements View.OnClick
 
         androidx.cardview.widget.CardView nativeAdContainer = findViewById(R.id.cvNativeAdContainerHome);
         if (nativeAdContainer != null) {
-            TART_NativeAdUtil.loadNativeAd(nativeAdContainer, this, true);
+            TART_NativeAdUtil.loadNativeAd(nativeAdContainer, this, false); // false = INVISIBLE, keeps empty box
         }
     }
 
     private void setupBottomNav() {
-        View navHome = findViewById(R.id.navHome);
-        View navTemplates = findViewById(R.id.navTemplates);
-        View navCreate = findViewById(R.id.navCreate);
-        View navGallery = findViewById(R.id.navGallery);
-        View navProfile = findViewById(R.id.navProfile);
-
-        if (navTemplates != null) {
-            navTemplates.setOnClickListener(v -> MyApplication.showInterstitialAd(TART_MainActivity.this, this::btSampleOnclickNext));
-        }
-        if (navCreate != null) {
-            navCreate.setOnClickListener(v -> MyApplication.showInterstitialAd(TART_MainActivity.this, () -> {
-                startActivity(new Intent(TART_MainActivity.this, TART_ColorPickerActivity.class));
-            }));
-        }
-        if (navGallery != null) {
-            navGallery.setOnClickListener(v -> MyApplication.showInterstitialAd(TART_MainActivity.this, this::pickFromGalery));
-        }
-        if (navProfile != null) {
-            navProfile.setOnClickListener(v -> SettingsNext());
-        }
+        com.addtext.textonphoto.textart.TART_utils.TART_BottomNavHelper.setupBottomNav(this, R.id.navHome);
     }
 
     private void setupCategoryChips() {
