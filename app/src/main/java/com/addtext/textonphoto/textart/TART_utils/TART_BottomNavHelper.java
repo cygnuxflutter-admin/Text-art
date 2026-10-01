@@ -59,58 +59,57 @@ public class TART_BottomNavHelper {
         // Setup click listeners
         navHome.setOnClickListener(v -> {
             if (currentTabId != R.id.navHome) {
-                Intent intent = new Intent(activity, TART_MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                activity.startActivity(intent);
-                if (!(activity instanceof TART_MainActivity)) {
-                    activity.finish();
-                }
+                MyApplication.showInterstitialAd(activity, () -> {
+                    Intent intent = new Intent(activity, TART_MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    activity.startActivity(intent);
+                    if (!(activity instanceof TART_MainActivity)) {
+                        activity.finish();
+                    }
+                });
             }
         });
 
         navTemplates.setOnClickListener(v -> {
             if (currentTabId != R.id.navTemplates) {
-                TART_LoadingDialog loader = new TART_LoadingDialog(activity);
-                loader.show();
-                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
-                    loader.dismiss();
+                MyApplication.showInterstitialAd(activity, () -> {
                     Intent intent = new Intent(activity, TART_SampleActivity.class);
                     activity.startActivity(intent);
                     if (!(activity instanceof TART_MainActivity)) {
                         activity.finish();
                     }
-                }, 600);
+                });
             }
         });
 
         navCreate.setOnClickListener(v -> {
-            TART_LoadingDialog loader = new TART_LoadingDialog(activity);
-            loader.show();
-            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
-                loader.dismiss();
+            MyApplication.showInterstitialAd(activity, () -> {
                 Intent intent = new Intent(activity, TART_ColorPickerActivity.class);
                 activity.startActivity(intent);
                 if (!(activity instanceof TART_MainActivity)) {
                     activity.finish();
                 }
-            }, 600);
+            });
         });
 
         navGallery.setOnClickListener(v -> {
-            com.addtext.textonphoto.textart.imagepicker.KSUtil.fromAlbum = false;
-            Intent intent = new Intent(activity, com.addtext.textonphoto.textart.imagepicker.ImagePickerActivity.class);
-            intent.putExtra(com.addtext.textonphoto.textart.imagepicker.ImagePickerActivity.KEY_LIMIT_MAX_IMAGE, 30);
-            intent.putExtra(com.addtext.textonphoto.textart.imagepicker.ImagePickerActivity.KEY_LIMIT_MIN_IMAGE, 4);
-            activity.startActivityForResult(intent, com.addtext.textonphoto.textart.imagepicker.ImagePickerActivity.PICKER_REQUEST_CODE);
+            MyApplication.showInterstitialAd(activity, () -> {
+                Intent intent = new Intent(activity, TART_MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra("open_gallery", true);
+                activity.startActivity(intent);
+            });
         });
 
         navProfile.setOnClickListener(v -> {
             if (currentTabId != R.id.navProfile) {
-                Intent intent = new Intent(activity, TART_SettingsActivity.class);
-                activity.startActivity(intent);
-                if (!(activity instanceof TART_MainActivity)) {
-                    activity.finish();
-                }
+                MyApplication.showInterstitialAd(activity, () -> {
+                    Intent intent = new Intent(activity, TART_SettingsActivity.class);
+                    activity.startActivity(intent);
+                    if (!(activity instanceof TART_MainActivity)) {
+                        activity.finish();
+                    }
+                });
             }
         });
     }

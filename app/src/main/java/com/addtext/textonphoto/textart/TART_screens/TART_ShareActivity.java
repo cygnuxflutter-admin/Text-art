@@ -258,9 +258,9 @@ public class TART_ShareActivity extends AppCompatActivity implements View.OnClic
 
     public void goToHome() {
         Intent intent = new Intent(this, TART_MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
-
+        finish();
     }
 
     public void sharePhoto(String str) {

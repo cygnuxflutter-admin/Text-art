@@ -176,9 +176,109 @@ public class TART_SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public final void run() {
-                startToMainActivity();
+                showSplashAdThenMain();
             }
         }, delay);
+    }
+
+    private void showSplashAdThenMain() {
+        if (isNavigated) return;
+
+        int appOpenEnabled = preferenceClass.getAdsStatus("splashscreen"); // 1 or 0
+        int interstitialFallbackEnabled = preferenceClass.getAdsStatus("SplashInterstitialFallback"); // 1 or 0
+
+        if (appOpenEnabled == 1) {
+            loadAndShowAppOpenAd(new Runnable() {
+                @Override
+                public void run() {
+                    if (isNavigated) return;
+                    if (interstitialFallbackEnabled == 1) {
+                        loadAndShowInterstitialSplash(new Runnable() {
+                            @Override
+                            public void run() {
+                                callMainActivity();
+                            }
+                        });
+                    } else {
+                        callMainActivity();
+                    }
+                }
+            }, new Runnable() {
+                @Override
+                public void run() {
+                    callMainActivity();
+                }
+            });
+        } else if (interstitialFallbackEnabled == 1) {
+            loadAndShowInterstitialSplash(new Runnable() {
+                @Override
+                public void run() {
+                    callMainActivity();
+                }
+            });
+        } else {
+            callMainActivity();
+        }
+    }
+
+    private void loadAndShowAppOpenAd(Runnable onFailedOrDidNotShow, Runnable onDismissed) {
+        String adUnitId = preferenceClass.getAdsId("GoogleAppopenAd");
+        if (adUnitId == null || adUnitId.trim().isEmpty() || BuildConfig.DEBUG) {
+            adUnitId = "ca-app-pub-3940256099942544/9257395921";
+        }
+
+        com.google.android.gms.ads.AdRequest request = new com.google.android.gms.ads.AdRequest.Builder().build();
+        com.google.android.gms.ads.appopen.AppOpenAd.load(this, adUnitId, request, com.google.android.gms.ads.appopen.AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, new com.google.android.gms.ads.appopen.AppOpenAd.AppOpenAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull com.google.android.gms.ads.appopen.AppOpenAd appOpenAd) {
+                appOpenAd.setFullScreenContentCallback(new com.google.android.gms.ads.FullScreenContentCallback() {
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        onDismissed.run();
+                    }
+                    @Override
+                    public void onAdFailedToShowFullScreenContent(com.google.android.gms.ads.AdError adError) {
+                        onFailedOrDidNotShow.run();
+                    }
+                });
+                appOpenAd.show(TART_SplashActivity.this);
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull com.google.android.gms.ads.LoadAdError loadAdError) {
+                onFailedOrDidNotShow.run();
+            }
+        });
+    }
+
+    private void loadAndShowInterstitialSplash(Runnable onDone) {
+        String adUnitId = preferenceClass.getAdsId("GoogleInterstitialAd");
+        if (adUnitId == null || adUnitId.trim().isEmpty() || BuildConfig.DEBUG) {
+            adUnitId = "ca-app-pub-3940256099942544/1033173712";
+        }
+
+        com.google.android.gms.ads.AdRequest request = new com.google.android.gms.ads.AdRequest.Builder().build();
+        com.google.android.gms.ads.interstitial.InterstitialAd.load(this, adUnitId, request, new com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull com.google.android.gms.ads.interstitial.InterstitialAd interstitialAd) {
+                interstitialAd.setFullScreenContentCallback(new com.google.android.gms.ads.FullScreenContentCallback() {
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        onDone.run();
+                    }
+                    @Override
+                    public void onAdFailedToShowFullScreenContent(com.google.android.gms.ads.AdError adError) {
+                        onDone.run();
+                    }
+                });
+                interstitialAd.show(TART_SplashActivity.this);
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull com.google.android.gms.ads.LoadAdError loadAdError) {
+                onDone.run();
+            }
+        });
     }
 
     private String getStringSafe(DataSnapshot snapshot, String key) {
@@ -214,6 +314,13 @@ public class TART_SplashActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     try {
                         preferenceClass.setInt("splashscreen", getIntSafe(snapshot, "SplashScreenAdsManage", 0));
+                        preferenceClass.setInt("SplashInterstitialFallback", getIntSafe(snapshot, "SplashInterstitialFallback", 0));
+                        preferenceClass.setInt("BannerHome", getIntSafe(snapshot, "BannerHome", 1));
+                        preferenceClass.setInt("BannerEdit", getIntSafe(snapshot, "BannerEdit", 1));
+                        preferenceClass.setInt("BannerSettings", getIntSafe(snapshot, "BannerSettings", 1));
+                        preferenceClass.setInt("BannerColor", getIntSafe(snapshot, "BannerColor", 1));
+                        preferenceClass.setInt("BannerSample", getIntSafe(snapshot, "BannerSample", 1));
+                        preferenceClass.setInt("BannerGallery", getIntSafe(snapshot, "BannerGallery", 1));
                         preferenceClass.setInt("UpdateAvailable", getIntSafe(snapshot, "UpdateAvailable", 0));
                         preferenceClass.setDataType("UpdateVersionName", getStringSafe(snapshot, "UpdateVersionName"));
 
@@ -258,7 +365,7 @@ public class TART_SplashActivity extends AppCompatActivity {
                         android.util.Log.e("FIREBASE_ADS_LOG", "==================================================");
 
                         try {
-                            ((MyApplication) getApplication()).getInterstitialAdManager().fetchAdMobAd();
+                            // Removed unconditional fetchAdMobAd to respect N-1 logic
                         } catch (Exception ignored) {}
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -318,7 +425,8 @@ public class TART_SplashActivity extends AppCompatActivity {
                                     if (materialDialog.isShowing()) {
                                         materialDialog.dismiss();
                                     }
-                                    finish();
+                                    finishAffinity();
+                                    System.exit(0);
                                 });
                             } else {
                                 button1.setText("Cancel");

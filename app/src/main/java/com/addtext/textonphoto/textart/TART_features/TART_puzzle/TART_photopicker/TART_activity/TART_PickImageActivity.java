@@ -1,7 +1,7 @@
 package com.addtext.textonphoto.textart.TART_features.TART_puzzle.TART_photopicker.TART_activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;

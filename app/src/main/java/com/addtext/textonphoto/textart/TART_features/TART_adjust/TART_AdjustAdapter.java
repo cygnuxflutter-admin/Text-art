@@ -46,8 +46,10 @@ public class TART_AdjustAdapter extends RecyclerView.Adapter<TART_AdjustAdapter.
         viewHolder.icon.setImageDrawable(this.selectedFilterIndex != i ? this.lstAdjusts.get(i).icon : this.lstAdjusts.get(i).selectedIcon);
         if (this.selectedFilterIndex == i) {
             viewHolder.toolName.setTextColor(ContextCompat.getColor(context, R.color.selected));
+            viewHolder.icon.setColorFilter(ContextCompat.getColor(context, R.color.selected));
         } else {
             viewHolder.toolName.setTextColor(ContextCompat.getColor(context, R.color.unselected_color));
+            viewHolder.icon.setColorFilter(null);
         }
     }
 

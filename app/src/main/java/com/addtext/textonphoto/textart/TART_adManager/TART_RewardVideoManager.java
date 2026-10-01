@@ -24,14 +24,14 @@ import com.google.android.gms.ads.rewarded.RewardItem;
 
 
 import com.addtext.textonphoto.textart.TART_utils.TART_PreferenceClass;
-import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
-import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 public class TART_RewardVideoManager {
     private static TART_PreferenceClass preferenceClass;
     private static String AD_google_Rw;
     private static AlertDialog alertDialog;
-    public static RewardedInterstitialAd mRewardedAd;
+    public static RewardedAd mRewardedAd;
 
     static boolean isUserEarnReward = false;
     
@@ -41,7 +41,7 @@ public class TART_RewardVideoManager {
         if (preferenceClass == null) {
             preferenceClass = new TART_PreferenceClass(context);
         }
-        AD_google_Rw = preferenceClass.getAdsId("GoogleInterstialRewardAd");//"ca-app-pub-3940256099942544/5354046379" ;//test key
+        AD_google_Rw = preferenceClass.getAdsId("GoogleRewardedAd");
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = inflater.inflate(R.layout.knack_lottie_anim_dialog, null);
@@ -58,10 +58,11 @@ public class TART_RewardVideoManager {
             }
         }
 
+        Log.d("AdmobReward", "Loading Reward Ad with ID: " + AD_google_Rw);
         AdRequest adRequest = new AdRequest.Builder().build();
-        RewardedInterstitialAd.load(context, AD_google_Rw, adRequest, new RewardedInterstitialAdLoadCallback() {
+        RewardedAd.load(context, AD_google_Rw, adRequest, new RewardedAdLoadCallback() {
             @Override
-            public void onAdLoaded(RewardedInterstitialAd ad) {
+            public void onAdLoaded(@NonNull RewardedAd ad) {
                 mRewardedAd = ad;
                 if (alertDialog != null) {
                     if (alertDialog.isShowing()) {
@@ -69,12 +70,6 @@ public class TART_RewardVideoManager {
                     }
                 }
                 if (mRewardedAd != null) {
-                    mRewardedAd.show(context, new OnUserEarnedRewardListener() {
-                        @Override
-                        public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-                            isUserEarnReward = true;
-                        }
-                    });
                     mRewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
                         public void onAdDismissedFullScreenContent() {
@@ -86,8 +81,13 @@ public class TART_RewardVideoManager {
                         public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                             super.onAdFailedToShowFullScreenContent(adError);
                             onAdLoadInterface.onAdFail();
-//                            isUserEarnReward = false;
-//                            onAdLoadInterface.onAdClose(isUserEarnReward);
+                        }
+                    });
+
+                    mRewardedAd.show(context, new OnUserEarnedRewardListener() {
+                        @Override
+                        public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                            isUserEarnReward = true;
                         }
                     });
                 }

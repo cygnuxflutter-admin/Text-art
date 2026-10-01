@@ -15,14 +15,16 @@
             android:id="@+id/btn_watermark"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/knack_ic_launcher_watermark" />
+            android:src="@drawable/splash_logo_hd" />
 
         <ImageView
             android:id="@+id/btn_watermark_remove"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
             android:layout_alignParentEnd="true"
-            android:layout_gravity="end|bottom"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
             android:background="@color/white"
             android:src="@drawable/knack_ic_close"
             android:visibility="visible" />

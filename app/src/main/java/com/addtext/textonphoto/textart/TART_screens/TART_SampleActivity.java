@@ -60,8 +60,11 @@ public class TART_SampleActivity extends AppCompatActivity {
         setContentView(R.layout.knack_activity_sample);
         com.addtext.textonphoto.textart.TART_utils.TART_BottomNavHelper.setupBottomNav(this, R.id.navTemplates);
         RelativeLayout rl_ad = findViewById(R.id.rl_ad);
-        if (rl_ad != null) {
+        preferenceClass = new TART_PreferenceClass(this);
+        if (rl_ad != null && preferenceClass.getAdsStatus("BannerSample") == 1) {
             com.addtext.textonphoto.textart.adManager.TART_LoadAds.loadAdmobBannerAd(this, rl_ad);
+        } else if (rl_ad != null) {
+            rl_ad.setVisibility(View.GONE);
         }
        /* String banner1 = preferenceClass.getDataType("URL_BGActivityGame");
         String banner2 = preferenceClass.getDataType("URL_BGActivityBanner1");
@@ -126,7 +129,7 @@ public class TART_SampleActivity extends AppCompatActivity {
         ((ImageView) findViewById(R.id.btnBack)).setOnClickListener(new View.OnClickListener() {
             @Override
             public final void onClick(View view) {
-                finish();
+                MyApplication.showInterstitialAd(TART_SampleActivity.this, () -> finish());
             }
         });
         this.recyclerNature = (RecyclerView) findViewById(R.id.recyclerNature);
@@ -261,7 +264,7 @@ public class TART_SampleActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        MyApplication.showInterstitialAd(TART_SampleActivity.this, () -> finish());
     }
 
 

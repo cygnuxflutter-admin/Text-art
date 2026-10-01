@@ -2,8 +2,8 @@ package com.addtext.textonphoto.textart.imagepicker;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
+import androidx.appcompat.app.AlertDialog;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -109,8 +109,10 @@ public class ImagePickerActivity extends AppCompatActivity implements OnClickLis
 
 
         RelativeLayout rl_ad = this.findViewById(R.id.rl_ad);
-        if (TART_NetworkUtils.isNetworkAvailable(this)) {
+        if (TART_NetworkUtils.isNetworkAvailable(this) && preferenceClass.getAdsStatus("BannerGallery") == 1) {
             TART_LoadAds.loadAdmobBannerAd(this, rl_ad);
+        } else if (rl_ad != null) {
+            rl_ad.setVisibility(View.GONE);
         }
 
 
@@ -382,7 +384,7 @@ public class ImagePickerActivity extends AppCompatActivity implements OnClickLis
 
     public void showDialogSortAlbum() {
         CharSequence[] items = getResources().getStringArray(R.array.array_sort_value);
-        final Builder builder = new Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.text_title_dialog_sort_by_album));
         Log.e("TAG", "showDialogSortAlbum");
         builder.setSingleChoiceItems(items, position, (dialogInterface, i) -> {
@@ -444,7 +446,7 @@ public class ImagePickerActivity extends AppCompatActivity implements OnClickLis
 /*
     public void showDialogSortListAlbum() {
         CharSequence[] items = getResources().getStringArray(R.array.array_sort_value);
-        Builder builder = new Builder(this);
+        Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.text_title_dialog_sort_by_photo));
         builder.setSingleChoiceItems(items, position, (dialogInterface, i) -> {
             switch (i) {

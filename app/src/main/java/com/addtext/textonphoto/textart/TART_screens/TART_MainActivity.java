@@ -291,8 +291,10 @@ public class TART_MainActivity extends AppCompatActivity implements View.OnClick
         rateus_button = findViewById(R.id.btrateButton);
 
         RelativeLayout rl_banner = findViewById(R.id.rl_banner_home);
-        if (rl_banner != null) {
+        if (rl_banner != null && preferenceClass.getAdsStatus("BannerHome") == 1) {
             com.addtext.textonphoto.textart.adManager.TART_LoadAds.loadAdmobBannerAd(this, rl_banner);
+        } else if (rl_banner != null) {
+            rl_banner.setVisibility(View.GONE);
         }
 
         if (camera != null) camera.setOnClickListener(TART_MainActivity.this);
@@ -318,6 +320,21 @@ public class TART_MainActivity extends AppCompatActivity implements View.OnClick
         if (nativeAdContainer != null) {
             TART_NativeAdUtil.loadNativeAd(nativeAdContainer, this, false); // false = INVISIBLE, keeps empty box
         }
+        
+        checkIntent(getIntent());
+    }
+    
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        checkIntent(intent);
+    }
+
+    private void checkIntent(Intent intent) {
+        if (intent != null && intent.getBooleanExtra("open_gallery", false)) {
+            pickFromGalery();
+        }
     }
 
     private void setupBottomNav() {
@@ -332,7 +349,11 @@ public class TART_MainActivity extends AppCompatActivity implements View.OnClick
         View layoutRecentHeader = findViewById(R.id.layoutRecentHeader);
         TextView tvSeeAllProjects = findViewById(R.id.tvSeeAllProjects);
         if (tvSeeAllProjects != null) {
-            tvSeeAllProjects.setOnClickListener(v -> startActivity(new Intent(TART_MainActivity.this, TART_SavedProjectsActivity.class)));
+            tvSeeAllProjects.setOnClickListener(v -> {
+                MyApplication.showInterstitialAd(TART_MainActivity.this, () -> {
+                    startActivity(new Intent(TART_MainActivity.this, TART_SavedProjectsActivity.class));
+                });
+            });
         }
 
         androidx.recyclerview.widget.RecyclerView rvRecent = findViewById(R.id.rvRecentProjects);
@@ -364,9 +385,11 @@ public class TART_MainActivity extends AppCompatActivity implements View.OnClick
                 if (layoutNoRecent != null) layoutNoRecent.setVisibility(View.GONE);
                 com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter adapter =
                         new com.addtext.textonphoto.textart.TART_viewadapter.TART_RecentProjectsAdapter(this, list, false, item -> {
-                            Intent intent = new Intent(TART_MainActivity.this, TART_ShareActivity.class);
-                            intent.putExtra("path", item.imagePath);
-                            startActivity(intent);
+                            MyApplication.showInterstitialAd(TART_MainActivity.this, () -> {
+                                Intent intent = new Intent(TART_MainActivity.this, TART_ShareActivity.class);
+                                intent.putExtra("path", item.imagePath);
+                                startActivity(intent);
+                            });
                         });
                 rvRecent.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false));
                 rvRecent.setAdapter(adapter);
@@ -385,7 +408,9 @@ public class TART_MainActivity extends AppCompatActivity implements View.OnClick
 
             com.addtext.textonphoto.textart.TART_viewadapter.TART_TrendingTemplatesAdapter adapter =
                     new com.addtext.textonphoto.textart.TART_viewadapter.TART_TrendingTemplatesAdapter(this, list, item -> {
-                        btSampleOnclickNext();
+                        MyApplication.showInterstitialAd(TART_MainActivity.this, () -> {
+                            btSampleOnclickNext();
+                        });
                     });
             rvTemplates.setLayoutManager(new GridLayoutManager(this, 2));
             rvTemplates.setAdapter(adapter);

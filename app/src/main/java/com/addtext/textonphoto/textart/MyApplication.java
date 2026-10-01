@@ -19,16 +19,22 @@ public class MyApplication extends android.app.Application {
     public static MyApplication mInstance;
 
     public static void showInterstitialAd(Activity activity, TART_InterstitialAdManager.OnAdLoadInterface onAdLoadInterface) {
-        com.addtext.textonphoto.textart.TART_utils.TART_LoadingDialog dialog = new com.addtext.textonphoto.textart.TART_utils.TART_LoadingDialog(activity);
-        dialog.show();
-        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
-            if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
+        if (activity == null || activity.isFinishing() || activity.isDestroyed()) return;
+        TART_InterstitialAdManager manager = ((MyApplication) activity.getApplication()).getInterstitialAdManager();
+        if (manager.willShowAd()) {
+            com.addtext.textonphoto.textart.TART_utils.TART_LoadingDialog dialog = new com.addtext.textonphoto.textart.TART_utils.TART_LoadingDialog(activity);
+            dialog.show();
+            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+                    if (dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
+                    manager.showAdIfAvailable(activity, onAdLoadInterface);
                 }
-                ((MyApplication) activity.getApplication()).getInterstitialAdManager().showAdIfAvailable(activity, onAdLoadInterface);
-            }
-        }, 800);
+            }, 800);
+        } else {
+            manager.showAdIfAvailable(activity, onAdLoadInterface);
+        }
     }
     public static void showInterstitialAdWithOutCount(Activity activity, TART_InterstitialAdManager.OnAdLoadInterface onAdLoadInterface) {
         ((MyApplication) activity.getApplication()).getInterstitialAdManager().showInterstitialAd(activity, onAdLoadInterface);

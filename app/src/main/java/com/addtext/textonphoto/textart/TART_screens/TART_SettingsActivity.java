@@ -22,6 +22,7 @@ import com.addtext.textonphoto.textart.TART_views.CustomTabChrom;
 import com.addtext.textonphoto.textart.Utils;
 import com.addtext.textonphoto.textart.adManager.TART_NativeAdUtil;
 import com.bumptech.glide.Glide;
+import com.addtext.textonphoto.textart.MyApplication;
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -60,8 +61,11 @@ public class TART_SettingsActivity extends AppCompatActivity implements View.OnC
         }
 
         RelativeLayout rl_banner_settings = findViewById(R.id.rl_banner_settings);
-        if (rl_banner_settings != null) {
+        TART_PreferenceClass preferenceClass = new TART_PreferenceClass(this);
+        if (rl_banner_settings != null && preferenceClass.getAdsStatus("BannerSettings") == 1) {
             com.addtext.textonphoto.textart.adManager.TART_LoadAds.loadAdmobBannerAd(this, rl_banner_settings);
+        } else if (rl_banner_settings != null) {
+            rl_banner_settings.setVisibility(View.GONE);
         }
 
         /*String url = new TART_PreferenceClass(this).getDataType("URL_SettingActivityGame", "");
@@ -91,7 +95,7 @@ public class TART_SettingsActivity extends AppCompatActivity implements View.OnC
         } else if (id == R.id.feed_back) {
             sendFeedBack();
         } else if (id == R.id.ivBack) {
-            finish();
+            MyApplication.showInterstitialAd(TART_SettingsActivity.this, () -> finish());
         } else if (id == R.id.privacy_app) {
             startActivity(new Intent("android.intent.action.VIEW", Uri.parse(Utils.privacy_policy)));
         } else if (id == R.id.rate_app) {
@@ -99,7 +103,9 @@ public class TART_SettingsActivity extends AppCompatActivity implements View.OnC
         } else if (id == R.id.shareApp) {
             shareApp();
         } else if (id == R.id.saved_photos) {
-            startActivity(new Intent(TART_SettingsActivity.this, TART_SavedProjectsActivity.class));
+            MyApplication.showInterstitialAd(TART_SettingsActivity.this, () -> {
+                startActivity(new Intent(TART_SettingsActivity.this, TART_SavedProjectsActivity.class));
+            });
         }
     }
 
@@ -127,5 +133,10 @@ public class TART_SettingsActivity extends AppCompatActivity implements View.OnC
         intent.putExtra("android.intent.extra.EMAIL", new String[]{Utils.feedback_mail});
         intent.putExtra("android.intent.extra.SUBJECT", string);
         startActivity(Intent.createChooser(intent, "Choose an Email client :"));
+    }
+
+    @Override
+    public void onBackPressed() {
+        MyApplication.showInterstitialAd(TART_SettingsActivity.this, () -> finish());
     }
 }

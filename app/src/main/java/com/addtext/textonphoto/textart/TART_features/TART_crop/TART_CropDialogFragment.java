@@ -88,7 +88,11 @@ public class TART_CropDialogFragment extends DialogFragment implements TART_Aspe
         if (rotateBtn != null) {
             rotateBtn.setOnClickListener(view -> {
                 if (TART_CropDialogFragment.this.mCropView != null) {
-                    TART_CropDialogFragment.this.mCropView.rotateImage(CropImageView.RotateDegrees.ROTATE_90D);
+                    try {
+                        TART_CropDialogFragment.this.mCropView.rotateImage(CropImageView.RotateDegrees.ROTATE_90D);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }

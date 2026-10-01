@@ -40,9 +40,11 @@ public class TART_ColorAdapter extends RecyclerView.Adapter<TART_ColorAdapter.Co
     @Override
     public void onBindViewHolder(ColorViewHolder colorViewHolder, int i) {
         if (this.index == i) {
+            colorViewHolder.colorSection.getDelegate().setStrokeWidth(5); // Active selection stroke
             colorViewHolder.colorSection.getDelegate().setStrokeColor(ContextCompat.getColor(this.context, R.color.icChecked));
         } else {
-            colorViewHolder.colorSection.getDelegate().setStrokeColor(17170445);
+            colorViewHolder.colorSection.getDelegate().setStrokeWidth(3); // Faint border for visibility
+            colorViewHolder.colorSection.getDelegate().setStrokeColor(Color.parseColor("#DDDDDD"));
         }
         colorViewHolder.colorSection.getDelegate().setBackgroundColor(this.colorList.get(i).intValue());
     }

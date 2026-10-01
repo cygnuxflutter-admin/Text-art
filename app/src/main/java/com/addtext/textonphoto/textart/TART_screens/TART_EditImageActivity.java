@@ -2,7 +2,7 @@ package com.addtext.textonphoto.textart.TART_screens;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -215,8 +215,11 @@ public class TART_EditImageActivity extends TART_BaseActivity implements TART_On
         }*/
 
         RelativeLayout rl_ad = this.findViewById(R.id.rl_ad);
-        if (TART_NetworkUtils.isNetworkAvailable(this)) {
+        TART_PreferenceClass preferenceClass = new TART_PreferenceClass(this);
+        if (TART_NetworkUtils.isNetworkAvailable(this) && preferenceClass.getAdsStatus("BannerEdit") == 1) {
             TART_LoadAds.loadAdmobBannerAd(this, rl_ad);
+        } else if (rl_ad != null) {
+            rl_ad.setVisibility(View.GONE);
         }
 
         initViews();

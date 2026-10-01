@@ -25,8 +25,11 @@ public class TART_ColorPickerActivity extends AppCompatActivity {
         com.addtext.textonphoto.textart.TART_utils.TART_BottomNavHelper.setupBottomNav(this, R.id.navCreate);
 
         android.widget.RelativeLayout rl_banner_color = findViewById(R.id.rl_banner_color);
-        if (rl_banner_color != null) {
+        com.addtext.textonphoto.textart.TART_utils.TART_PreferenceClass preferenceClass = new com.addtext.textonphoto.textart.TART_utils.TART_PreferenceClass(this);
+        if (rl_banner_color != null && preferenceClass.getAdsStatus("BannerColor") == 1) {
             com.addtext.textonphoto.textart.adManager.TART_LoadAds.loadAdmobBannerAd(this, rl_banner_color);
+        } else if (rl_banner_color != null) {
+            rl_banner_color.setVisibility(android.view.View.GONE);
         }
 
         btnBack = findViewById(R.id.btnBack);
@@ -49,5 +52,10 @@ public class TART_ColorPickerActivity extends AppCompatActivity {
         Intent intent = new Intent(this, TART_EditImageActivity.class);
         intent.putExtra("SampleBackground", i);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        MyApplication.showInterstitialAd(TART_ColorPickerActivity.this, () -> finish());
     }
 }

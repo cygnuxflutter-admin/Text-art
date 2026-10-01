@@ -28,7 +28,10 @@ public class TART_InterstitialAdManager {
         preferenceClass = new TART_PreferenceClass(this.context);
         admobInterstitialAdId = preferenceClass.getAdsId("GoogleInterstitialAd");
         Log.e("TAG", "TART_InterstitialAdManager@: "+admobInterstitialAdId );
-        if (!com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
+        // Fetch initial ad based on count logic
+        int limit = preferenceClass.getAdsStatus("InerstialClickCount");
+        int count = preferenceClass.getInt("getClickCount");
+        if (limit > 0 && count >= limit - 1) {
             fetchAdMobAd();
         }
     }
@@ -36,18 +39,23 @@ public class TART_InterstitialAdManager {
     public void fetchAdMobAd() {
 
         if (isAdmobAdAvailable()) {
+            android.util.Log.e("ADMOB_DEBUG_LOG", "fetchAdMobAd: Ad is already available, skipping fetch.");
             return;
         }
+
+        android.util.Log.e("ADMOB_DEBUG_LOG", "fetchAdMobAd: Requesting new Interstitial Ad...");
 
         InterstitialAdLoadCallback loadCallback = new InterstitialAdLoadCallback() {
             @Override
             public void onAdLoaded(@NonNull InterstitialAd ad) {
                 admobInterstitialAd = ad;
+                android.util.Log.e("ADMOB_DEBUG_LOG", "Interstitial Ad LOADED successfully!");
             }
 
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 isFailed = true;
+                android.util.Log.e("ADMOB_DEBUG_LOG", "Interstitial Ad FAILED to load: " + loadAdError.getMessage());
             }
         };
         AdRequest request = getAdRequest();
@@ -66,22 +74,41 @@ public class TART_InterstitialAdManager {
 
     
 
+    public boolean willShowAd() {
+        int limit = preferenceClass.getAdsStatus("InerstialClickCount");
+        if (limit == 0) return false;
+        int count = preferenceClass.getInt("getClickCount") + 1;
+        if (count < limit) return false;
+        return isAdmobAdAvailable();
+    }
+
         public void showAdIfAvailable(Activity activity, OnAdLoadInterface onAdLoadInterface) {
         this.onAdLoadInterface = onAdLoadInterface;
 
-        if (com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
+        int limit = preferenceClass.getAdsStatus("InerstialClickCount");
+        if (limit == 0) {
+            onAdLoadInterface.onAdClose();
+            return;
+        }
+        int count = preferenceClass.getInt("getClickCount") + 1; // Increment first
+
+        android.util.Log.e("ADMOB_DEBUG_LOG", "Interstitial Click Count: " + count + " / Limit: " + limit);
+
+        if (count < limit) {
+            preferenceClass.setInt("getClickCount", count);
+            
+            // N-1 Preloading Logic! Load ad just before the click where it's needed
+            if (count >= limit - 1) {
+                android.util.Log.e("ADMOB_DEBUG_LOG", "N-1 Reached! Preloading Interstitial Ad in background...");
+                fetchAdMobAd(); 
+            }
+            
             if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
             return;
         }
 
-        int interstitalAdStatus = preferenceClass.getAdsStatus("InerstialClickCount");
-        int getClickCount = preferenceClass.getInt("getClickCount");
-        if (getClickCount < interstitalAdStatus) {
-            preferenceClass.setInt("getClickCount", getClickCount + 1);
-            if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
-            return;
-        }
-
+        // Target click reached!
+        android.util.Log.e("ADMOB_DEBUG_LOG", "Target Click Reached! Attempting to show Interstitial Ad...");
         preferenceClass.setInt("getClickCount", 0);
 
         if (isAdmobAdAvailable()) {
@@ -89,6 +116,7 @@ public class TART_InterstitialAdManager {
                 @Override
                 public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                     super.onAdFailedToShowFullScreenContent(adError);
+                    android.util.Log.e("ADMOB_DEBUG_LOG", "Interstitial Ad FAILED TO SHOW: " + adError.getMessage());
                     admobInterstitialAd = null;
                     isFailed = true;
                     if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
@@ -96,12 +124,21 @@ public class TART_InterstitialAdManager {
                 @Override
                 public void onAdShowedFullScreenContent() {
                     super.onAdShowedFullScreenContent();
+                    android.util.Log.e("ADMOB_DEBUG_LOG", "Interstitial Ad SHOWING to user! (Impression registered)");
                 }
                 @Override
                 public void onAdDismissedFullScreenContent() {
                     super.onAdDismissedFullScreenContent();
+                    android.util.Log.e("ADMOB_DEBUG_LOG", "Interstitial Ad DISMISSED by user.");
                     admobInterstitialAd = null;
-                    fetchAdMobAd();
+                    
+                    int currentLimit = preferenceClass.getAdsStatus("InerstialClickCount");
+                    int currentCount = preferenceClass.getInt("getClickCount");
+                    if (currentCount >= currentLimit - 1) {
+                        android.util.Log.e("ADMOB_DEBUG_LOG", "Post-Dismiss: N-1 Reached immediately! Fetching next ad...");
+                        fetchAdMobAd();
+                    }
+                    
                     if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
                 }
                 @Override
@@ -114,7 +151,12 @@ public class TART_InterstitialAdManager {
         } else {
             if (isFailed || admobInterstitialAd == null) {
                 isFailed = false;
-                fetchAdMobAd();
+                
+                int currentLimit = preferenceClass.getAdsStatus("InerstialClickCount");
+                int currentCount = preferenceClass.getInt("getClickCount");
+                if (currentCount >= currentLimit - 1) {
+                    fetchAdMobAd();
+                }
             }
             if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
         }
@@ -196,11 +238,12 @@ public class TART_InterstitialAdManager {
     public void showInterstitialAd(Activity activity, OnAdLoadInterface onAdLoadInterface) {
         this.onAdLoadInterface = onAdLoadInterface;
 
-        if (com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
-            if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
+        int interstitalAdStatus = preferenceClass.getAdsStatus("InerstialClickCount");
+
+        if (interstitalAdStatus == 0) {
+            onAdLoadInterface.onAdClose();
             return;
         }
-        int interstitalAdStatus = preferenceClass.getAdsStatus("InerstialClickCount");
 
         int getClickCount = preferenceClass.getInt("getClickCount");
         if (getClickCount < interstitalAdStatus) {
@@ -253,11 +296,6 @@ public class TART_InterstitialAdManager {
 
     public void showEDitAdIfAvailable(Activity activity, OnAdLoadInterface onAdLoadInterface) {
         this.onAdLoadInterface = onAdLoadInterface;
-
-        if (com.addtext.textonphoto.textart.BuildConfig.DEBUG) {
-            if (onAdLoadInterface != null) onAdLoadInterface.onAdClose();
-            return;
-        }
 
         int interstitalAdStatus = preferenceClass.getAdsStatus("EditScreenAdCount");
 
